@@ -4,8 +4,6 @@ import requests
 import json
 
 
-load_dotenv()
-api_key = os.getenv('RIOT_API_KEY')
 
 
 class Caller:
@@ -78,19 +76,27 @@ class Caller:
         return matches_storage
 
 
+def pipeline(api_key, player_name, player_tag, region):
+    """
+    Create Caller class instance with appropriate arguments -> 
+    Fetch PUUID by username and tagline -> 
+    Fetch ID's of last matches played ->
+    Fetch last matches data
+    """ 
+    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag)
+    puuidme = usercall.get_puuid()
+    matches_id = usercall.last_matches_id_call(puuidme)
+    matches_data = usercall.last_matches_data_call(matches_id)
+    with open('data.json', 'w') as f:
+        json.dump(matches_data, f)
+    return matches_data
 
 
+load_dotenv()
+api_key = os.getenv('RIOT_API_KEY')
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1')
 
+print(softmax)
 
-
-
-# Pipeline: Creating Caller class instance with appropriate  arguments -> Fetching PUUID by username and tagline -> Fetching ID's of last 20 matches played
-usercall = Caller('europe', api_key, 'softmax', 'EUNE1')
-puuidme = usercall.get_puuid()
-print(f'User PUUID: {puuidme}')
-matches_id = usercall.last_matches_id_call(puuidme)
-print(f'Matches_id list: {matches_id}')
-matches_data = usercall.last_matches_data_call(matches_id)
-print(matches_data)
 
 
