@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from model import Caller, Parser, Player
 
 
-def pipeline(api_key, player_name, player_tag, region):
+def pipeline(api_key, player_name, player_tag, region, count):
     """
     Create Caller class instance with appropriate arguments -> 
     Fetch PUUID by username and tagline -> 
@@ -14,11 +14,11 @@ def pipeline(api_key, player_name, player_tag, region):
     (TBA) extract most important data from match info (Parser class)
     (TBA) create Player class instance for each player with parser data as attributes
     """ 
-    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag)
+    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag, count=3)
     puuidme = usercall.get_puuid()
     matches_id = usercall.last_matches_id_call(puuidme)
     matches_data = usercall.last_matches_data_call(matches_id)
-    with open('data/latest_match.json', 'w') as f:
+    with open(f'data/data_from_{count}_previous_matches.json', 'w') as f:
         json.dump(matches_data, f)
     return matches_data
 
@@ -27,5 +27,5 @@ def pipeline(api_key, player_name, player_tag, region):
 
 load_dotenv()
 api_key = os.getenv('RIOT_API_KEY')
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1')
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=3)
 p1 = softmax["EUN1_3919534502"]["info"]["participants"][1]

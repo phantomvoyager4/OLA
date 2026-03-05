@@ -12,7 +12,7 @@ class Caller:
     2. Fetch last 20 user matches ID
     3. Fetch last 20 user matches data and store it into a separate file / variable (TBD)
     """
-    def __init__(self, region, api_key, player_name, player_tag):
+    def __init__(self, region, api_key, player_name, player_tag, count):
         """
         Args:
         region - Regional Routing Value for player. Can be: europe, americas, asia, sea
@@ -25,6 +25,7 @@ class Caller:
         self.player_name = player_name
         self.player_tag = player_tag
         self.url_base = f'https://{self.region}.api.riotgames.com'
+        self.count = count
 
     def get_puuid(self):
         """
@@ -39,7 +40,7 @@ class Caller:
         if call.status_code == 200:
             return call.json()['puuid']
 
-    def last_matches_id_call(self, puuid, count=1): 
+    def last_matches_id_call(self, puuid): 
         """
         Fetch user last {count} matches ID
 
@@ -49,7 +50,7 @@ class Caller:
         url = f'{self.url_base}/lol/match/v5/matches/by-puuid/{puuid}/ids'
         params = {
             'start': 0,
-            'count': count,
+            'count': self.count,
             'api_key': self.api_key,
             'queue': 420
         }

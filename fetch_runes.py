@@ -45,6 +45,6 @@ patch, runes = fetch_latest_data()
 
 
 runes_dict = structurize_data(input = runes, live_patch=patch)
-with open('data/data_dict.json', 'w') as f:
+with open('data/patch_lookup_table.json', 'w') as f:
     json.dump(runes_dict, f)
 
