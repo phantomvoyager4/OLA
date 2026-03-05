@@ -5,7 +5,6 @@ import json
 
 
 
-
 class Caller:
     """
     Class designed to:
@@ -40,7 +39,7 @@ class Caller:
         if call.status_code == 200:
             return call.json()['puuid']
 
-    def last_matches_id_call(self, puuid, count=5): 
+    def last_matches_id_call(self, puuid, count=1): 
         """
         Fetch user last {count} matches ID
 
@@ -51,7 +50,8 @@ class Caller:
         params = {
             'start': 0,
             'count': count,
-            'api_key': self.api_key
+            'api_key': self.api_key,
+            'queue': 420
         }
         response = requests.get(url=url, params=params)
         if response.status_code == 200:
@@ -87,16 +87,23 @@ def pipeline(api_key, player_name, player_tag, region):
     puuidme = usercall.get_puuid()
     matches_id = usercall.last_matches_id_call(puuidme)
     matches_data = usercall.last_matches_data_call(matches_id)
-    with open('data.json', 'w') as f:
+    with open('data/latest_match.json', 'w') as f:
         json.dump(matches_data, f)
     return matches_data
+
+
+class Player:
+    def __init__(self, input):
+        self.input = input
+        
+
+
+
 
 
 load_dotenv()
 api_key = os.getenv('RIOT_API_KEY')
 softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1')
 
-print(softmax)
-
-
+p1 = softmax["EUN1_3919534502"]["info"]["participants"][1]
 
