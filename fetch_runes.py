@@ -13,18 +13,32 @@ def fetch_latest_data():
     json_runes = runes_call.json()     
     return live_patch, json_runes
 
-load_dotenv()
-api_key = os.getenv('RIOT_API_KEY')
-
-
 def structurize_data(input: dict, live_patch):
-    clean_runes_storage = {}
-    clean_runes_storage["patch"] = live_patch
+    """
+    Create efficent lookup table for easy data retrieval
+    
+    :param input: fetched runes list from ddragon dataset
+    :type input: dict
+    :param live_patch: current patch passed from last function
+    """
+    runes_lookup_storage = {}
+    runes_lookup_storage["patch"] = live_patch
+    with open("data/stats.perks.json", 'r') as f:
+        stats_perks = json.load(f)
     for style in input:
+        style_name = style["name"]
+        runes_lookup_storage[str(style['id'])] = {"name": style_name, "group": "Style","icon": "", "description": ""}
         for slot in style['slots']:
             for rune in slot['runes']:
-                clean_runes_storage[rune['id']] = [rune["name"], rune['shortDesc']]
-    return clean_runes_storage
+                runes_lookup_storage[str(rune['id'])] = {
+                    "name": rune['name'],
+                    "group": style_name,
+                    "icon": rune['icon'],
+                    "description": rune['shortDesc']
+                }
+    runes_lookup_storage = runes_lookup_storage | stats_perks
+
+    return runes_lookup_storage
 
 patch, runes = fetch_latest_data()
 

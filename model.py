@@ -75,35 +75,22 @@ class Caller:
                 matches_storage[match] = response.json()
         return matches_storage
 
+class Parser:
+    def __init__(self, input: dict, player_index: int):
+        self.input = input
+        self.player_index = player_index
 
-def pipeline(api_key, player_name, player_tag, region):
-    """
-    Create Caller class instance with appropriate arguments -> 
-    Fetch PUUID by username and tagline -> 
-    Fetch ID's of last matches played ->
-    Fetch last matches data
-    """ 
-    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag)
-    puuidme = usercall.get_puuid()
-    matches_id = usercall.last_matches_id_call(puuidme)
-    matches_data = usercall.last_matches_data_call(matches_id)
-    with open('data/latest_match.json', 'w') as f:
-        json.dump(matches_data, f)
-    return matches_data
+    def extract(self):
+        index = ""
 
 
 class Player:
-    def __init__(self, input):
-        self.input = input
+    pass
+    # def __init__(self, input, game_id, player_index):
+    #     self.input = input
+    #     self.player_index = player_index
+    #     self.game_id = game_id
+    #     self.kills = input[game_id]["info"]["participants"][player_index]["kills"]
         
 
-
-
-
-
-load_dotenv()
-api_key = os.getenv('RIOT_API_KEY')
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1')
-
-p1 = softmax["EUN1_3919534502"]["info"]["participants"][1]
 

@@ -1,0 +1,37 @@
+{
+    "5001": {
+        "name": "Health Scaling",
+        "group": "Stat Perk",
+        "description": "Grants health based on level."
+    },
+    "5002": {
+        "name": "Armor",
+        "group": "Stat Perk",
+        "description": "Grants bonus armor."
+    },
+    "5003": {
+        "name": "Magic Resist",
+        "group": "Stat Perk",
+        "description": "Grants bonus magic resistance."
+    },
+    "5005": {
+        "name": "Attack Speed",
+        "group": "Stat Perk",
+        "description": "Grants bonus attack speed."
+    },
+    "5007": {
+        "name": "Ability Haste",
+        "group": "Stat Perk",
+        "description": "Grants bonus ability haste."
+    },
+    "5008": {
+        "name": "Adaptive Force",
+        "group": "Stat Perk",
+        "description": "Grants bonus adaptive force."
+    },
+    "5011": {
+        "name": "Health",
+        "group": "Stat Perk",
+        "description": "Grants flat bonus health."
+    }
+}
