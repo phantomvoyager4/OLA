@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-from model import Caller, Parser, Player
+from model import Caller, Parser
 
 
 def pipeline(api_key, player_name, player_tag, region, count):
@@ -14,7 +14,7 @@ def pipeline(api_key, player_name, player_tag, region, count):
     (TBA) extract most important data from match info (Parser class)
     (TBA) create Player class instance for each player with parser data as attributes
     """ 
-    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag, count=3)
+    usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
     puuidme = usercall.get_puuid()
     matches_id = usercall.last_matches_id_call(puuidme)
     matches_data = usercall.last_matches_data_call(matches_id)

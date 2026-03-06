@@ -77,21 +77,21 @@ class Caller:
         return matches_storage
 
 class Parser:
-    def __init__(self, input: dict, player_index: int):
+    def __init__(self, input: dict, player_index: int, match_id = str):
         self.input = input
         self.player_index = player_index
+        self.game_id = match_id
+       
+    def find_player(self):
+        self.player_data = input[self.game_id]["info"]["participants"][self.player_index]
 
     def extract(self):
-        index = ""
+        self.assists = self.player_data["assists"]
+        self.champlevel = self.player_data["champlevel"]
 
 
-class Player:
-    pass
-    # def __init__(self, input, game_id, player_index):
-    #     self.input = input
-    #     self.player_index = player_index
-    #     self.game_id = game_id
-    #     self.kills = input[game_id]["info"]["participants"][player_index]["kills"]
+
+
         
 
 

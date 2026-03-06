@@ -40,11 +40,11 @@ def structurize_data(input: dict, live_patch):
 
     return runes_lookup_storage
 
-patch, runes = fetch_latest_data()
 
+def fr():
+    patch, runes = fetch_latest_data()
+    runes_dict = structurize_data(input = runes, live_patch=patch)
+    with open('data/patch_lookup_table.json', 'w') as f:
+        json.dump(runes_dict, f)
 
-
-runes_dict = structurize_data(input = runes, live_patch=patch)
-with open('data/patch_lookup_table.json', 'w') as f:
-    json.dump(runes_dict, f)
-
+fr()
