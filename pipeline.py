@@ -21,11 +21,10 @@ def pipeline(api_key, player_name, player_tag, region, count):
     with open(f'data/data_from_{count}_previous_matches.json', 'w') as f:
         json.dump(matches_data, f)
     return matches_data
-
+    
 
 
 
 load_dotenv()
 api_key = os.getenv('RIOT_API_KEY')
 softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=3)
-p1 = softmax["EUN1_3919534502"]["info"]["participants"][1]

@@ -88,6 +88,7 @@ class Parser:
     def extract(self):
         self.assists = self.player_data["assists"]
         self.champlevel = self.player_data["champlevel"]
+        self.championName = self.player_data["championName"]
 
 
 
