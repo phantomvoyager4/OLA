@@ -175,17 +175,27 @@ class Player:
         Args:
             runes_map (dict): current runes data fetch from ddragon
         """
+        if not self.runes_raw: return None
+
+        self.stat_perks = list(self.runes_raw.get("statPerks", {}).values())
+        self.style_names = []
+        self.perks = []
+        
+        for n in self.runes_raw.get("styles", []):
+            self.style_names.append(n.get("style"))
+            for i in n.get("selections", []):
+                self.perks.append(i.get("perk"))
+        all_ids = self.stat_perks + self.style_names + self.perks
+        all_ids_strings = []
+        for n in all_ids:
+            if n is not None:
+                all_ids_strings.append(str(n))
+
         self.runes_mapped = []
-        self.stat_runes = self.runes_raw["statPerks"]
-        self.primaryStyle = self.runes_raw["styles"][0]
-        self.subStyle = self.runes_raw["styles"][1]
-        self.style = self.runes_raw["style"]
-        all_sorted = [self.stat_runes, self.primaryStyle,  self.subStyle, self.style]
-        for a in all_sorted:
-            for b in a:
-                for c in lookup_table.values():
-                    if b == c:
-                        self.runes_mapped.append(c)
+        for rune_id in all_ids_strings:
+            mapped_rune = lookup_table.get(rune_id)
+            if mapped_rune:
+                self.runes_mapped.append(mapped_rune)
 
     def to_json(self, filepath: str = None):
         """
