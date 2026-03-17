@@ -46,5 +46,6 @@ def fr():
     runes_dict = structurize_data(input = runes, live_patch=patch)
     with open('data/patch_lookup_table.json', 'w') as f:
         json.dump(runes_dict, f)
+    print("recent data saved in directory: data/patch_lookup_table.json")
 
 fr()

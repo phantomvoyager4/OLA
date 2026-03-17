@@ -22,8 +22,10 @@ def pipeline(api_key, player_name, player_tag, region, count):
         json.dump(matches_data, f)
     parse_player_data = Parser(input=matches_data, match_id=list(matches_data.keys())[0], player_index=1)
     player_object = Player(player_data=parse_player_data.player_data)
-    return player_object
     
+
+
+
 
 
 
