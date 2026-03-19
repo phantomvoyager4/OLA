@@ -214,17 +214,6 @@ class Player:
 
         return json.dumps(data_to_serialize, indent=4)
 
-class Data:
+class Match_Data:
         def __init__(self, match_data: dict):
             self.match_data = match_data
-            
-
-
-
-
-
-
-
-
-
-

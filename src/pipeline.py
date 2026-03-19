@@ -29,11 +29,11 @@ def pipeline(api_key, player_name, player_tag, region, count):
             raise RuntimeError(f"No valid match IDs returned from Riot API: {matches_id}")
         else: print("Matches fetched")
 
-        matches_data = usercall.last_matches_data_call(matches_id)
+        matches_data = usercall.last_matches_data_call(matches_id) # Use this for Match_data class
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
 
-        with open(f'data/data_from_{count}_previous_matches.json', 'w') as f:
+        with open(f'data/{count}_previous_matches.json', 'w') as f:
             json.dump(matches_data, f, indent=4)
 
         player_objects = []
@@ -92,4 +92,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=4)
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=10)
