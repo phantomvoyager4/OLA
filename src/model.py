@@ -8,7 +8,6 @@ import json
 
 class Caller:
     """
-    Class designed to:
     1. Obtain user riot account PUUID
     2. Fetch last 20 user matches ID
     3. Fetch last 20 user matches data and store it into a separate file / variable (TBD)
@@ -108,7 +107,6 @@ class Parser:
         return None
 
 
-
 class Player:
     def __init__(self, player_data: dict):
         """Map dictionary values to correct class attributes (based on OOD)
@@ -200,21 +198,29 @@ class Player:
 
     def to_json(self, filepath: str = None):
         """
-        Convert the Player object to a JSON string or save it directly to a file.
-        Removes the raw player_data from the output to prevent redundancy.
+        Convert the Player object to JSON.
+        Replace runes_raw with mapped runes (if available).
         """
-        
         data_to_serialize = copy.deepcopy(vars(self))
-        
+
         if "player_data" in data_to_serialize:
             del data_to_serialize["player_data"]
-            
-        if filepath:
-            with open(filepath, 'w') as f:
-                json.dump(data_to_serialize, f, indent=4)
-        
-        return json.dumps(data_to_serialize, indent=4)
 
+        if "runes_mapped" in data_to_serialize:
+            data_to_serialize["runes_raw"] = data_to_serialize["runes_mapped"]
+            del data_to_serialize["runes_mapped"]
+            data_to_serialize["runes_mapped"] = data_to_serialize.pop("runes_raw")
+
+        for key in ("stat_perks", "style_names", "perks"):
+            data_to_serialize.pop(key, None)
+
+        if filepath:
+            with open(filepath, "w") as f:
+                json.dump(data_to_serialize, f, indent=4)
+
+class Data:
+        def __init__(self, player_data: dict):
+            self.player_data = player_data
 
 
 

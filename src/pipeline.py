@@ -68,7 +68,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=3)
-
-
-
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=1)
