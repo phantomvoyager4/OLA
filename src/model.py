@@ -1,5 +1,3 @@
-from dotenv import load_dotenv
-import os
 import copy
 import requests
 import json
@@ -78,29 +76,18 @@ class Caller:
         return matches_storage
 
 class Parser:
-    def __init__(self, match_data: dict, match_id: str, target_puuid: str):
-        """
-        Extract player data from match statistics
-
-        Args:
-            match_data (dict): data in dict format from matches endpoint request
-            match_id (str): id of match to extract data from
-            target_puuid (str): PUUID of the player to extract data for
-        """
+    def __init__(self, match_data: dict, target_puuid: str):
         self.match_data = match_data
-        self.match_id = match_id
         self.target_puuid = target_puuid
-        
-        self.players_data = self.match_data[self.match_id]["info"]["participants"]
+        self.players_data = self.match_data["info"]["participants"]
 
-        with open("data/patch_lookup_table.json", 'r') as f:
+        with open("data/patch_lookup_table.json", "r") as f:
             self.lookup_table = json.load(f)
-            
+
         self.player_index = self.indexing()
         self.player_data = self.players_data[self.player_index] if self.player_index is not None else None
 
     def indexing(self):
-        """Find the index of the target player in the participants list."""
         for index, participant in enumerate(self.players_data):
             if participant.get("puuid") == self.target_puuid:
                 return index
@@ -166,7 +153,7 @@ class Player:
         self.totalTimeSpentDead = player_data.get("totalTimeSpentDead", 0)
 
         # Runes 
-        self.runes_raw = player_data.get("perks", {})
+        self.runes = player_data.get("perks", {})
 
     def runes_mapping(self, lookup_table: dict):
         """Find given rune data using patch lookup table
@@ -174,13 +161,13 @@ class Player:
         Args:
             runes_map (dict): current runes data fetch from ddragon
         """
-        if not self.runes_raw: return None
+        if not self.runes: return None
 
-        self.stat_perks = list(self.runes_raw.get("statPerks", {}).values())
+        self.stat_perks = list(self.runes.get("statPerks", {}).values())
         self.style_names = []
         self.perks = []
         
-        for n in self.runes_raw.get("styles", []):
+        for n in self.runes.get("styles", []):
             self.style_names.append(n.get("style"))
             for i in n.get("selections", []):
                 self.perks.append(i.get("perk"))
@@ -196,10 +183,10 @@ class Player:
             if mapped_rune:
                 self.runes_mapped.append(mapped_rune)
 
-    def to_json(self, filepath: str = None):
+    def to_dict(self):
         """
-        Convert the Player object to JSON.
-        Replace runes_raw with mapped runes (if available).
+        Convert Player object into a serializable dictionary.
+        If mapped runes are available, they replace raw runes.
         """
         data_to_serialize = copy.deepcopy(vars(self))
 
@@ -207,20 +194,30 @@ class Player:
             del data_to_serialize["player_data"]
 
         if "runes_mapped" in data_to_serialize:
-            data_to_serialize["runes_raw"] = data_to_serialize["runes_mapped"]
+            data_to_serialize["runes"] = data_to_serialize["runes_mapped"]
             del data_to_serialize["runes_mapped"]
-            data_to_serialize["runes_mapped"] = data_to_serialize.pop("runes_raw")
 
         for key in ("stat_perks", "style_names", "perks"):
             data_to_serialize.pop(key, None)
+
+        return data_to_serialize
+
+    def to_json(self, filepath: str = None):
+        """
+        Convert the Player object to JSON.
+        """
+        data_to_serialize = self.to_dict()
 
         if filepath:
             with open(filepath, "w") as f:
                 json.dump(data_to_serialize, f, indent=4)
 
+        return json.dumps(data_to_serialize, indent=4)
+
 class Data:
-        def __init__(self, player_data: dict):
-            self.player_data = player_data
+        def __init__(self, match_data: dict):
+            self.match_data = match_data
+            
 
 
 
