@@ -13,7 +13,7 @@ class Caller:
     2. Fetch last 20 user matches ID
     3. Fetch last 20 user matches data and store it into a separate file / variable (TBD)
     """
-    def __init__(self, region, api_key, player_name, player_tag, count, puuid):
+    def __init__(self, region, api_key, player_name, player_tag, count):
         """
         Args:
         region - Regional Routing Value for player. Can be: europe, americas, asia, sea
@@ -106,6 +106,7 @@ class Parser:
             if participant.get("puuid") == self.target_puuid:
                 return index
         return None
+
 
 
 class Player:
