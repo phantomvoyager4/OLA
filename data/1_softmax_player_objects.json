@@ -1,0 +1,100 @@
+{
+    "0": {
+        "name": "softmax",
+        "tagline": "EUNE1",
+        "puuid": "iuzLMJa1lYf5iNGk9CDuBi9LtRCMEJOANaERLBr9BIEfBGBSkaKRYUfespT0LYYeLFiyoEyGaaOM5A",
+        "lane": "MIDDLE",
+        "teamPosition": "MIDDLE",
+        "kills": 1,
+        "deaths": 12,
+        "assists": 6,
+        "champLevel": 14,
+        "championName": "Sylas",
+        "doubleKills": 0,
+        "tripleKills": 0,
+        "quadraKills": 0,
+        "pentaKills": 0,
+        "killingSprees": 0,
+        "largestKillingSpree": 0,
+        "goldEarned": 9705,
+        "goldSpent": 9400,
+        "itemsPurchased": 27,
+        "totalDamageDealtToChampions": 16173,
+        "physicalDamageDealtToChampions": 107,
+        "magicDamageDealtToChampions": 15247,
+        "trueDamageDealtToChampions": 818,
+        "totalDamageTaken": 48844,
+        "physicalDamageTaken": 35782,
+        "neutralMinionsKilled": 4,
+        "totalAllyJungleMinionsKilled": 4,
+        "totalEnemyJungleMinionsKilled": 0,
+        "objectiveStolen": 0,
+        "gameEndedInSurrender": false,
+        "totalTimeSpentDead": 396,
+        "runes": [
+            {
+                "name": "Health Scaling",
+                "group": "Stat Perk",
+                "description": "Grants health based on level."
+            },
+            {
+                "name": "Adaptive Force",
+                "group": "Stat Perk",
+                "description": "Grants bonus adaptive force."
+            },
+            {
+                "name": "Adaptive Force",
+                "group": "Stat Perk",
+                "description": "Grants bonus adaptive force."
+            },
+            {
+                "name": "Precision",
+                "group": "Style",
+                "icon": "",
+                "description": ""
+            },
+            {
+                "name": "Resolve",
+                "group": "Style",
+                "icon": "",
+                "description": ""
+            },
+            {
+                "name": "Conqueror",
+                "group": "Precision",
+                "icon": "perk-images/Styles/Precision/Conqueror/Conqueror.png",
+                "description": "Gain stacks of adaptive force when attacking enemy champions. After reaching 12 stacks, heal for a portion of damage you deal to champions."
+            },
+            {
+                "name": "Presence of Mind",
+                "group": "Precision",
+                "icon": "perk-images/Styles/Precision/PresenceOfMind/PresenceOfMind.png",
+                "description": "Restore a small amount of mana or energy when damaging an enemy champion. Takedowns restore mana or energy."
+            },
+            {
+                "name": "Legend: Haste",
+                "group": "Precision",
+                "icon": "perk-images/Styles/Precision/LegendHaste/LegendHaste.png",
+                "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent Basic Ability <b>Haste</b>. "
+            },
+            {
+                "name": "Last Stand",
+                "group": "Precision",
+                "icon": "perk-images/Styles/Sorcery/LastStand/LastStand.png",
+                "description": "Deal more damage to champions while you are low on health."
+            },
+            {
+                "name": "Unflinching",
+                "group": "Resolve",
+                "icon": "perk-images/Styles/Sorcery/Unflinching/Unflinching.png",
+                "description": "Gain Armor and Magic Resist when receiving crowd control."
+            },
+            {
+                "name": "Second Wind",
+                "group": "Resolve",
+                "icon": "perk-images/Styles/Resolve/SecondWind/SecondWind.png",
+                "description": "After taking damage from an enemy champion heal back some missing health over time. "
+            }
+        ]
+    }
+}

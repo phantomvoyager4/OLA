@@ -2,7 +2,7 @@ import os
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-from model import Caller, Parser, Player
+from model import Caller, Parser, Player, Match
 
 
 def pipeline(api_key, player_name, player_tag, region, count):
@@ -38,6 +38,8 @@ def pipeline(api_key, player_name, player_tag, region, count):
 
         player_objects = []
         player_dicts = {}
+        match_objects = []
+        matches_dicts = {}
 
         for index, match_id in enumerate(matches_id):
             match_payload = matches_data.get(match_id)
@@ -50,10 +52,12 @@ def pipeline(api_key, player_name, player_tag, region, count):
 
             player_object = Player(player_data=parse_player_data.player_data)
             player_object.runes_mapping(parse_player_data.lookup_table)
-
             player_objects.append(player_object)
             player_dicts[index] = player_object.to_dict()
 
+            match_object = Match(match_data=match_payload)
+            match_objects.append(match_object)
+            matches_dicts[index] = match_object.to_dict()
 
         if not player_dicts:
             raise RuntimeError("Target player not found in fetched matches")
@@ -64,13 +68,21 @@ def pipeline(api_key, player_name, player_tag, region, count):
         with open(output_path, "w") as f:
             json.dump(player_dicts, f, indent=4)
 
-        return player_objects
+        match_output_path = f"data/{count}_{player_name}_match_objects.json"
+        with open(match_output_path, "w") as f:
+            json.dump(matches_dicts, f, indent=4)
+        print("match objects created")
+
+        return player_objects, match_objects
     except (ValueError, RuntimeError, OSError) as error:
         print(f"Pipeline error: {error}")
         return None
 
 
 def load_api_key():
+    """
+    Load api key from environment folder
+    """
     project_root = Path(__file__).resolve().parent.parent
     env_candidates = [
         project_root / ".env",
@@ -92,4 +104,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=10)
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=1)

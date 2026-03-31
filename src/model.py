@@ -214,6 +214,57 @@ class Player:
 
         return json.dumps(data_to_serialize, indent=4)
 
-class Match_Data:
-        def __init__(self, match_data: dict):
-            self.match_data = match_data
+class Match:
+    def __init__(self, match_data: dict):
+        """
+        Extract generic match data like duration, mode, patch version, 
+        and team results based on the Match dictionary.
+
+        Args:
+            match_data (dict): raw match data obtained from the Riot API
+        """
+        self.match_data = match_data
+        
+        metadata = match_data.get("metadata", {})
+        info = match_data.get("info", {})
+        
+        # Metadata
+        self.matchId = metadata.get("matchId", "No data")
+        
+        # Game Information
+        self.gameCreation = info.get("gameCreation", 0)
+        self.gameDuration = info.get("gameDuration", 0)
+        self.gameType = info.get("gameType", "No data")
+        self.gameVersion = info.get("gameVersion", "No data")
+        self.platformId = info.get("platformId", "No data")
+        self.queueId = info.get("queueId", 0)
+        
+        # Team Results Summary (store list of team IDs and their win status)
+        self.teams = []
+        for team in info.get("teams", []):
+            self.teams.append({
+                "teamId": team.get("teamId"),
+                "win": team.get("win"),
+                "objectives": team.get("objectives", {})
+            })
+
+    def to_dict(self):
+        """
+        Convert Match object into a serializable dictionary.
+        """
+        data_to_serialize = copy.deepcopy(vars(self))
+        if "match_data" in data_to_serialize:
+            del data_to_serialize["match_data"]
+        return data_to_serialize
+
+    def to_json(self, filepath: str = None):
+        """
+        Convert the Match object to JSON.
+        """
+        data_to_serialize = self.to_dict()
+
+        if filepath:
+            with open(filepath, "w") as f:
+                json.dump(data_to_serialize, f, indent=4)
+
+        return json.dumps(data_to_serialize, indent=4)
