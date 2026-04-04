@@ -33,7 +33,7 @@ def structurize_data(input: dict, live_patch):
                 runes_lookup_storage[str(rune['id'])] = {
                     "name": rune['name'],
                     "group": style_name,
-                    "icon": rune['icon'],
+                    # "icon": rune['icon'],
                     "description": rune['shortDesc']
                 }
     runes_lookup_storage = runes_lookup_storage | stats_perks

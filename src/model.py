@@ -7,8 +7,8 @@ import json
 class Caller:
     """
     1. Obtain user riot account PUUID
-    2. Fetch last 20 user matches ID
-    3. Fetch last 20 user matches data and store it into a separate file / variable (TBD)
+    2. Fetch last {number} user matches ID
+    3. Fetch last {number} user matches data and store it into a separate file / variable (TBD)
     """
     def __init__(self, region, api_key, player_name, player_tag, count):
         """
@@ -93,13 +93,15 @@ class Player:
         self.puuid = player_data.get("puuid", default_value)
         self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
+        self.championName = player_data.get("championName", default_value)
+
         
         # Basic Combat Stats
         self.kills = player_data.get("kills", 0)
         self.deaths = player_data.get("deaths", 0)
         self.assists = player_data.get("assists", 0)
         self.champLevel = player_data.get("champLevel", 0)
-        self.championName = player_data.get("championName", default_value)
+        self.KDA = round((int(self.kills) + int(self.assists)) / max(1, int(self.deaths)), 2)
         
         # Multi-kills and Sprees
         self.doubleKills = player_data.get("doubleKills", 0)
@@ -114,23 +116,48 @@ class Player:
         self.goldSpent = player_data.get("goldSpent", 0)
         self.itemsPurchased = player_data.get("itemsPurchased", 0)
         
+        # Farming and Creep Score
+        self.totalMinionsKilled = player_data.get("totalMinionsKilled", 0)
+        self.neutralMinionsKilled = player_data.get("neutralMinionsKilled", 0)
+        self.totalAllyJungleMinionsKilled = player_data.get("totalAllyJungleMinionsKilled", 0)
+        self.totalEnemyJungleMinionsKilled = player_data.get("totalEnemyJungleMinionsKilled", 0)
+        
+        # Vision and Wards
+        self.visionScore = player_data.get("visionScore", 0)
+        self.wardsPlaced = player_data.get("wardsPlaced", 0)
+        self.wardsKilled = player_data.get("wardsKilled", 0)
+        self.detectorWardsPlaced = player_data.get("detectorWardsPlaced", 0)
+        self.visionWardsBoughtInGame = player_data.get("visionWardsBoughtInGame", 0)
+
+        # Communication and Pings
+        self.assistMePings = player_data.get("assistMePings", 0)
+        self.commandPings = player_data.get("commandPings", 0)
+        self.dangerPings = player_data.get("dangerPings", 0)
+        self.enemyMissingPings = player_data.get("enemyMissingPings", 0)
+        self.onMyWayPings = player_data.get("onMyWayPings", 0)
+        self.retreatPings = player_data.get("retreatPings", 0)
+
         # Damage Dealt (Offensive)
         self.totalDamageDealtToChampions = player_data.get("totalDamageDealtToChampions", 0)
         self.physicalDamageDealtToChampions = player_data.get("physicalDamageDealtToChampions", 0)
         self.magicDamageDealtToChampions = player_data.get("magicDamageDealtToChampions", 0)
         self.trueDamageDealtToChampions = player_data.get("trueDamageDealtToChampions", 0)
         
-        # Damage Taken (Defensive)
+        # Damage Taken and Mitigation
         self.totalDamageTaken = player_data.get("totalDamageTaken", 0)
         self.physicalDamageTaken = player_data.get("physicalDamageTaken", 0)
+        self.damageSelfMitigated = player_data.get("damageSelfMitigated", 0)
+        self.totalHealsOnTeammates = player_data.get("totalHealsOnTeammates", 0)
+        self.totalDamageShieldedOnTeammates = player_data.get("totalDamageShieldedOnTeammates", 0)
         
-        # Objectives and Jungle
-        self.neutralMinionsKilled = player_data.get("neutralMinionsKilled", 0)
-        self.totalAllyJungleMinionsKilled = player_data.get("totalAllyJungleMinionsKilled", 0)
-        self.totalEnemyJungleMinionsKilled = player_data.get("totalEnemyJungleMinionsKilled", 0)
+        # Objectives and Utility
         self.objectiveStolen = player_data.get("objectivesStolen", 0)
+        self.damageDealtToObjectives = player_data.get("damageDealtToObjectives", 0)
+        self.damageDealtToTurrets = player_data.get("damageDealtToTurrets", 0)
+        self.timeCCingOthers = player_data.get("timeCCingOthers", 0)
         
         # Game State and Miscellaneous
+        self.win = player_data.get("win", False)
         self.gameEndedInSurrender = player_data.get("gameEndedInSurrender", False)
         self.totalTimeSpentDead = player_data.get("totalTimeSpentDead", 0)
 

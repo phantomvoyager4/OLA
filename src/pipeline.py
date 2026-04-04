@@ -74,7 +74,8 @@ def pipeline(api_key, player_name, player_tag, region, count):
         else: 
             print("Combined objects created")
 
-        output_path = f"data/{count}_{player_name}_combined_records.json"
+        # eg. softmax#EUNE1_1 <- last softmax#EUNE1 match data
+        output_path = f"data/{player_name}#{player_tag}_{count}.json"
         with open(output_path, "w") as f:
             json.dump(combined_records, f, indent=4)
 
@@ -109,4 +110,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=1)
+softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=10)
