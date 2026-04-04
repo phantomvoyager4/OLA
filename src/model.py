@@ -1,6 +1,7 @@
 import copy
 import requests
 import json
+from datetime import datetime
 
 
 
@@ -241,12 +242,16 @@ class Match:
         self.matchId = metadata.get("matchId", "No data")
         
         # Game Information
-        self.gameCreation = info.get("gameCreation", 0)
+        self.gameCreation = info.get("gameCreation", 0) 
+        self.gameStart = info.get("gameStartTimestamp", 0)
+        self.gameEnd = info.get("gameEndTimestamp", 0)
         self.gameDuration = info.get("gameDuration", 0)
         self.gameType = info.get("gameType", "No data")
         self.gameVersion = info.get("gameVersion", "No data")
         self.platformId = info.get("platformId", "No data")
         self.queueId = info.get("queueId", 0)
+        self.gameDate = datetime.fromtimestamp(self.gameStart / 1000).strftime('%Y-%m-%d %H:%M:%S')
+        self.gameDuration_min = int(self.gameDuration) / 60
         
         # Team Results Summary (store list of team IDs and their win status)
         self.teams = []
