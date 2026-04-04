@@ -75,24 +75,6 @@ class Caller:
                 matches_storage[match] = response.json()
         return matches_storage
 
-class Parser:
-    def __init__(self, match_data: dict, target_puuid: str):
-        self.match_data = match_data
-        self.target_puuid = target_puuid
-        self.players_data = self.match_data["info"]["participants"]
-
-        with open("data/patch_lookup_table.json", "r") as f:
-            self.lookup_table = json.load(f)
-
-        self.player_index = self.indexing()
-        self.player_data = self.players_data[self.player_index] if self.player_index is not None else None
-
-    def indexing(self):
-        for index, participant in enumerate(self.players_data):
-            if participant.get("puuid") == self.target_puuid:
-                return index
-        return None
-
 
 class Player:
     def __init__(self, player_data: dict):

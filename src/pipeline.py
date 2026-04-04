@@ -2,7 +2,7 @@ import os
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-from model import Caller, Parser, Player, Match
+from model import Caller, Player, Match
 
 
 def pipeline(api_key, player_name, player_tag, region, count):
@@ -29,51 +29,56 @@ def pipeline(api_key, player_name, player_tag, region, count):
             raise RuntimeError(f"No valid match IDs returned from Riot API: {matches_id}")
         else: print("Matches fetched")
 
-        matches_data = usercall.last_matches_data_call(matches_id) # Use this for Match_data class
+        matches_data = usercall.last_matches_data_call(matches_id)
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
 
-        with open(f'data/{count}_previous_matches.json', 'w') as f:
-            json.dump(matches_data, f, indent=4)
+        # with open(f'data/{count}_previous_matches.json', 'w') as f:
+        #     json.dump(matches_data, f, indent=4)
 
-        player_objects = []
-        player_dicts = {}
-        match_objects = []
-        matches_dicts = {}
+        with open("data/patch_lookup_table.json", "r") as f:
+            lookup_table = json.load(f)
 
-        for index, match_id in enumerate(matches_id):
+        combined_records = []
+
+        for match_id in matches_id:
             match_payload = matches_data.get(match_id)
             if not match_payload:
                 continue
 
-            parse_player_data = Parser(match_data=match_payload, target_puuid=puuidme)
-            if not parse_player_data.player_data:
-                continue
-
-            player_object = Player(player_data=parse_player_data.player_data)
-            player_object.runes_mapping(parse_player_data.lookup_table)
-            player_objects.append(player_object)
-            player_dicts[index] = player_object.to_dict()
-
             match_object = Match(match_data=match_payload)
-            match_objects.append(match_object)
-            matches_dicts[index] = match_object.to_dict()
+            
+            # 1. Match metadata and list of players
+            match_entry = {
+                "match_id": match_id,
+                "metadata": match_object.to_dict(),
+                "players": []
+            }
 
-        if not player_dicts:
-            raise RuntimeError("Target player not found in fetched matches")
-        else: print("player objects created")
+            # 2. All players in the match
+            participants = match_payload.get("info", {}).get("participants", [])
+            for participant in participants:
+                player_object = Player(player_data=participant)
+                player_object.runes_mapping(lookup_table)
+                
+                # Check if this participant is the one we instantiated the pipeline for
+                player_dict = player_object.to_dict()
+                player_dict["caller"] = (participant.get("puuid") == puuidme)
+                
+                match_entry["players"].append(player_dict)
 
+            combined_records.append(match_entry)
 
-        output_path = f"data/{count}_{player_name}_player_objects.json"
+        if not combined_records:
+            raise RuntimeError("No matched elements built.")
+        else: 
+            print("Combined objects created")
+
+        output_path = f"data/{count}_{player_name}_combined_records.json"
         with open(output_path, "w") as f:
-            json.dump(player_dicts, f, indent=4)
+            json.dump(combined_records, f, indent=4)
 
-        match_output_path = f"data/{count}_{player_name}_match_objects.json"
-        with open(match_output_path, "w") as f:
-            json.dump(matches_dicts, f, indent=4)
-        print("match objects created")
-
-        return player_objects, match_objects
+        return combined_records
     except (ValueError, RuntimeError, OSError) as error:
         print(f"Pipeline error: {error}")
         return None
