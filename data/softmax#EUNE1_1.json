@@ -1,18 +1,14 @@
 [
     {
-        "match_id": "EUN1_3931873037",
+        "match_id": "EUN1_3934858226",
         "metadata": {
-            "matchId": "EUN1_3931873037",
-            "gameCreation": 1774903970526,
-            "gameStart": 1774904002102,
-            "gameEnd": 1774905967613,
-            "gameDuration": 1965,
+            "matchId": "EUN1_3934858226",
             "gameType": "MATCHED_GAME",
-            "gameVersion": "16.6.756.9613",
+            "gameVersion": "16.7.760.9485",
             "platformId": "EUN1",
             "queueId": 420,
-            "gameDate": "2026-03-30 22:53:22",
-            "gameDuration_min": 32.75,
+            "gameDate": "2026-04-06 18:45:03 - 19:13:36",
+            "gameDuration_min": 28.55,
             "teams": [
                 {
                     "teamId": 100,
@@ -23,16 +19,16 @@
                             "kills": 0
                         },
                         "baron": {
-                            "first": true,
-                            "kills": 1
+                            "first": false,
+                            "kills": 0
                         },
                         "champion": {
-                            "first": true,
-                            "kills": 40
+                            "first": false,
+                            "kills": 41
                         },
                         "dragon": {
-                            "first": true,
-                            "kills": 3
+                            "first": false,
+                            "kills": 2
                         },
                         "horde": {
                             "first": true,
@@ -40,15 +36,15 @@
                         },
                         "inhibitor": {
                             "first": true,
-                            "kills": 2
+                            "kills": 1
                         },
                         "riftHerald": {
-                            "first": false,
-                            "kills": 0
+                            "first": true,
+                            "kills": 1
                         },
                         "tower": {
                             "first": true,
-                            "kills": 11
+                            "kills": 9
                         }
                     }
                 },
@@ -65,11 +61,11 @@
                             "kills": 0
                         },
                         "champion": {
-                            "first": false,
-                            "kills": 22
+                            "first": true,
+                            "kills": 29
                         },
                         "dragon": {
-                            "first": false,
+                            "first": true,
                             "kills": 2
                         },
                         "horde": {
@@ -81,12 +77,12 @@
                             "kills": 0
                         },
                         "riftHerald": {
-                            "first": true,
-                            "kills": 1
+                            "first": false,
+                            "kills": 0
                         },
                         "tower": {
                             "first": false,
-                            "kills": 4
+                            "kills": 1
                         }
                     }
                 }
@@ -94,57 +90,57 @@
         },
         "players": [
             {
-                "name": "proIV",
-                "tagline": "EUNE",
-                "puuid": "PsclTXK4kBM7xaZxG_Zqp_zORYBeKL9PRSs44TFXloqLDlvJlqNws1FgUCnIA-YXBVDiIYfOtD75JA",
-                "lane": "TOP",
+                "name": "bioly",
+                "tagline": "7446",
+                "puuid": "RcBh53eaa5AI0s5wBqEHF46vXUr0jqHNoZdBsjNmsAZyRyorM3Vpu5WjJtLH32yzGjHAee3ZY1Vwbw",
+                "lane": "JUNGLE",
                 "teamPosition": "TOP",
-                "championName": "Garen",
-                "kills": 6,
-                "deaths": 4,
-                "assists": 7,
-                "champLevel": 18,
-                "KDA": 3.25,
+                "championName": "Aatrox",
+                "kills": 17,
+                "deaths": 5,
+                "assists": 11,
+                "champLevel": 17,
+                "KDA": 5.6,
                 "doubleKills": 1,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 1,
-                "largestKillingSpree": 5,
-                "goldEarned": 12353,
-                "goldSpent": 11000,
-                "itemsPurchased": 22,
-                "totalMinionsKilled": 213,
-                "neutralMinionsKilled": 0,
+                "killingSprees": 3,
+                "largestKillingSpree": 7,
+                "goldEarned": 15973,
+                "goldSpent": 14675,
+                "itemsPurchased": 23,
+                "totalMinionsKilled": 177,
+                "neutralMinionsKilled": 6,
                 "totalAllyJungleMinionsKilled": 0,
                 "totalEnemyJungleMinionsKilled": 0,
-                "visionScore": 26,
-                "wardsPlaced": 12,
-                "wardsKilled": 2,
-                "detectorWardsPlaced": 0,
-                "visionWardsBoughtInGame": 0,
-                "assistMePings": 4,
-                "commandPings": 1,
+                "visionScore": 30,
+                "wardsPlaced": 11,
+                "wardsKilled": 3,
+                "detectorWardsPlaced": 1,
+                "visionWardsBoughtInGame": 1,
+                "assistMePings": 1,
+                "commandPings": 0,
                 "dangerPings": 0,
-                "enemyMissingPings": 12,
+                "enemyMissingPings": 2,
                 "onMyWayPings": 4,
-                "retreatPings": 2,
-                "totalDamageDealtToChampions": 18782,
-                "physicalDamageDealtToChampions": 14690,
-                "magicDamageDealtToChampions": 0,
-                "trueDamageDealtToChampions": 4091,
-                "totalDamageTaken": 34757,
-                "physicalDamageTaken": 16693,
-                "damageSelfMitigated": 44970,
+                "retreatPings": 3,
+                "totalDamageDealtToChampions": 38413,
+                "physicalDamageDealtToChampions": 34126,
+                "magicDamageDealtToChampions": 3256,
+                "trueDamageDealtToChampions": 1030,
+                "totalDamageTaken": 47308,
+                "physicalDamageTaken": 27156,
+                "damageSelfMitigated": 38192,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 7707,
-                "damageDealtToTurrets": 6606,
-                "timeCCingOthers": 37,
+                "damageDealtToObjectives": 21886,
+                "damageDealtToTurrets": 15042,
+                "timeCCingOthers": 41,
                 "win": true,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 134,
+                "totalTimeSpentDead": 171,
                 "runes": [
                     {
                         "name": "Health Scaling",
@@ -194,80 +190,75 @@
                         "description": "Deal more damage to champions while you are low on health."
                     },
                     {
-                        "name": "Conditioning",
+                        "name": "Bone Plating",
                         "group": "Resolve",
-                        "description": "After 12 min gain +8 Armor and +8 Magic Resist and increase your Armor and Magic Resist by 3%."
+                        "description": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage.<br><br>Duration: 1.5s<br>Cooldown: 55s"
                     },
                     {
-                        "name": "Overgrowth",
+                        "name": "Revitalize",
                         "group": "Resolve",
-                        "description": "Gain permanent max health when minions or monsters die near you."
+                        "description": "Gain 5% Heal and Shield Power.<br><br>Heals and shields you cast or receive are 10% stronger on targets below 40% health."
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "b zanbet",
-                "tagline": "SANGE",
-                "puuid": "B3Tl31hYLjBmovMDIDicK1dOaUOyDrq2wYH3PkoPz7D4qECSmeIFnOPZwhXH0NAcyT8_9uOHq9fIlQ",
+                "name": "MagicznySibej",
+                "tagline": "6767",
+                "puuid": "60NiOxlFJ5roJNUKt35tikqaR0L_bgXc3TvFajBPl9ySYI5dJfK45bN_lhhIIWnFb2XniN0AyyHsHQ",
                 "lane": "JUNGLE",
                 "teamPosition": "JUNGLE",
-                "championName": "Rengar",
-                "kills": 8,
-                "deaths": 6,
-                "assists": 5,
-                "champLevel": 18,
-                "KDA": 2.17,
-                "doubleKills": 1,
+                "championName": "Ekko",
+                "kills": 5,
+                "deaths": 5,
+                "assists": 10,
+                "champLevel": 16,
+                "KDA": 3.0,
+                "doubleKills": 0,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 2,
-                "largestKillingSpree": 4,
-                "goldEarned": 14871,
-                "goldSpent": 13800,
-                "itemsPurchased": 29,
-                "totalMinionsKilled": 35,
-                "neutralMinionsKilled": 201,
-                "totalAllyJungleMinionsKilled": 148,
+                "killingSprees": 1,
+                "largestKillingSpree": 2,
+                "goldEarned": 12166,
+                "goldSpent": 11550,
+                "itemsPurchased": 18,
+                "totalMinionsKilled": 11,
+                "neutralMinionsKilled": 199,
+                "totalAllyJungleMinionsKilled": 133,
                 "totalEnemyJungleMinionsKilled": 12,
-                "visionScore": 42,
+                "visionScore": 33,
                 "wardsPlaced": 10,
-                "wardsKilled": 8,
-                "detectorWardsPlaced": 4,
-                "visionWardsBoughtInGame": 6,
-                "assistMePings": 5,
-                "commandPings": 1,
+                "wardsKilled": 0,
+                "detectorWardsPlaced": 0,
+                "visionWardsBoughtInGame": 0,
+                "assistMePings": 6,
+                "commandPings": 2,
                 "dangerPings": 0,
-                "enemyMissingPings": 6,
-                "onMyWayPings": 17,
-                "retreatPings": 0,
-                "totalDamageDealtToChampions": 16701,
-                "physicalDamageDealtToChampions": 13424,
-                "magicDamageDealtToChampions": 1136,
-                "trueDamageDealtToChampions": 2140,
-                "totalDamageTaken": 29980,
-                "physicalDamageTaken": 20142,
-                "damageSelfMitigated": 17259,
+                "enemyMissingPings": 9,
+                "onMyWayPings": 4,
+                "retreatPings": 2,
+                "totalDamageDealtToChampions": 17530,
+                "physicalDamageDealtToChampions": 3067,
+                "magicDamageDealtToChampions": 14109,
+                "trueDamageDealtToChampions": 353,
+                "totalDamageTaken": 31602,
+                "physicalDamageTaken": 18474,
+                "damageSelfMitigated": 28274,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 25529,
-                "damageDealtToTurrets": 2083,
-                "timeCCingOthers": 9,
+                "damageDealtToObjectives": 36030,
+                "damageDealtToTurrets": 1416,
+                "timeCCingOthers": 13,
                 "win": true,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 174,
+                "totalTimeSpentDead": 155,
                 "runes": [
                     {
                         "name": "Health Scaling",
                         "group": "Stat Perk",
                         "description": "Grants health based on level."
-                    },
-                    {
-                        "name": "Adaptive Force",
-                        "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
                     },
                     {
                         "name": "Attack Speed",
@@ -281,7 +272,7 @@
                         "description": ""
                     },
                     {
-                        "name": "Domination",
+                        "name": "Inspiration",
                         "group": "Style",
                         "icon": "",
                         "description": ""
@@ -307,183 +298,70 @@
                         "description": "Deal more damage to high health enemy champions."
                     },
                     {
-                        "name": "Sudden Impact",
-                        "group": "Domination",
-                        "description": "Damaging basic attacks and abilities deal bonus true damage to enemy champions after using a dash, leap, blink, teleport, or when leaving stealth."
+                        "name": "Magical Footwear",
+                        "group": "Inspiration",
+                        "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner."
                     },
                     {
-                        "name": "Ultimate Hunter",
-                        "group": "Domination",
-                        "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. "
+                        "name": "Cosmic Insight",
+                        "group": "Inspiration",
+                        "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste"
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "iliqncho33",
+                "name": "barracunda",
                 "tagline": "EUNE",
-                "puuid": "ePy5-ugCHI_BG-HDBk6itQEHV7QvwemA6A_aL1t8fHE3LQ_6WJozJzrzRYdNUgpyq6WFudo9i4CWTQ",
-                "lane": "TOP",
+                "puuid": "i7b5KMP8jGTCRclhIK_E5BhIYnUMxZd96gY-6_xtFAxVJhMw1A9me017hoxDxh9ivyqFttrAutQ7Cg",
+                "lane": "MIDDLE",
                 "teamPosition": "MIDDLE",
-                "championName": "Yone",
-                "kills": 21,
-                "deaths": 5,
-                "assists": 4,
-                "champLevel": 18,
-                "KDA": 5.0,
-                "doubleKills": 2,
+                "championName": "Vex",
+                "kills": 10,
+                "deaths": 9,
+                "assists": 11,
+                "champLevel": 15,
+                "KDA": 2.33,
+                "doubleKills": 1,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 4,
-                "largestKillingSpree": 7,
-                "goldEarned": 20510,
-                "goldSpent": 18300,
-                "itemsPurchased": 23,
-                "totalMinionsKilled": 273,
-                "neutralMinionsKilled": 19,
+                "killingSprees": 3,
+                "largestKillingSpree": 3,
+                "goldEarned": 12800,
+                "goldSpent": 10625,
+                "itemsPurchased": 22,
+                "totalMinionsKilled": 176,
+                "neutralMinionsKilled": 0,
                 "totalAllyJungleMinionsKilled": 0,
-                "totalEnemyJungleMinionsKilled": 15,
-                "visionScore": 25,
-                "wardsPlaced": 9,
-                "wardsKilled": 3,
-                "detectorWardsPlaced": 0,
-                "visionWardsBoughtInGame": 0,
+                "totalEnemyJungleMinionsKilled": 0,
+                "visionScore": 27,
+                "wardsPlaced": 13,
+                "wardsKilled": 2,
+                "detectorWardsPlaced": 1,
+                "visionWardsBoughtInGame": 1,
                 "assistMePings": 0,
-                "commandPings": 8,
+                "commandPings": 3,
                 "dangerPings": 0,
-                "enemyMissingPings": 2,
-                "onMyWayPings": 3,
-                "retreatPings": 3,
-                "totalDamageDealtToChampions": 66723,
-                "physicalDamageDealtToChampions": 46305,
-                "magicDamageDealtToChampions": 9741,
-                "trueDamageDealtToChampions": 10676,
-                "totalDamageTaken": 29994,
-                "physicalDamageTaken": 15262,
-                "damageSelfMitigated": 52618,
+                "enemyMissingPings": 20,
+                "onMyWayPings": 7,
+                "retreatPings": 16,
+                "totalDamageDealtToChampions": 25891,
+                "physicalDamageDealtToChampions": 1554,
+                "magicDamageDealtToChampions": 23236,
+                "trueDamageDealtToChampions": 1101,
+                "totalDamageTaken": 19021,
+                "physicalDamageTaken": 6311,
+                "damageSelfMitigated": 9231,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 37390,
-                "damageDealtToTurrets": 19738,
+                "damageDealtToObjectives": 11769,
+                "damageDealtToTurrets": 11340,
                 "timeCCingOthers": 35,
                 "win": true,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 193,
-                "runes": [
-                    {
-                        "name": "Health Scaling",
-                        "group": "Stat Perk",
-                        "description": "Grants health based on level."
-                    },
-                    {
-                        "name": "Adaptive Force",
-                        "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
-                    },
-                    {
-                        "name": "Attack Speed",
-                        "group": "Stat Perk",
-                        "description": "Grants bonus attack speed."
-                    },
-                    {
-                        "name": "Precision",
-                        "group": "Style",
-                        "icon": "",
-                        "description": ""
-                    },
-                    {
-                        "name": "Resolve",
-                        "group": "Style",
-                        "icon": "",
-                        "description": ""
-                    },
-                    {
-                        "name": "Lethal Tempo",
-                        "group": "Precision",
-                        "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>bonus adaptive damage</font></lol-uikit-tooltipped-keyword> On-Attack."
-                    },
-                    {
-                        "name": "Triumph",
-                        "group": "Precision",
-                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 5% of your missing health and grant an additional 20 gold. "
-                    },
-                    {
-                        "name": "Legend: Alacrity",
-                        "group": "Precision",
-                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. "
-                    },
-                    {
-                        "name": "Last Stand",
-                        "group": "Precision",
-                        "description": "Deal more damage to champions while you are low on health."
-                    },
-                    {
-                        "name": "Overgrowth",
-                        "group": "Resolve",
-                        "description": "Gain permanent max health when minions or monsters die near you."
-                    },
-                    {
-                        "name": "Bone Plating",
-                        "group": "Resolve",
-                        "description": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage.<br><br>Duration: 1.5s<br>Cooldown: 55s"
-                    }
-                ],
-                "caller": false
-            },
-            {
-                "name": "chrzanicmurzynow",
-                "tagline": "2115",
-                "puuid": "j6txKMy3Tfc50TOkFlUukjjcEshumM4VMXzKxezfJ_Jnbh9vBIof5zUr5eJcbUuCpmzLgbr9eJy3Sg",
-                "lane": "BOTTOM",
-                "teamPosition": "BOTTOM",
-                "championName": "Taliyah",
-                "kills": 3,
-                "deaths": 3,
-                "assists": 13,
-                "champLevel": 17,
-                "KDA": 5.33,
-                "doubleKills": 0,
-                "tripleKills": 0,
-                "quadraKills": 0,
-                "pentaKills": 0,
-                "killingSprees": 0,
-                "largestKillingSpree": 0,
-                "goldEarned": 14727,
-                "goldSpent": 12700,
-                "itemsPurchased": 21,
-                "totalMinionsKilled": 250,
-                "neutralMinionsKilled": 19,
-                "totalAllyJungleMinionsKilled": 4,
-                "totalEnemyJungleMinionsKilled": 11,
-                "visionScore": 19,
-                "wardsPlaced": 10,
-                "wardsKilled": 2,
-                "detectorWardsPlaced": 0,
-                "visionWardsBoughtInGame": 0,
-                "assistMePings": 2,
-                "commandPings": 2,
-                "dangerPings": 0,
-                "enemyMissingPings": 5,
-                "onMyWayPings": 3,
-                "retreatPings": 4,
-                "totalDamageDealtToChampions": 23689,
-                "physicalDamageDealtToChampions": 457,
-                "magicDamageDealtToChampions": 23232,
-                "trueDamageDealtToChampions": 0,
-                "totalDamageTaken": 18073,
-                "physicalDamageTaken": 8353,
-                "damageSelfMitigated": 7729,
-                "totalHealsOnTeammates": 0,
-                "totalDamageShieldedOnTeammates": 0,
-                "objectiveStolen": 0,
-                "damageDealtToObjectives": 15107,
-                "damageDealtToTurrets": 7312,
-                "timeCCingOthers": 36,
-                "win": true,
-                "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 89,
+                "totalTimeSpentDead": 252,
                 "runes": [
                     {
                         "name": "Health Scaling",
@@ -528,9 +406,9 @@
                         "description": "Collect 1 memento on champion <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword>, up to 18 total.<br><br>Gain 6 Trinket Haste for each collected."
                     },
                     {
-                        "name": "Treasure Hunter",
+                        "name": "Ultimate Hunter",
                         "group": "Domination",
-                        "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant additional gold the first time they are collected. "
+                        "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. "
                     },
                     {
                         "name": "Manaflow Band",
@@ -546,75 +424,75 @@
                 "caller": false
             },
             {
-                "name": "RonnieColaman",
-                "tagline": "2115",
-                "puuid": "iV35ZQPVQX8nSXbdSnxeGTcUd2jpH_s3rSe67rrYB8aQbQ9XV5F3h7uYv-cyKmC1BkiouDlRa2fiHg",
+                "name": "softmax",
+                "tagline": "EUNE1",
+                "puuid": "iuzLMJa1lYf5iNGk9CDuBi9LtRCMEJOANaERLBr9BIEfBGBSkaKRYUfespT0LYYeLFiyoEyGaaOM5A",
                 "lane": "BOTTOM",
-                "teamPosition": "UTILITY",
-                "championName": "Rell",
-                "kills": 2,
+                "teamPosition": "BOTTOM",
+                "championName": "Varus",
+                "kills": 5,
                 "deaths": 4,
-                "assists": 13,
-                "champLevel": 15,
-                "KDA": 3.75,
-                "doubleKills": 0,
+                "assists": 14,
+                "champLevel": 14,
+                "KDA": 4.75,
+                "doubleKills": 1,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 0,
-                "largestKillingSpree": 0,
-                "goldEarned": 9425,
-                "goldSpent": 8030,
+                "killingSprees": 2,
+                "largestKillingSpree": 3,
+                "goldEarned": 12760,
+                "goldSpent": 11325,
                 "itemsPurchased": 25,
-                "totalMinionsKilled": 28,
+                "totalMinionsKilled": 166,
                 "neutralMinionsKilled": 0,
                 "totalAllyJungleMinionsKilled": 0,
                 "totalEnemyJungleMinionsKilled": 0,
-                "visionScore": 80,
-                "wardsPlaced": 26,
-                "wardsKilled": 4,
-                "detectorWardsPlaced": 2,
+                "visionScore": 21,
+                "wardsPlaced": 11,
+                "wardsKilled": 0,
+                "detectorWardsPlaced": 0,
                 "visionWardsBoughtInGame": 2,
-                "assistMePings": 3,
-                "commandPings": 4,
+                "assistMePings": 0,
+                "commandPings": 0,
                 "dangerPings": 0,
-                "enemyMissingPings": 2,
-                "onMyWayPings": 3,
-                "retreatPings": 4,
-                "totalDamageDealtToChampions": 7841,
-                "physicalDamageDealtToChampions": 1733,
-                "magicDamageDealtToChampions": 6047,
-                "trueDamageDealtToChampions": 60,
-                "totalDamageTaken": 24716,
-                "physicalDamageTaken": 13999,
-                "damageSelfMitigated": 34042,
+                "enemyMissingPings": 10,
+                "onMyWayPings": 0,
+                "retreatPings": 0,
+                "totalDamageDealtToChampions": 26914,
+                "physicalDamageDealtToChampions": 19986,
+                "magicDamageDealtToChampions": 6927,
+                "trueDamageDealtToChampions": 0,
+                "totalDamageTaken": 11936,
+                "physicalDamageTaken": 6167,
+                "damageSelfMitigated": 3841,
                 "totalHealsOnTeammates": 0,
-                "totalDamageShieldedOnTeammates": 276,
+                "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 6776,
-                "damageDealtToTurrets": 4500,
-                "timeCCingOthers": 33,
+                "damageDealtToObjectives": 9784,
+                "damageDealtToTurrets": 8850,
+                "timeCCingOthers": 30,
                 "win": true,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 93,
+                "totalTimeSpentDead": 89,
                 "runes": [
                     {
-                        "name": "Health Scaling",
+                        "name": "Health",
                         "group": "Stat Perk",
-                        "description": "Grants health based on level."
+                        "description": "Grants flat bonus health."
                     },
                     {
-                        "name": "Health Scaling",
+                        "name": "Adaptive Force",
                         "group": "Stat Perk",
-                        "description": "Grants health based on level."
+                        "description": "Grants bonus adaptive force."
                     },
                     {
-                        "name": "Ability Haste",
+                        "name": "Attack Speed",
                         "group": "Stat Perk",
-                        "description": "Grants bonus ability haste."
+                        "description": "Grants bonus attack speed."
                     },
                     {
-                        "name": "Resolve",
+                        "name": "Sorcery",
                         "group": "Style",
                         "icon": "",
                         "description": ""
@@ -626,90 +504,203 @@
                         "description": ""
                     },
                     {
-                        "name": "Aftershock",
-                        "group": "Resolve",
-                        "description": "After <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Immobilize'>immobilizing</lol-uikit-tooltipped-keyword> an enemy champion gain defenses and later deal a burst of magic damage around you."
+                        "name": "Arcane Comet",
+                        "group": "Sorcery",
+                        "description": "Damaging a champion with an ability hurls a damaging comet at their location."
                     },
                     {
-                        "name": "Shield Bash",
-                        "group": "Resolve",
-                        "description": "Whenever you gain a shield, your next basic attack against a champion deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'><font color='#48C4B7'>adaptive</font></lol-uikit-tooltipped-keyword> damage."
+                        "name": "Manaflow Band",
+                        "group": "Sorcery",
+                        "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds."
                     },
                     {
-                        "name": "Bone Plating",
-                        "group": "Resolve",
-                        "description": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage.<br><br>Duration: 1.5s<br>Cooldown: 55s"
+                        "name": "Transcendence",
+                        "group": "Sorcery",
+                        "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%."
                     },
                     {
-                        "name": "Unflinching",
-                        "group": "Resolve",
-                        "description": "Gain Armor and Magic Resist when receiving crowd control."
-                    },
-                    {
-                        "name": "Hextech Flashtraption",
-                        "group": "Inspiration",
-                        "description": "While Flash is on cooldown it is replaced by <i>Hexflash</i>.<br><br><i>Hexflash</i>: Channel, then blink to a new location."
+                        "name": "Scorch",
+                        "group": "Sorcery",
+                        "description": "Your first damaging ability hit every 10s burns champions."
                     },
                     {
                         "name": "Cosmic Insight",
                         "group": "Inspiration",
                         "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste"
+                    },
+                    {
+                        "name": "Cash Back",
+                        "group": "Inspiration",
+                        "description": "Get some gold back when you purchase Legendary Items."
+                    }
+                ],
+                "caller": true
+            },
+            {
+                "name": "GigaFoxik",
+                "tagline": "SZEW",
+                "puuid": "HE98ORqjqIO-ya5-QQeagA1X2reyPP-LkMCYHnXpa4J4n3UWqsGiiDP6n27IcpxeYz8HoednGnySvQ",
+                "lane": "BOTTOM",
+                "teamPosition": "UTILITY",
+                "championName": "Morgana",
+                "kills": 4,
+                "deaths": 6,
+                "assists": 18,
+                "champLevel": 14,
+                "KDA": 3.67,
+                "doubleKills": 0,
+                "tripleKills": 0,
+                "quadraKills": 0,
+                "pentaKills": 0,
+                "killingSprees": 1,
+                "largestKillingSpree": 2,
+                "goldEarned": 9503,
+                "goldSpent": 9250,
+                "itemsPurchased": 22,
+                "totalMinionsKilled": 41,
+                "neutralMinionsKilled": 0,
+                "totalAllyJungleMinionsKilled": 0,
+                "totalEnemyJungleMinionsKilled": 0,
+                "visionScore": 52,
+                "wardsPlaced": 21,
+                "wardsKilled": 9,
+                "detectorWardsPlaced": 2,
+                "visionWardsBoughtInGame": 2,
+                "assistMePings": 0,
+                "commandPings": 0,
+                "dangerPings": 0,
+                "enemyMissingPings": 0,
+                "onMyWayPings": 0,
+                "retreatPings": 2,
+                "totalDamageDealtToChampions": 19901,
+                "physicalDamageDealtToChampions": 764,
+                "magicDamageDealtToChampions": 19136,
+                "trueDamageDealtToChampions": 0,
+                "totalDamageTaken": 20746,
+                "physicalDamageTaken": 13395,
+                "damageSelfMitigated": 8425,
+                "totalHealsOnTeammates": 0,
+                "totalDamageShieldedOnTeammates": 588,
+                "objectiveStolen": 0,
+                "damageDealtToObjectives": 3046,
+                "damageDealtToTurrets": 2310,
+                "timeCCingOthers": 76,
+                "win": true,
+                "gameEndedInSurrender": false,
+                "totalTimeSpentDead": 150,
+                "runes": [
+                    {
+                        "name": "Health Scaling",
+                        "group": "Stat Perk",
+                        "description": "Grants health based on level."
+                    },
+                    {
+                        "name": "Adaptive Force",
+                        "group": "Stat Perk",
+                        "description": "Grants bonus adaptive force."
+                    },
+                    {
+                        "name": "Adaptive Force",
+                        "group": "Stat Perk",
+                        "description": "Grants bonus adaptive force."
+                    },
+                    {
+                        "name": "Sorcery",
+                        "group": "Style",
+                        "icon": "",
+                        "description": ""
+                    },
+                    {
+                        "name": "Inspiration",
+                        "group": "Style",
+                        "icon": "",
+                        "description": ""
+                    },
+                    {
+                        "name": "Arcane Comet",
+                        "group": "Sorcery",
+                        "description": "Damaging a champion with an ability hurls a damaging comet at their location."
+                    },
+                    {
+                        "name": "Manaflow Band",
+                        "group": "Sorcery",
+                        "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds."
+                    },
+                    {
+                        "name": "Transcendence",
+                        "group": "Sorcery",
+                        "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%."
+                    },
+                    {
+                        "name": "Scorch",
+                        "group": "Sorcery",
+                        "description": "Your first damaging ability hit every 10s burns champions."
+                    },
+                    {
+                        "name": "Cash Back",
+                        "group": "Inspiration",
+                        "description": "Get some gold back when you purchase Legendary Items."
+                    },
+                    {
+                        "name": "Biscuit Delivery",
+                        "group": "Inspiration",
+                        "description": "Gain a free Biscuit every 2 min, until 6 min. Consuming or selling a Biscuit permanently increases your max health and restores health."
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "Bartolo2137",
-                "tagline": "OTP",
-                "puuid": "j2K9sXXAfiLoupl-0RGWfoG_Du8mZnImYHFs8ZR8VwR4SN3rk5zbVYKjldsNxMx959LSc5NTMZfY1w",
-                "lane": "JUNGLE",
+                "name": "Fizz Me Daddy",
+                "tagline": "1999",
+                "puuid": "sH9Nb1HgtlbMRG7P37v0ZVVmnw0vz9AYAvp-9DZ9yK5XfGyJGMqKXRzEZJm6xR2a_gzfZB9vGfd0Kg",
+                "lane": "TOP",
                 "teamPosition": "TOP",
                 "championName": "Malphite",
-                "kills": 1,
-                "deaths": 6,
-                "assists": 2,
-                "champLevel": 16,
-                "KDA": 0.5,
+                "kills": 6,
+                "deaths": 12,
+                "assists": 1,
+                "champLevel": 13,
+                "KDA": 0.58,
                 "doubleKills": 0,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
                 "killingSprees": 0,
                 "largestKillingSpree": 0,
-                "goldEarned": 10243,
-                "goldSpent": 9850,
-                "itemsPurchased": 22,
-                "totalMinionsKilled": 208,
-                "neutralMinionsKilled": 4,
+                "goldEarned": 8079,
+                "goldSpent": 11250,
+                "itemsPurchased": 19,
+                "totalMinionsKilled": 74,
+                "neutralMinionsKilled": 0,
                 "totalAllyJungleMinionsKilled": 0,
                 "totalEnemyJungleMinionsKilled": 0,
-                "visionScore": 48,
-                "wardsPlaced": 15,
-                "wardsKilled": 0,
-                "detectorWardsPlaced": 2,
-                "visionWardsBoughtInGame": 2,
+                "visionScore": 20,
+                "wardsPlaced": 7,
+                "wardsKilled": 3,
+                "detectorWardsPlaced": 0,
+                "visionWardsBoughtInGame": 0,
                 "assistMePings": 0,
-                "commandPings": 7,
+                "commandPings": 4,
                 "dangerPings": 0,
-                "enemyMissingPings": 3,
-                "onMyWayPings": 2,
-                "retreatPings": 7,
-                "totalDamageDealtToChampions": 16002,
-                "physicalDamageDealtToChampions": 3485,
-                "magicDamageDealtToChampions": 12516,
+                "enemyMissingPings": 1,
+                "onMyWayPings": 1,
+                "retreatPings": 0,
+                "totalDamageDealtToChampions": 17658,
+                "physicalDamageDealtToChampions": 3968,
+                "magicDamageDealtToChampions": 13690,
                 "trueDamageDealtToChampions": 0,
-                "totalDamageTaken": 24423,
-                "physicalDamageTaken": 12112,
-                "damageSelfMitigated": 50391,
+                "totalDamageTaken": 30410,
+                "physicalDamageTaken": 19703,
+                "damageSelfMitigated": 40065,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 8767,
-                "damageDealtToTurrets": 7097,
-                "timeCCingOthers": 29,
+                "damageDealtToObjectives": 342,
+                "damageDealtToTurrets": 0,
+                "timeCCingOthers": 32,
                 "win": false,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 230,
+                "totalTimeSpentDead": 375,
                 "runes": [
                     {
                         "name": "Health Scaling",
@@ -759,70 +750,70 @@
                         "description": "Your first damaging ability hit every 10s burns champions."
                     },
                     {
-                        "name": "Second Wind",
-                        "group": "Resolve",
-                        "description": "After taking damage from an enemy champion heal back some missing health over time. "
-                    },
-                    {
                         "name": "Overgrowth",
                         "group": "Resolve",
                         "description": "Gain permanent max health when minions or monsters die near you."
+                    },
+                    {
+                        "name": "Second Wind",
+                        "group": "Resolve",
+                        "description": "After taking damage from an enemy champion heal back some missing health over time. "
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "klepiepipe",
-                "tagline": "6780",
-                "puuid": "307FTxRmJGsl8WP0Bnf0KAgat0R1Hfyw8RPZeLwkLvnRMmxUMUyZTYmr4LunPxoOnZxw1xXns9Wauw",
+                "name": "whitetiger420",
+                "tagline": "420",
+                "puuid": "wvYs5Vz7A0gv4mhjopuZqcqRNMQAlBKhWy9VtnruBgdaOJO-63FlUfINmw__vm66ZLBqG5kzDYzprQ",
                 "lane": "JUNGLE",
                 "teamPosition": "JUNGLE",
-                "championName": "Nocturne",
-                "kills": 9,
-                "deaths": 5,
-                "assists": 6,
-                "champLevel": 18,
-                "KDA": 3.0,
-                "doubleKills": 1,
+                "championName": "Graves",
+                "kills": 4,
+                "deaths": 11,
+                "assists": 4,
+                "champLevel": 13,
+                "KDA": 0.73,
+                "doubleKills": 0,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 3,
-                "largestKillingSpree": 4,
-                "goldEarned": 14925,
-                "goldSpent": 14375,
-                "itemsPurchased": 24,
-                "totalMinionsKilled": 78,
-                "neutralMinionsKilled": 179,
-                "totalAllyJungleMinionsKilled": 129,
-                "totalEnemyJungleMinionsKilled": 12,
-                "visionScore": 32,
-                "wardsPlaced": 12,
+                "killingSprees": 1,
+                "largestKillingSpree": 2,
+                "goldEarned": 10044,
+                "goldSpent": 9950,
+                "itemsPurchased": 22,
+                "totalMinionsKilled": 21,
+                "neutralMinionsKilled": 128,
+                "totalAllyJungleMinionsKilled": 94,
+                "totalEnemyJungleMinionsKilled": 16,
+                "visionScore": 20,
+                "wardsPlaced": 1,
                 "wardsKilled": 3,
-                "detectorWardsPlaced": 1,
-                "visionWardsBoughtInGame": 1,
-                "assistMePings": 1,
-                "commandPings": 7,
+                "detectorWardsPlaced": 0,
+                "visionWardsBoughtInGame": 0,
+                "assistMePings": 5,
+                "commandPings": 0,
                 "dangerPings": 0,
-                "enemyMissingPings": 13,
-                "onMyWayPings": 1,
-                "retreatPings": 5,
-                "totalDamageDealtToChampions": 22371,
-                "physicalDamageDealtToChampions": 18765,
-                "magicDamageDealtToChampions": 1119,
-                "trueDamageDealtToChampions": 2486,
-                "totalDamageTaken": 43246,
-                "physicalDamageTaken": 27881,
-                "damageSelfMitigated": 28606,
+                "enemyMissingPings": 0,
+                "onMyWayPings": 9,
+                "retreatPings": 0,
+                "totalDamageDealtToChampions": 14777,
+                "physicalDamageDealtToChampions": 13088,
+                "magicDamageDealtToChampions": 280,
+                "trueDamageDealtToChampions": 1407,
+                "totalDamageTaken": 26873,
+                "physicalDamageTaken": 15414,
+                "damageSelfMitigated": 16534,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 24145,
-                "damageDealtToTurrets": 3350,
-                "timeCCingOthers": 195,
+                "damageDealtToObjectives": 5064,
+                "damageDealtToTurrets": 0,
+                "timeCCingOthers": 18,
                 "win": false,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 133,
+                "totalTimeSpentDead": 310,
                 "runes": [
                     {
                         "name": "Health Scaling",
@@ -846,15 +837,15 @@
                         "description": ""
                     },
                     {
-                        "name": "Domination",
+                        "name": "Inspiration",
                         "group": "Style",
                         "icon": "",
                         "description": ""
                     },
                     {
-                        "name": "Conqueror",
+                        "name": "Fleet Footwork",
                         "group": "Precision",
-                        "description": "Gain stacks of adaptive force when attacking enemy champions. After reaching 12 stacks, heal for a portion of damage you deal to champions."
+                        "description": "Attacking and moving builds Energy stacks. At 100 stacks, your next attack heals you and grants increased <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword>."
                     },
                     {
                         "name": "Triumph",
@@ -867,9 +858,112 @@
                         "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. "
                     },
                     {
-                        "name": "Last Stand",
+                        "name": "Coup de Grace",
                         "group": "Precision",
-                        "description": "Deal more damage to champions while you are low on health."
+                        "description": "Deal more damage to low health enemy champions."
+                    },
+                    {
+                        "name": "Cash Back",
+                        "group": "Inspiration",
+                        "description": "Get some gold back when you purchase Legendary Items."
+                    },
+                    {
+                        "name": "Cosmic Insight",
+                        "group": "Inspiration",
+                        "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste"
+                    }
+                ],
+                "caller": false
+            },
+            {
+                "name": "mpalothias",
+                "tagline": "TONY",
+                "puuid": "DG-euPAtZMLH4GRzK2mHH7COB1Dua1vpQVyCHi_eZ3dwzW59677cQZKdORHc2Rthxnc6aC9OBLnKwQ",
+                "lane": "MIDDLE",
+                "teamPosition": "MIDDLE",
+                "championName": "Lissandra",
+                "kills": 13,
+                "deaths": 7,
+                "assists": 4,
+                "champLevel": 17,
+                "KDA": 2.43,
+                "doubleKills": 1,
+                "tripleKills": 1,
+                "quadraKills": 1,
+                "pentaKills": 0,
+                "killingSprees": 3,
+                "largestKillingSpree": 6,
+                "goldEarned": 14052,
+                "goldSpent": 13310,
+                "itemsPurchased": 24,
+                "totalMinionsKilled": 221,
+                "neutralMinionsKilled": 0,
+                "totalAllyJungleMinionsKilled": 0,
+                "totalEnemyJungleMinionsKilled": 0,
+                "visionScore": 29,
+                "wardsPlaced": 14,
+                "wardsKilled": 1,
+                "detectorWardsPlaced": 0,
+                "visionWardsBoughtInGame": 0,
+                "assistMePings": 0,
+                "commandPings": 4,
+                "dangerPings": 0,
+                "enemyMissingPings": 6,
+                "onMyWayPings": 8,
+                "retreatPings": 0,
+                "totalDamageDealtToChampions": 32540,
+                "physicalDamageDealtToChampions": 1257,
+                "magicDamageDealtToChampions": 29326,
+                "trueDamageDealtToChampions": 1956,
+                "totalDamageTaken": 29243,
+                "physicalDamageTaken": 9942,
+                "damageSelfMitigated": 15336,
+                "totalHealsOnTeammates": 0,
+                "totalDamageShieldedOnTeammates": 0,
+                "objectiveStolen": 0,
+                "damageDealtToObjectives": 11245,
+                "damageDealtToTurrets": 6481,
+                "timeCCingOthers": 54,
+                "win": false,
+                "gameEndedInSurrender": false,
+                "totalTimeSpentDead": 220,
+                "runes": [
+                    {
+                        "name": "Health Scaling",
+                        "group": "Stat Perk",
+                        "description": "Grants health based on level."
+                    },
+                    {
+                        "name": "Adaptive Force",
+                        "group": "Stat Perk",
+                        "description": "Grants bonus adaptive force."
+                    },
+                    {
+                        "name": "Attack Speed",
+                        "group": "Stat Perk",
+                        "description": "Grants bonus attack speed."
+                    },
+                    {
+                        "name": "Domination",
+                        "group": "Style",
+                        "icon": "",
+                        "description": ""
+                    },
+                    {
+                        "name": "Sorcery",
+                        "group": "Style",
+                        "icon": "",
+                        "description": ""
+                    },
+                    {
+                        "name": "Electrocute",
+                        "group": "Domination",
+                        "description": "Hitting a champion with 3 <b>separate</b> attacks or abilities in 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>."
+                    },
+                    {
+                        "name": "Cheap Shot",
+                        "group": "Domination",
+                        "description": "Deal bonus true damage to enemy champions with <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairAct'>impaired movement or actions</lol-uikit-tooltipped-keyword>. "
                     },
                     {
                         "name": "Grisly Mementos",
@@ -880,180 +974,77 @@
                         "name": "Ultimate Hunter",
                         "group": "Domination",
                         "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. "
+                    },
+                    {
+                        "name": "Scorch",
+                        "group": "Sorcery",
+                        "description": "Your first damaging ability hit every 10s burns champions."
+                    },
+                    {
+                        "name": "Transcendence",
+                        "group": "Sorcery",
+                        "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%."
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "softmax",
-                "tagline": "EUNE1",
-                "puuid": "iuzLMJa1lYf5iNGk9CDuBi9LtRCMEJOANaERLBr9BIEfBGBSkaKRYUfespT0LYYeLFiyoEyGaaOM5A",
-                "lane": "MIDDLE",
-                "teamPosition": "MIDDLE",
-                "championName": "Sylas",
-                "kills": 1,
-                "deaths": 12,
+                "name": "Tamagotchi v3",
+                "tagline": "1738",
+                "puuid": "qGuGgIYfaw5n0TMteabL7QwlzOGYxoIy1NTrBocpt1TgdbriANQgS-60SjpsBi4nICPDopCjJA945w",
+                "lane": "BOTTOM",
+                "teamPosition": "BOTTOM",
+                "championName": "Aphelios",
+                "kills": 4,
+                "deaths": 4,
                 "assists": 6,
-                "champLevel": 14,
-                "KDA": 0.58,
+                "champLevel": 13,
+                "KDA": 2.5,
                 "doubleKills": 0,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 0,
-                "largestKillingSpree": 0,
-                "goldEarned": 9705,
-                "goldSpent": 9400,
-                "itemsPurchased": 27,
-                "totalMinionsKilled": 164,
+                "killingSprees": 2,
+                "largestKillingSpree": 2,
+                "goldEarned": 11064,
+                "goldSpent": 10950,
+                "itemsPurchased": 22,
+                "totalMinionsKilled": 165,
                 "neutralMinionsKilled": 4,
                 "totalAllyJungleMinionsKilled": 4,
                 "totalEnemyJungleMinionsKilled": 0,
-                "visionScore": 21,
-                "wardsPlaced": 5,
-                "wardsKilled": 2,
+                "visionScore": 40,
+                "wardsPlaced": 14,
+                "wardsKilled": 4,
                 "detectorWardsPlaced": 4,
                 "visionWardsBoughtInGame": 4,
                 "assistMePings": 0,
-                "commandPings": 1,
+                "commandPings": 14,
                 "dangerPings": 0,
-                "enemyMissingPings": 11,
-                "onMyWayPings": 1,
-                "retreatPings": 1,
-                "totalDamageDealtToChampions": 16173,
-                "physicalDamageDealtToChampions": 107,
-                "magicDamageDealtToChampions": 15247,
-                "trueDamageDealtToChampions": 818,
-                "totalDamageTaken": 48844,
-                "physicalDamageTaken": 35782,
-                "damageSelfMitigated": 26254,
+                "enemyMissingPings": 0,
+                "onMyWayPings": 0,
+                "retreatPings": 0,
+                "totalDamageDealtToChampions": 24164,
+                "physicalDamageDealtToChampions": 23375,
+                "magicDamageDealtToChampions": 686,
+                "trueDamageDealtToChampions": 102,
+                "totalDamageTaken": 17956,
+                "physicalDamageTaken": 10419,
+                "damageSelfMitigated": 9122,
                 "totalHealsOnTeammates": 0,
                 "totalDamageShieldedOnTeammates": 0,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 6502,
-                "damageDealtToTurrets": 5533,
-                "timeCCingOthers": 17,
+                "damageDealtToObjectives": 2277,
+                "damageDealtToTurrets": 1372,
+                "timeCCingOthers": 10,
                 "win": false,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 396,
+                "totalTimeSpentDead": 90,
                 "runes": [
                     {
-                        "name": "Health Scaling",
+                        "name": "Health",
                         "group": "Stat Perk",
-                        "description": "Grants health based on level."
-                    },
-                    {
-                        "name": "Adaptive Force",
-                        "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
-                    },
-                    {
-                        "name": "Adaptive Force",
-                        "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
-                    },
-                    {
-                        "name": "Precision",
-                        "group": "Style",
-                        "icon": "",
-                        "description": ""
-                    },
-                    {
-                        "name": "Resolve",
-                        "group": "Style",
-                        "icon": "",
-                        "description": ""
-                    },
-                    {
-                        "name": "Conqueror",
-                        "group": "Precision",
-                        "description": "Gain stacks of adaptive force when attacking enemy champions. After reaching 12 stacks, heal for a portion of damage you deal to champions."
-                    },
-                    {
-                        "name": "Presence of Mind",
-                        "group": "Precision",
-                        "description": "Restore a small amount of mana or energy when damaging an enemy champion. Takedowns restore mana or energy."
-                    },
-                    {
-                        "name": "Legend: Haste",
-                        "group": "Precision",
-                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent Basic Ability <b>Haste</b>. "
-                    },
-                    {
-                        "name": "Last Stand",
-                        "group": "Precision",
-                        "description": "Deal more damage to champions while you are low on health."
-                    },
-                    {
-                        "name": "Unflinching",
-                        "group": "Resolve",
-                        "description": "Gain Armor and Magic Resist when receiving crowd control."
-                    },
-                    {
-                        "name": "Second Wind",
-                        "group": "Resolve",
-                        "description": "After taking damage from an enemy champion heal back some missing health over time. "
-                    }
-                ],
-                "caller": true
-            },
-            {
-                "name": "Suhaib Sego",
-                "tagline": "EUNE",
-                "puuid": "tm2kva0KbnxYoHJBEEBl47spJCu1C4qGUB-JpgkmTen_eNnlN7SHC3sgkN7Abv6pZVyMp8yE1eQwdA",
-                "lane": "BOTTOM",
-                "teamPosition": "BOTTOM",
-                "championName": "Caitlyn",
-                "kills": 6,
-                "deaths": 10,
-                "assists": 6,
-                "champLevel": 14,
-                "KDA": 1.2,
-                "doubleKills": 0,
-                "tripleKills": 0,
-                "quadraKills": 0,
-                "pentaKills": 0,
-                "killingSprees": 1,
-                "largestKillingSpree": 4,
-                "goldEarned": 12254,
-                "goldSpent": 11750,
-                "itemsPurchased": 22,
-                "totalMinionsKilled": 187,
-                "neutralMinionsKilled": 3,
-                "totalAllyJungleMinionsKilled": 0,
-                "totalEnemyJungleMinionsKilled": 3,
-                "visionScore": 23,
-                "wardsPlaced": 11,
-                "wardsKilled": 3,
-                "detectorWardsPlaced": 0,
-                "visionWardsBoughtInGame": 0,
-                "assistMePings": 0,
-                "commandPings": 5,
-                "dangerPings": 0,
-                "enemyMissingPings": 11,
-                "onMyWayPings": 11,
-                "retreatPings": 6,
-                "totalDamageDealtToChampions": 19683,
-                "physicalDamageDealtToChampions": 19173,
-                "magicDamageDealtToChampions": 295,
-                "trueDamageDealtToChampions": 214,
-                "totalDamageTaken": 24918,
-                "physicalDamageTaken": 15140,
-                "damageSelfMitigated": 10838,
-                "totalHealsOnTeammates": 0,
-                "totalDamageShieldedOnTeammates": 0,
-                "objectiveStolen": 0,
-                "damageDealtToObjectives": 10982,
-                "damageDealtToTurrets": 6472,
-                "timeCCingOthers": 34,
-                "win": false,
-                "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 318,
-                "runes": [
-                    {
-                        "name": "Health Scaling",
-                        "group": "Stat Perk",
-                        "description": "Grants health based on level."
+                        "description": "Grants flat bonus health."
                     },
                     {
                         "name": "Adaptive Force",
@@ -1072,20 +1063,20 @@
                         "description": ""
                     },
                     {
-                        "name": "Sorcery",
+                        "name": "Inspiration",
                         "group": "Style",
                         "icon": "",
                         "description": ""
                     },
                     {
-                        "name": "Lethal Tempo",
+                        "name": "Press the Attack",
                         "group": "Precision",
-                        "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>bonus adaptive damage</font></lol-uikit-tooltipped-keyword> On-Attack."
+                        "description": "Hitting an enemy champion 3 consecutive times deals bonus damage and amplifies your damage until you leave combat with champions."
                     },
                     {
-                        "name": "Presence of Mind",
+                        "name": "Triumph",
                         "group": "Precision",
-                        "description": "Restore a small amount of mana or energy when damaging an enemy champion. Takedowns restore mana or energy."
+                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 5% of your missing health and grant an additional 20 gold. "
                     },
                     {
                         "name": "Legend: Bloodline",
@@ -1093,132 +1084,132 @@
                         "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent<b> Life Steal</b>, up to a cap. Once the cap is reached, increase your max health. Weaker earlier but stronger later game than other Legend Runes."
                     },
                     {
-                        "name": "Coup de Grace",
+                        "name": "Cut Down",
                         "group": "Precision",
-                        "description": "Deal more damage to low health enemy champions."
+                        "description": "Deal more damage to high health enemy champions."
                     },
                     {
-                        "name": "Absolute Focus",
-                        "group": "Sorcery",
-                        "description": "While above 70% health, gain extra <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>."
+                        "name": "Cash Back",
+                        "group": "Inspiration",
+                        "description": "Get some gold back when you purchase Legendary Items."
                     },
                     {
-                        "name": "Gathering Storm",
-                        "group": "Sorcery",
-                        "description": "Gain increasing amounts of AD or AP, <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> over the course of the game."
+                        "name": "Cosmic Insight",
+                        "group": "Inspiration",
+                        "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste"
                     }
                 ],
                 "caller": false
             },
             {
-                "name": "SUFFHEAT",
-                "tagline": "1080",
-                "puuid": "I8z5Na8VVrhRaNUy167MdpMboAcRC3MeAfKTrHpjyKpatsBGvCbzeEknJi03Ov0KaZ49CE1VZAgxPQ",
+                "name": "Just a DreaMM",
+                "tagline": "EUNE",
+                "puuid": "XiRMUmLYsOwUN00ah7XBHexO-z9mQRexZqWnTQ4QaSTgVzIOS9XZy6ZgOzNFj2g88ygg-a-njj0rhw",
                 "lane": "BOTTOM",
                 "teamPosition": "UTILITY",
-                "championName": "Mel",
-                "kills": 5,
+                "championName": "TahmKench",
+                "kills": 2,
                 "deaths": 7,
-                "assists": 10,
-                "champLevel": 15,
-                "KDA": 2.14,
+                "assists": 5,
+                "champLevel": 12,
+                "KDA": 1.0,
                 "doubleKills": 0,
                 "tripleKills": 0,
                 "quadraKills": 0,
                 "pentaKills": 0,
-                "killingSprees": 1,
-                "largestKillingSpree": 4,
-                "goldEarned": 12610,
-                "goldSpent": 12250,
-                "itemsPurchased": 23,
-                "totalMinionsKilled": 127,
+                "killingSprees": 0,
+                "largestKillingSpree": 0,
+                "goldEarned": 8480,
+                "goldSpent": 7750,
+                "itemsPurchased": 19,
+                "totalMinionsKilled": 47,
                 "neutralMinionsKilled": 0,
                 "totalAllyJungleMinionsKilled": 0,
                 "totalEnemyJungleMinionsKilled": 0,
-                "visionScore": 59,
-                "wardsPlaced": 21,
+                "visionScore": 39,
+                "wardsPlaced": 15,
                 "wardsKilled": 5,
                 "detectorWardsPlaced": 0,
                 "visionWardsBoughtInGame": 0,
-                "assistMePings": 9,
-                "commandPings": 8,
+                "assistMePings": 1,
+                "commandPings": 4,
                 "dangerPings": 0,
-                "enemyMissingPings": 9,
-                "onMyWayPings": 9,
-                "retreatPings": 3,
-                "totalDamageDealtToChampions": 29050,
-                "physicalDamageDealtToChampions": 1465,
-                "magicDamageDealtToChampions": 26587,
-                "trueDamageDealtToChampions": 998,
-                "totalDamageTaken": 22498,
-                "physicalDamageTaken": 13453,
-                "damageSelfMitigated": 9036,
+                "enemyMissingPings": 4,
+                "onMyWayPings": 6,
+                "retreatPings": 8,
+                "totalDamageDealtToChampions": 10496,
+                "physicalDamageDealtToChampions": 1760,
+                "magicDamageDealtToChampions": 8157,
+                "trueDamageDealtToChampions": 579,
+                "totalDamageTaken": 38275,
+                "physicalDamageTaken": 17137,
+                "damageSelfMitigated": 37893,
                 "totalHealsOnTeammates": 0,
-                "totalDamageShieldedOnTeammates": 0,
+                "totalDamageShieldedOnTeammates": 52,
                 "objectiveStolen": 0,
-                "damageDealtToObjectives": 2924,
-                "damageDealtToTurrets": 2890,
-                "timeCCingOthers": 49,
+                "damageDealtToObjectives": 1276,
+                "damageDealtToTurrets": 129,
+                "timeCCingOthers": 22,
                 "win": false,
                 "gameEndedInSurrender": false,
-                "totalTimeSpentDead": 205,
+                "totalTimeSpentDead": 196,
                 "runes": [
                     {
-                        "name": "Health",
+                        "name": "Health Scaling",
                         "group": "Stat Perk",
-                        "description": "Grants flat bonus health."
+                        "description": "Grants health based on level."
                     },
                     {
-                        "name": "Adaptive Force",
+                        "name": "Health Scaling",
                         "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
+                        "description": "Grants health based on level."
                     },
                     {
-                        "name": "Adaptive Force",
+                        "name": "Attack Speed",
                         "group": "Stat Perk",
-                        "description": "Grants bonus adaptive force."
+                        "description": "Grants bonus attack speed."
                     },
                     {
-                        "name": "Domination",
+                        "name": "Resolve",
                         "group": "Style",
                         "icon": "",
                         "description": ""
                     },
                     {
-                        "name": "Sorcery",
+                        "name": "Precision",
                         "group": "Style",
                         "icon": "",
                         "description": ""
                     },
                     {
-                        "name": "Dark Harvest",
-                        "group": "Domination",
-                        "description": "Damaging a low health champion inflicts <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword> and harvests a soul from the victim."
+                        "name": "Grasp of the Undying",
+                        "group": "Resolve",
+                        "description": "Every 4s your next attack on a champion deals bonus magic damage, heals you, and permanently increases your health."
                     },
                     {
-                        "name": "Cheap Shot",
-                        "group": "Domination",
-                        "description": "Deal bonus true damage to enemy champions with <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairAct'>impaired movement or actions</lol-uikit-tooltipped-keyword>. "
+                        "name": "Shield Bash",
+                        "group": "Resolve",
+                        "description": "Whenever you gain a shield, your next basic attack against a champion deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'><font color='#48C4B7'>adaptive</font></lol-uikit-tooltipped-keyword> damage."
                     },
                     {
-                        "name": "Sixth Sense",
-                        "group": "Domination",
-                        "description": "On a long Cooldown, automatically sense a nearby untracked and unseen ward, tracking it for the team. <br><br>Level 11: Also reveal the ward for 10s."
+                        "name": "Second Wind",
+                        "group": "Resolve",
+                        "description": "After taking damage from an enemy champion heal back some missing health over time. "
                     },
                     {
-                        "name": "Ultimate Hunter",
-                        "group": "Domination",
-                        "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. "
+                        "name": "Unflinching",
+                        "group": "Resolve",
+                        "description": "Gain Armor and Magic Resist when receiving crowd control."
                     },
                     {
-                        "name": "Manaflow Band",
-                        "group": "Sorcery",
-                        "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds."
+                        "name": "Triumph",
+                        "group": "Precision",
+                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 5% of your missing health and grant an additional 20 gold. "
                     },
                     {
-                        "name": "Scorch",
-                        "group": "Sorcery",
-                        "description": "Your first damaging ability hit every 10s burns champions."
+                        "name": "Legend: Alacrity",
+                        "group": "Precision",
+                        "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. "
                     }
                 ],
                 "caller": false
