@@ -11,7 +11,7 @@ class Caller:
     2. Fetch last {number} user matches ID
     3. Fetch last {number} user matches data and store it into a separate file / variable (TBD)
     """
-    def __init__(self, region, api_key, player_name, player_tag, count):
+    def __init__(self, platform, api_key, player_name, player_tag, count):
         """
         Args:
         region - Regional Routing Value for player. Can be: europe, americas, asia, sea
@@ -19,10 +19,35 @@ class Caller:
         player_name - riot account username
         player_tag - riot account tagline
         """
-        self.region = region
+        self.platform = platform 
+        platform_to_region = {
+            "BR1": "americas",
+            "LA1": "americas",
+            "LA2": "americas",
+            "NA1": "americas",
+            "EUN1": "europe",
+            "EUW1": "europe",
+            "TR1": "europe",
+            "RU": "europe",
+            "ME1": "europe",
+            "JP1": "asia",
+            "KR": "asia",
+            "OC1": "sea",
+            "PH2": "sea",
+            "SG2": "sea",
+            "TH2": "sea",
+            "TW2": "sea",
+            "VN2": "sea"
+        }
+
+        self.region = platform_to_region.get(self.platform.upper())
+        if not self.region:
+            raise ValueError(f"Invalid platform '{self.platform}'. Cannot map to a region.")
+
         self.api_key = api_key
         self.player_name = player_name
         self.player_tag = player_tag
+        self.url_base_platform = f'https://{self.platform}.api.riotgames.com'
         self.url_base = f'https://{self.region}.api.riotgames.com'
         self.count = count
 
@@ -75,6 +100,9 @@ class Caller:
             if response.status_code == 200:
                 matches_storage[match] = response.json()
         return matches_storage
+    
+    def player_metadata_call(self):
+        pass
 
 
 class Player:

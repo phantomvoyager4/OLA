@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from model import Caller, Player, Match
 
 
-def pipeline(api_key, player_name, player_tag, region, count):
+def pipeline(api_key, player_name, player_tag, platform, count):
     """
     Create Caller class instance with appropriate arguments -> 
     Fetch PUUID by username and tagline -> 
@@ -21,7 +21,7 @@ def pipeline(api_key, player_name, player_tag, region, count):
 
         os.makedirs("data", exist_ok=True)
 
-        usercall = Caller(region=region, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
+        usercall = Caller(platform=platform, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
         puuidme = usercall.get_puuid()
 
         matches_id = usercall.last_matches_id_call(puuidme)
@@ -36,7 +36,7 @@ def pipeline(api_key, player_name, player_tag, region, count):
         with open(f'data/{player_name}#{player_tag}_{count}_fetch.json', 'w') as f:
             json.dump(matches_data, f, indent=4)
 
-        with open("data/patch_lookup_table.json", "r") as f:
+        with open("data/static/patch_lookup_table.json", "r") as f:
             lookup_table = json.load(f)
 
         combined_records = []
@@ -110,4 +110,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, region='europe', player_name='softmax', player_tag='EUNE1', count=1)
+softmax = pipeline(api_key=api_key, platform='EUN1', player_name='softmax', player_tag='EUNE1', count=1)
