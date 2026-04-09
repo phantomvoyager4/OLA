@@ -121,19 +121,19 @@ class Caller:
         return ranked_data
 
 class Player:
-    def __init__(self, player_data: dict):
+    def __init__(self, player_data: dict, game_duration_sec: int):
         """Map dictionary values to correct class attributes (based on OOD)
            Prepare JSON file for server response
 
         Args:
             player_data (dict): input from Parser class
+            game_duration_sec (int): game duration in seconds passed from match metadata
         """
         self.player_data = player_data
         default_value = "No data"
         
         # Identity and Position
-        self.name = player_data.get("riotIdGameName", default_value)
-        self.tagline = player_data.get("riotIdTagline", default_value)
+        self.username = f'{player_data.get("riotIdGameName", default_value)} #{player_data.get("riotIdTagline", default_value)}'
         self.puuid = player_data.get("puuid", default_value)
         self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
@@ -162,6 +162,16 @@ class Player:
         
         # Farming and Creep Score
         self.totalMinionsKilled = player_data.get("totalMinionsKilled", 0)
+        self.totalJungleMinionsKilled = player_data.get("neutralMinionsKilled", 0)
+
+        total_cs = int(self.totalMinionsKilled) + int(self.totalJungleMinionsKilled)
+        
+        duration_min = game_duration_sec / 60
+        if duration_min > 0:
+            self.cs_min = round(int(total_cs) / duration_min, 1)
+        else:
+            self.cs_min = 0.0
+            
         self.neutralMinionsKilled = player_data.get("neutralMinionsKilled", 0)
         self.totalAllyJungleMinionsKilled = player_data.get("totalAllyJungleMinionsKilled", 0)
         self.totalEnemyJungleMinionsKilled = player_data.get("totalEnemyJungleMinionsKilled", 0)

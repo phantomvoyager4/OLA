@@ -49,6 +49,9 @@ def pipeline(api_key, player_name, player_tag, platform, count):
 
             match_object = Match(match_data=match_payload)
             
+            # Extract game duration in seconds to pass to the Player object
+            game_duration = match_payload.get("info", {}).get("gameDuration", 0)
+            
             # 1. Match metadata and list of players
             match_entry = {
                 "match_id": match_id,
@@ -59,7 +62,7 @@ def pipeline(api_key, player_name, player_tag, platform, count):
             # 2. All players in the match
             participants = match_payload.get("info", {}).get("participants", [])
             for participant in participants:
-                player_object = Player(player_data=participant)
+                player_object = Player(player_data=participant, game_duration_sec=game_duration)
                 player_object.runes_mapping(lookup_table)
                 
                 # Check if this participant is the one we instantiated the pipeline for
@@ -114,4 +117,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1)
+pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1) #H2P_Gucio
