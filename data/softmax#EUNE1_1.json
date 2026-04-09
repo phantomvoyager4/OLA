@@ -534,7 +534,18 @@
                         "description": "Get some gold back when you purchase Legendary Items."
                     }
                 ],
-                "caller": true
+                "caller": true,
+                "metadata": {
+                    "leagueId": "f728933b-4972-4f2b-be01-f8fdb7864811",
+                    "queueType": "RANKED_SOLO_5x5",
+                    "tier": "PLATINUM",
+                    "rank": "III",
+                    "leaguePoints": 47,
+                    "wins": 28,
+                    "losses": 24,
+                    "inactive": false,
+                    "winrate": "53.85%"
+                }
             },
             {
                 "name": "GigaFoxik",

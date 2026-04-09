@@ -64,6 +64,8 @@ def pipeline(api_key, player_name, player_tag, platform, count):
                 # Check if this participant is the one we instantiated the pipeline for
                 player_dict = player_object.to_dict()
                 player_dict["caller"] = (participant.get("puuid") == puuidme)
+                if player_dict["caller"]:
+                    player_dict['metadata'] = usercall.player_metadata_call()
                 
                 match_entry["players"].append(player_dict)
 

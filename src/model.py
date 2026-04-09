@@ -102,8 +102,24 @@ class Caller:
         return matches_storage
     
     def player_metadata_call(self):
-        pass
+        url = f'{self.url_base_platform}/lol/league/v4/entries/by-puuid/{self.puuid}'
+        params = {'api_key': self.api_key}
+        response = requests.get(url, params)
+        if response.status_code == 200:
+            player_metadata = response.json()
+            ranked_data = next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {})
+            #winrate calc
+            to_pop = ["veteran", "freshBlood", "hotStreak", "puuid"]
+            for n in to_pop:
+                ranked_data.pop(n)
+            wins = ranked_data.get("wins", 0)
+            losses = ranked_data.get("losses", 0)
+            total_matches = wins + losses
+            ranked_data["winrate"] = f'{round((wins / total_matches) * 100, 2)}%'
 
+        else:
+            return f'Error getting user metadata: {response.status_code}'
+        return ranked_data
 
 class Player:
     def __init__(self, player_data: dict):
