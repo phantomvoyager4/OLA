@@ -72,12 +72,13 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         if not combined_records:
             raise RuntimeError("No matched elements built.")
         else: 
-            print("Combined objects created")
-
+            print("objects created sucessfuly :)")
+        
         # eg. softmax#EUNE1_1 <- last softmax#EUNE1 match data
         output_path = f"data/{player_name}#{player_tag}_{count}.json"
         with open(output_path, "w") as f:
             json.dump(combined_records, f, indent=4)
+            print(f"Combined objects created in directory: {output_path}")
 
         return combined_records
     except (ValueError, RuntimeError, OSError) as error:
@@ -110,4 +111,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-softmax = pipeline(api_key=api_key, platform='EUN1', player_name='softmax', player_tag='EUNE1', count=1)
+pipeline(api_key=api_key, platform='EUN1', player_name='softmax', player_tag='EUNE1', count=1)
