@@ -4,7 +4,6 @@ import json
 from datetime import datetime
 
 
-
 class Caller:
     """
     1. Obtain user riot account PUUID
@@ -109,7 +108,7 @@ class Caller:
             player_metadata = response.json()
             ranked_data = next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {})
             #winrate calc
-            to_pop = ["veteran", "freshBlood", "hotStreak", "puuid"]
+            to_pop = ["veteran", "freshBlood", "hotStreak", "inactive", "puuid"]
             for n in to_pop:
                 ranked_data.pop(n)
             wins = ranked_data.get("wins", 0)

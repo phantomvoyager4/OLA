@@ -33,8 +33,9 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
 
-        with open(f'data/{player_name}#{player_tag}_{count}_fetch.json', 'w') as f:
-            json.dump(matches_data, f, indent=4)
+        # Optional: save server raw response 
+        # with open(f'data/{player_name}#{player_tag}_{count}_fetch.json', 'w') as f:
+        #     json.dump(matches_data, f, indent=4)
 
         with open("data/static/patch_lookup_table.json", "r") as f:
             lookup_table = json.load(f)
@@ -113,4 +114,4 @@ def load_api_key():
 
 
 api_key = load_api_key()
-pipeline(api_key=api_key, platform='EUN1', player_name='softmax', player_tag='EUNE1', count=1)
+pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1)
