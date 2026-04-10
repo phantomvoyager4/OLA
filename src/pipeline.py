@@ -86,10 +86,10 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         # Ensure data folder exists relative to project root
         os.makedirs(data_dir, exist_ok=True)
         # eg. softmax#EUNE1_1 <- last softmax#EUNE1 match data
-        output_path = data_dir / f"{player_name}#{player_tag}_{count}.json"
-        with open(output_path, "w") as f:
-            json.dump(combined_records, f, indent=4)
-            print(f"Combined objects created in directory: {output_path}")
+        # output_path = data_dir / f"{player_name}#{player_tag}_{count}.json"
+        # with open(output_path, "w") as f:
+        #     json.dump(combined_records, f, indent=4)
+        #     print(f"Combined objects created in directory: {output_path}")
 
         return combined_records
     except (ValueError, RuntimeError, OSError) as error:

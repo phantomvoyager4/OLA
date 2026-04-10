@@ -4,34 +4,41 @@
 
 ## Current state
 
-for now, repo can pull json file from riot server and create an optimized object of your match data! What you need to do:
-1. In repo directory, create `venv` folder,
-2. Inside it, create .env file with this structure:
+The repository runs a FastAPI server that can pull match data from the Riot API and serve optimized JSON responses of your match history. What you need to do:
+
+1. In the root directory, create a `.env` file (or inside a `venv` folder) with this structure:
 ```bash
-RIOT_API_KEY = "[YOUR_API_KEY_HERE]"
-# To acquire api key, create an account on https://developer.riotgames.com site and generate api key
+RIOT_API_KEY="[YOUR_API_KEY_HERE]"
+# To acquire an API key, create an account on https://developer.riotgames.com and generate a key.
 ```
 
-3. Install dependencies:
+2. Install dependencies:
 ```bash
-# Make sure your bash is in this repo directory
-pip install requirements.txt
+# Make sure your terminal is in the repo directory
+pip install -r requirements.txt
 ```
 
-4. Open `src/pipeline.py` file and create your function instance:
-
-```python
-pipeline(api_key=api_key, platform=[YOUR_PLATFORM*], player_name=[YOUR_RIOT_ACCOUNT_USERNAME], player_tag=[YOUR_RIOT_ACCOUNT_TAG], count=[quantity of matches you want to fetch])
-
-#here is in example for my account:
-pipeline(api_key=api_key, platform='EUN1', player_name='softmax', player_tag='EUNE1', count=1)
-```
-if everything goes correctly, you should see this message in your bash:
+3. Start the FastAPI server:
 ```bash
-Matches fetched
-objects created sucessfuly :)
-Combined objects created in directory: data/your_file_name.json
+cd src
+uvicorn main:app --reload
 ```
+
+4. Access the API!
+Once the server is running, you can open your browser and go to the interactive API documentation (Swagger UI) at:
+**http://127.0.0.1:8000/docs**
+
+Here you can easily test the endpoint by providing your parameters:
+- `platform`: e.g., `EUN1` (see codes below)
+- `player_name`: e.g., `softmax`
+- `player_tag`: e.g., `EUNE1`
+- `count`: quantity of matches you want to fetch
+
+Alternatively, you can call the endpoint directly in your browser or frontend application:
+```text
+http://127.0.0.1:8000/api/matches/EUN1/softmax/EUNE1?count=1
+```
+If everything goes correctly, you will receive a JSON response containing the optimized match data! Our pipeline also securely saves a backup of this processed data inside the `data/` folder.
 
 <br><br>
 
