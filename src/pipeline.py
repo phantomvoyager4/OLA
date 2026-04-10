@@ -19,7 +19,9 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         if not api_key:
             raise ValueError("Missing RIOT_API_KEY")
 
-        os.makedirs("data", exist_ok=True)
+        project_root = Path(__file__).resolve().parent.parent
+        data_dir = project_root / "data"
+        os.makedirs(data_dir, exist_ok=True)
 
         usercall = Caller(platform=platform, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
         puuidme = usercall.get_puuid()
@@ -33,11 +35,12 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
 
-        # Optional: save server raw response 
-        # with open(f'data/{player_name}#{player_tag}_{count}_fetch.json', 'w') as f:
-        #     json.dump(matches_data, f, indent=4)
+        # Ensure we are looking in the project root correctly
+        project_root = Path(__file__).resolve().parent.parent
+        data_dir = project_root / "data"
+        lookup_path = data_dir / "static" / "patch_lookup_table.json"
 
-        with open("data/static/patch_lookup_table.json", "r") as f:
+        with open(lookup_path, "r") as f:
             lookup_table = json.load(f)
 
         combined_records = []
@@ -80,8 +83,10 @@ def pipeline(api_key, player_name, player_tag, platform, count):
         else: 
             print("objects created sucessfuly :)")
         
+        # Ensure data folder exists relative to project root
+        os.makedirs(data_dir, exist_ok=True)
         # eg. softmax#EUNE1_1 <- last softmax#EUNE1 match data
-        output_path = f"data/{player_name}#{player_tag}_{count}.json"
+        output_path = data_dir / f"{player_name}#{player_tag}_{count}.json"
         with open(output_path, "w") as f:
             json.dump(combined_records, f, indent=4)
             print(f"Combined objects created in directory: {output_path}")
@@ -116,5 +121,6 @@ def load_api_key():
     return normalized_value or None
 
 
-api_key = load_api_key()
-pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1) #H2P_Gucio
+if __name__ == '__main__':
+    api_key = load_api_key()
+    pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1) #H2P_Gucio
