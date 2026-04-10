@@ -24,7 +24,7 @@ cd src
 uvicorn main:app --reload
 ```
 
-4. Access the API!
+4. Access the API <br>
 Once the server is running, you can open your browser and go to the interactive API documentation (Swagger UI) at:
 **http://127.0.0.1:8000/docs**
 
@@ -43,19 +43,19 @@ If everything goes correctly, you will receive a JSON response containing the op
 <br><br>
 
 *Insert platform codes accordingly:
-BR1: Brazil
-EUN1: Europe Nordic & East
-EUW1: Europe West
-JP1: Japan
-KR: Korea
-LA1: Latin America North
-LA2: Latin America South
-NA1: North America
-OC1: Oceania
-TR1: Turkey
-RU: Russia
-PH2: Philippines
-SG2: Singapore
-TH2: Thailand
-TW2: Taiwan
-VN2: Vietnam 
+BR1: Brazil <br>
+EUN1: Europe Nordic & East<br>
+EUW1: Europe West<br>
+JP1: Japan<br>
+KR: Korea<br>
+LA1: Latin America North<br>
+LA2: Latin America South<br>
+NA1: North America<br>
+OC1: Oceania<br>
+TR1: Turkey<br>
+RU: Russia<br>
+PH2: Philippines<br>
+SG2: Singapore<br>
+TH2: Thailand<br>
+TW2: Taiwan<br>
+VN2: Vietnam <br>
