@@ -2,6 +2,8 @@ import copy
 import requests
 import json
 from datetime import datetime
+from pathlib import Path
+import os
 
 
 class Caller:
@@ -18,7 +20,32 @@ class Caller:
         player_name - riot account username
         player_tag - riot account tagline
         """
-        self.platform = platform 
+        upper_platform = platform.upper()
+        
+        # Map common server names to their routing values
+        server_to_platform = {
+            "BR": "BR1",
+            "EUNE": "EUN1",
+            "EUW": "EUW1",
+            "JP": "JP1",
+            "KR": "KR",
+            "LAN": "LA1",
+            "LAS": "LA2",
+            "NA": "NA1",
+            "OCE": "OC1",
+            "TR": "TR1",
+            "RU": "RU",
+            "PH": "PH2",
+            "SG": "SG2",
+            "TH": "TH2",
+            "TW": "TW2",
+            "VN": "VN2",
+            "ME": "ME1"
+        }
+        
+        # Use mapped value if available, else use the provided value
+        self.platform = server_to_platform.get(upper_platform, upper_platform)
+        
         platform_to_region = {
             "BR1": "americas",
             "LA1": "americas",
@@ -129,6 +156,16 @@ class Player:
             player_data (dict): input from Parser class
             game_duration_sec (int): game duration in seconds passed from match metadata
         """
+        project_root = Path(__file__).resolve().parent.parent
+        data_dir = project_root / "data"
+        os.makedirs(data_dir, exist_ok=True)
+        project_root = Path(__file__).resolve().parent.parent
+        data_dir = project_root / "data"
+        lookup_path = data_dir / "static" / "patch_lookup_table.json"
+        with open(lookup_path, "r") as f:
+            lookup_table = json.load(f)
+
+        self.currentPatch = lookup_table["patch"]
         self.player_data = player_data
         default_value = "No data"
         
@@ -138,6 +175,7 @@ class Player:
         self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
         self.championName = player_data.get("championName", default_value)
+        self.championImageLink = f"https://ddragon.leagueoflegends.com/cdn/{self.currentPatch}/img/champion/{self.championName}.png"
 
         
         # Basic Combat Stats

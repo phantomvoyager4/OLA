@@ -2,36 +2,43 @@
     "5001": {
         "name": "Health Scaling",
         "group": "Stat Perk",
-        "description": "Grants health based on level."
+        "description": "Grants health based on level.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsHealthScalingIcon.png"
     },
     "5002": {
         "name": "Armor",
         "group": "Stat Perk",
-        "description": "Grants bonus armor."
+        "description": "Grants bonus armor.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsArmorIcon.png"
     },
     "5003": {
         "name": "Magic Resist",
         "group": "Stat Perk",
-        "description": "Grants bonus magic resistance."
+        "description": "Grants bonus magic resistance.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsMagicResistIcon.png"
     },
     "5005": {
         "name": "Attack Speed",
         "group": "Stat Perk",
-        "description": "Grants bonus attack speed."
+        "description": "Grants bonus attack speed.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsAttackSpeedIcon.png"
     },
     "5007": {
         "name": "Ability Haste",
         "group": "Stat Perk",
-        "description": "Grants bonus ability haste."
+        "description": "Grants bonus ability haste.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsCdRIcon.png"
     },
     "5008": {
         "name": "Adaptive Force",
         "group": "Stat Perk",
-        "description": "Grants bonus adaptive force."
+        "description": "Grants bonus adaptive force.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsAdaptiveForceIcon.png"
     },
     "5011": {
         "name": "Health",
         "group": "Stat Perk",
-        "description": "Grants flat bonus health."
+        "description": "Grants flat bonus health.",
+        "runeImageLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/StatMods/StatModsHealthPlusIcon.png"
     }
 }

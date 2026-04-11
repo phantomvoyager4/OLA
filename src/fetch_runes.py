@@ -33,9 +33,10 @@ def structurize_data(input: dict, live_patch):
                 runes_lookup_storage[str(rune['id'])] = {
                     "name": rune['name'],
                     "group": style_name,
-                    # "icon": rune['icon'],
-                    "description": rune['shortDesc']
+                    "description": rune['shortDesc'],
+                    "runeIconLink": f'https://ddragon.leagueoflegends.com/cdn/img/{rune['icon']}'
                 }
+                
     runes_lookup_storage = runes_lookup_storage | stats_perks
 
     return runes_lookup_storage

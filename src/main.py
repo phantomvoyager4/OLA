@@ -31,7 +31,7 @@ def get_matches(
     if result is None:
         raise HTTPException(
             status_code=404, 
-            detail="Could not fetch matches."
+            detail="Could not fetch matches. [404]"
         )
         
     return result
