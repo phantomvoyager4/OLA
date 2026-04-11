@@ -2,9 +2,7 @@
     "patch": "16.7.1",
     "8100": {
         "name": "Domination",
-        "group": "Style",
-        "icon": "",
-        "description": ""
+        "group": "Style"
     },
     "8112": {
         "name": "Electrocute",
@@ -80,9 +78,7 @@
     },
     "8300": {
         "name": "Inspiration",
-        "group": "Style",
-        "icon": "",
-        "description": ""
+        "group": "Style"
     },
     "8351": {
         "name": "Glacial Augment",
@@ -158,9 +154,7 @@
     },
     "8000": {
         "name": "Precision",
-        "group": "Style",
-        "icon": "",
-        "description": ""
+        "group": "Style"
     },
     "8005": {
         "name": "Press the Attack",
@@ -242,9 +236,7 @@
     },
     "8400": {
         "name": "Resolve",
-        "group": "Style",
-        "icon": "",
-        "description": ""
+        "group": "Style"
     },
     "8437": {
         "name": "Grasp of the Undying",
@@ -320,9 +312,7 @@
     },
     "8200": {
         "name": "Sorcery",
-        "group": "Style",
-        "icon": "",
-        "description": ""
+        "group": "Style"
     },
     "8214": {
         "name": "Summon Aery",

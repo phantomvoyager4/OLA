@@ -27,7 +27,7 @@ def structurize_data(input: dict, live_patch):
         stats_perks = json.load(f)
     for style in input:
         style_name = style["name"]
-        runes_lookup_storage[str(style['id'])] = {"name": style_name, "group": "Style","icon": "", "description": ""}
+        runes_lookup_storage[str(style['id'])] = {"name": style_name, "group": "Style"}
         for slot in style['slots']:
             for rune in slot['runes']:
                 runes_lookup_storage[str(rune['id'])] = {

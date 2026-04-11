@@ -165,7 +165,7 @@ class Player:
         with open(lookup_path, "r") as f:
             lookup_table = json.load(f)
 
-        self.currentPatch = lookup_table["patch"]
+        currentPatch = lookup_table["patch"]
         self.player_data = player_data
         default_value = "No data"
         
@@ -175,7 +175,7 @@ class Player:
         self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
         self.championName = player_data.get("championName", default_value)
-        self.championImageLink = f"https://ddragon.leagueoflegends.com/cdn/{self.currentPatch}/img/champion/{self.championName}.png"
+        self.championImageLink = f"https://ddragon.leagueoflegends.com/cdn/{currentPatch}/img/champion/{self.championName}.png"
 
         
         # Basic Combat Stats
