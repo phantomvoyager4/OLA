@@ -187,6 +187,20 @@ class Player:
         self.champLevel = player_data.get("champLevel", 0)
         self.KDA = round((int(self.kills) + int(self.assists)) / max(1, int(self.deaths)), 2)
         
+        
+        # Crucial Advanced Metrics (Challenges)
+        challenges = player_data.get("challenges", {})
+        self.killParticipation = f"{round(challenges.get('killParticipation', 0) * 100, 2)}%"
+        self.skillshotsDodged = challenges.get("skillshotsDodged", 0)
+        self.skillshotsHit = challenges.get("skillshotsHit", 0)
+        self.teamDamagePercentage = f"{round(challenges.get('teamDamagePercentage', 0) * 100, 2)}%"
+        self.damageTakenOnTeamPercentage = f"{round(challenges.get('damageTakenOnTeamPercentage', 0) * 100, 2)}%"
+        self.damagePerMinute = round(challenges.get("damagePerMinute", 0), 2)
+        self.goldPerMinute = round(challenges.get("goldPerMinute", 0), 2)
+        self.soloKills = challenges.get("soloKills", 0)
+        self.visionScorePerMinute = round(challenges.get("visionScorePerMinute", 0), 2)
+        self.maxCsAdvantageOnLaneOpponent = round(challenges.get("maxCsAdvantageOnLaneOpponent", 0), 1)
+        
         # Multi-kills and Sprees
         self.doubleKills = player_data.get("doubleKills", 0)
         self.tripleKills = player_data.get("tripleKills", 0)
@@ -343,7 +357,7 @@ class Match:
         gameStartDate = datetime.fromtimestamp(info["gameStartTimestamp"] / 1000).strftime('%Y-%m-%d %H:%M:%S')
         gameEndDate = datetime.fromtimestamp(info["gameEndTimestamp"] / 1000).strftime('%H:%M:%S')
         self.gameDate = f"{gameStartDate} - {gameEndDate}"
-        self.gameDuration_min = int(info["gameDuration"]) / 60
+        self.gameDuration_min = round(int(info["gameDuration"]) / 60, 2)
         
         # Team Results Summary (store list of team IDs and their win status)
         self.teams = []
