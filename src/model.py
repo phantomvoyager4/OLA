@@ -2,7 +2,6 @@ import requests
 import json
 from datetime import datetime
 from pathlib import Path
-import os
 import concurrent.futures
 import time
 
@@ -138,9 +137,9 @@ class Caller:
             return match, None
 
         # ThreadPoolExecutor runs requests concurrently. 
-        # max_workers=10 ensures we never shoot more than 10 requests exactly at the same time,
+        # max_workers=12 ensures we never shoot more than 12 requests exactly at the same time,
         # protecting us from hitting the 20 req/1 sec Dev Key rate limit.
-        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
             future_to_match = {executor.submit(fetch_match, match): match for match in matches_id}
             for future in concurrent.futures.as_completed(future_to_match):
                 match, data = future.result()
@@ -287,7 +286,6 @@ class Player:
         self.timeCCingOthers = player_data.get("timeCCingOthers", 0)
         
         # Game State and Miscellaneous
-        self.win = player_data.get("win", False)
         self.gameEndedInSurrender = player_data.get("gameEndedInSurrender", False)
         self.totalTimeSpentDead = player_data.get("totalTimeSpentDead", 0)
 
