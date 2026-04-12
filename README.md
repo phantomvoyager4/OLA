@@ -6,28 +6,20 @@
 
 The repository runs a FastAPI server that can pull match data from the Riot API and serve optimized JSON responses of your match history. What you need to do:
 
-#### 1. In the root directory, create a `.env` file (or inside a `venv` folder) with this structure:
-```bash
-RIOT_API_KEY="[YOUR_API_KEY_HERE]"
-# To acquire an API key, create an account on https://developer.riotgames.com and generate a key.
-```
-
-#### 2. Install dependencies:
-```bash
-# Make sure your terminal is in the repo directory
-pip install -r requirements.txt
-```
-
-#### 3. Start the FastAPI server:
+## Instruction
+1. Go to [Riot Developer Portal](https://developer.riotgames.com/), log in and generate api key.
+2. Being the project root, open terminal and write:
 ```bash
 cd src
-uvicorn main:app --reload
+python script.py 
 ```
-
-#### 4. Access the API <br>
-Once the server is running, you can open your browser and go to the interactive API documentation (Swagger UI) at:
-**http://127.0.0.1:8000/docs**
-
+3. Insert your API key
+```bash
+# Sript will ask you for it:
+Insert your riot API key: [Your key here]
+```
+Once server will start up, it will automatically open docslink for you to use it 
+4. Test it :)
 Here you can easily test the endpoint by providing your parameters:
 - `platform`: e.g., `EUN1` (see codes below)
 - `player_name`: e.g., `softmax`
