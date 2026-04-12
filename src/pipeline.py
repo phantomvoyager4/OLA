@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 from model import Caller, Player, Match
+import time
 
 
 def pipeline(api_key, player_name, player_tag, platform, count, save):
@@ -15,6 +16,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
     extract most important data from match info (Parser class)
     create Player class instance for each player with parser data as attributes
     """ 
+    start_timer = time.time()
     try:
         if not api_key:
             raise ValueError("Missing RIOT_API_KEY")
@@ -25,15 +27,18 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
 
         usercall = Caller(platform=platform, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
         puuidme = usercall.get_puuid()
+        print("Caller puuid fetched")
 
         matches_id = usercall.last_matches_id_call(puuidme)
         if not isinstance(matches_id, list) or not matches_id:
             raise RuntimeError(f"No valid match IDs returned from Riot API: {matches_id}")
-        else: print("Matches fetched")
+        else: print("Matches ID fetched")
 
         matches_data = usercall.last_matches_data_call(matches_id)
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
+        else:
+            print("Matches raw data fetched")
 
         # Ensure we are looking in the project root correctly
         project_root = Path(__file__).resolve().parent.parent
@@ -46,6 +51,9 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             path = data_dir / "static" / f"{name}_lookup_table.json"
             with open(path, "r") as f:
                 lookup_tables[name] = json.load(f)
+                
+        # Fetch the metadata ONCE before the loop to save massive API time
+        caller_metadata = usercall.player_metadata_call()
         
         combined_records = []
 
@@ -69,7 +77,11 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             # 2. All players in the match
             participants = match_payload.get("info", {}).get("participants", [])
             for participant in participants:
-                player_object = Player(player_data=participant, game_duration_sec=game_duration)
+                player_object = Player(
+                    player_data=participant, 
+                    game_duration_sec=game_duration,
+                    runes_lookup=lookup_tables['runes']
+                )
                 player_object.summoners_mapping(lookup_tables['summoners'])
                 player_object.runes_mapping(lookup_tables['runes'])
                 player_object.items_mapping(lookup_tables['items'])
@@ -78,7 +90,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 player_dict = player_object.to_dict()
                 player_dict["caller"] = (participant.get("puuid") == puuidme)
                 if player_dict["caller"]:
-                    player_dict['metadata'] = usercall.player_metadata_call()
+                    player_dict['metadata'] = caller_metadata
                 
                 match_entry["players"].append(player_dict)
 
@@ -88,7 +100,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         if not combined_records:
             raise RuntimeError("No matched elements built.")
         else: 
-            print("objects created sucessfuly :)")
+            print(f"objects created sucessfuly :) \n Timer: {round(time.time() - start_timer,2)}")
         
         # Ensure data folder exists relative to project root
         os.makedirs(data_dir, exist_ok=True)

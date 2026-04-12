@@ -1,9 +1,10 @@
-import copy
 import requests
 import json
 from datetime import datetime
 from pathlib import Path
 import os
+import concurrent.futures
+import time
 
 
 class Caller:
@@ -113,18 +114,39 @@ class Caller:
     
     def last_matches_data_call(self, matches_id: list):
         """
-        Obtain user last matches statistics via matches id call
-        
-        Args:
-        matches_id - list of user last matches id
+        Obtain user last matches statistics via matches id call using concurrent requests.
+        Limiting to 10 workers to respect the Riot Dev API limit of 20 requests per second.
         """
+        
         matches_storage = {}
-        for match in matches_id:
+        
+        def fetch_match(match):
             url = f'{self.url_base}/lol/match/v5/matches/{match}'
             params = {'api_key': self.api_key}
+            
             response = requests.get(url, params)
+            
+            # Handle rate limiting (HTTP 429 Too Many Requests)
+            if response.status_code == 429:
+                retry_after = int(response.headers.get("Retry-After", 1))
+                time.sleep(retry_after)
+                # Retry recursively if rate limited
+                return fetch_match(match)
+                
             if response.status_code == 200:
-                matches_storage[match] = response.json()
+                return match, response.json()
+            return match, None
+
+        # ThreadPoolExecutor runs requests concurrently. 
+        # max_workers=10 ensures we never shoot more than 10 requests exactly at the same time,
+        # protecting us from hitting the 20 req/1 sec Dev Key rate limit.
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+            future_to_match = {executor.submit(fetch_match, match): match for match in matches_id}
+            for future in concurrent.futures.as_completed(future_to_match):
+                match, data = future.result()
+                if data:
+                    matches_storage[match] = data
+                    
         return matches_storage
     
     def player_metadata_call(self):
@@ -148,7 +170,7 @@ class Caller:
         return ranked_data
 
 class Player:
-    def __init__(self, player_data: dict, game_duration_sec: int):
+    def __init__(self, player_data: dict, game_duration_sec: int, runes_lookup: dict = None):
         """Map dictionary values to correct class attributes (based on OOD)
            Prepare JSON file for server response
 
@@ -157,16 +179,17 @@ class Player:
             game_duration_sec (int): game duration in seconds passed from match metadata
         """
         self.player_data = player_data
-        project_root = Path(__file__).resolve().parent.parent
-        data_dir = project_root / "data"
-        os.makedirs(data_dir, exist_ok=True)
-        project_root = Path(__file__).resolve().parent.parent
-        data_dir = project_root / "data"
-        lookup_path = data_dir / "static" / "runes_lookup_table.json"
-        with open(lookup_path, "r") as f:
-            lookup_table = json.load(f)
 
-        currentPatch = lookup_table["patch"]
+        # Use passed lookup or fallback to default
+        if runes_lookup:
+            currentPatch = runes_lookup.get("patch", "14.1.1")
+        else:
+            project_root = Path(__file__).resolve().parent.parent
+            lookup_path = project_root / "data" / "static" / "runes_lookup_table.json"
+            with open(lookup_path, "r") as f:
+                lookup_table = json.load(f)
+            currentPatch = lookup_table.get("patch", "14.1.1")
+
         self.player_data = player_data
         default_value = "No data"
         
@@ -317,10 +340,9 @@ class Player:
         """
         Convert Player object into a serializable dictionary.
         """
-        data_to_serialize = copy.deepcopy(vars(self))
+        data_to_serialize = dict(vars(self))
 
-        if "player_data" in data_to_serialize:
-            del data_to_serialize["player_data"]
+        data_to_serialize.pop("player_data", None)
 
         for key in ("stat_perks", "style_names", "perks"):
             data_to_serialize.pop(key, None)
@@ -379,9 +401,8 @@ class Match:
         """
         Convert Match object into a serializable dictionary.
         """
-        data_to_serialize = copy.deepcopy(vars(self))
-        if "match_data" in data_to_serialize:
-            del data_to_serialize["match_data"]
+        data_to_serialize = dict(vars(self))
+        data_to_serialize.pop("match_data", None)
         return data_to_serialize
 
     def to_json(self, filepath: str = None):
