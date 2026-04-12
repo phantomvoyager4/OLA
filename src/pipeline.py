@@ -38,11 +38,15 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         # Ensure we are looking in the project root correctly
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
-        lookup_path = data_dir / "static" / "patch_lookup_table.json"
+        lookup_path_runes = data_dir / "static" / "patch_lookup_table.json"
+        lookup_path_summoners = data_dir / "static" / "summoners_lookup_table.json"
 
-        with open(lookup_path, "r") as f:
-            lookup_table = json.load(f)
+        with open(lookup_path_runes, "r") as f:
+            lookup_table_runes = json.load(f)
 
+        with open(lookup_path_summoners, "r") as f:
+            lookup_table_summoners = json.load(f)
+        
         combined_records = []
 
         for match_id in matches_id:
@@ -66,7 +70,8 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             participants = match_payload.get("info", {}).get("participants", [])
             for participant in participants:
                 player_object = Player(player_data=participant, game_duration_sec=game_duration)
-                player_object.runes_mapping(lookup_table)
+                player_object.runes_mapping(lookup_table_runes)
+                player_object.summoners_mapping(lookup_table_summoners)
                 
                 # Check if this participant is the one we instantiated the pipeline for
                 player_dict = player_object.to_dict()
@@ -124,4 +129,4 @@ def load_api_key():
 
 if __name__ == '__main__':
     api_key = load_api_key()
-    pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1) #H2P_Gucio
+    pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1, save=True) #H2P_Gucio

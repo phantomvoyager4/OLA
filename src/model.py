@@ -156,6 +156,7 @@ class Player:
             player_data (dict): input from Parser class
             game_duration_sec (int): game duration in seconds passed from match metadata
         """
+        self.player_data = player_data
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
         os.makedirs(data_dir, exist_ok=True)
@@ -169,13 +170,14 @@ class Player:
         self.player_data = player_data
         default_value = "No data"
         
-        # Identity and Position
+        # Identity, Position and Summoners
         self.username = f'{player_data.get("riotIdGameName", default_value)} #{player_data.get("riotIdTagline", default_value)}'
         self.puuid = player_data.get("puuid", default_value)
         self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
         self.championName = player_data.get("championName", default_value)
         self.championImageLink = f"https://ddragon.leagueoflegends.com/cdn/{currentPatch}/img/champion/{self.championName}.png"
+        self.summonerLevel = player_data.get("summonerLevel", default_value)
 
         
         # Basic Combat Stats
@@ -253,22 +255,22 @@ class Player:
         self.gameEndedInSurrender = player_data.get("gameEndedInSurrender", False)
         self.totalTimeSpentDead = player_data.get("totalTimeSpentDead", 0)
 
-        # Runes 
-        self.runes = player_data.get("perks", {})
-
     def runes_mapping(self, lookup_table: dict):
         """Find given rune data using patch lookup table
 
         Args:
             runes_map (dict): current runes data fetch from ddragon
         """
-        if not self.runes: return None
+        runes = self.player_data.get("perks", {})
+        if not runes:
+            self.runes = []
+            return
 
-        self.stat_perks = list(self.runes.get("statPerks", {}).values())
+        self.stat_perks = list(runes.get("statPerks", {}).values())
         self.style_names = []
         self.perks = []
         
-        for n in self.runes.get("styles", []):
+        for n in runes.get("styles", []):
             self.style_names.append(n.get("style"))
             for i in n.get("selections", []):
                 self.perks.append(i.get("perk"))
@@ -278,25 +280,26 @@ class Player:
             if n is not None:
                 all_ids_strings.append(str(n))
 
-        self.runes_mapped = []
+        self.runes = []
         for rune_id in all_ids_strings:
             mapped_rune = lookup_table.get(rune_id)
             if mapped_rune:
-                self.runes_mapped.append(mapped_rune)
-
+                self.runes.append(mapped_rune)
+    
+    def summoners_mapping(self, lookup_table: dict):
+        summoner1 = self.player_data.get("summoner1Id", "No data")
+        summoner2 = self.player_data.get("summoner2Id", "No data")
+        self.summoner1Name = lookup_table[str(summoner1)]["name"]
+        self.summoner2Name = lookup_table[str(summoner2)]["name"]
+        
     def to_dict(self):
         """
         Convert Player object into a serializable dictionary.
-        If mapped runes are available, they replace raw runes.
         """
         data_to_serialize = copy.deepcopy(vars(self))
 
         if "player_data" in data_to_serialize:
             del data_to_serialize["player_data"]
-
-        if "runes_mapped" in data_to_serialize:
-            data_to_serialize["runes"] = data_to_serialize["runes_mapped"]
-            del data_to_serialize["runes_mapped"]
 
         for key in ("stat_perks", "style_names", "perks"):
             data_to_serialize.pop(key, None)
