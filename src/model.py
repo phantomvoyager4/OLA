@@ -162,7 +162,7 @@ class Player:
         os.makedirs(data_dir, exist_ok=True)
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
-        lookup_path = data_dir / "static" / "patch_lookup_table.json"
+        lookup_path = data_dir / "static" / "runes_lookup_table.json"
         with open(lookup_path, "r") as f:
             lookup_table = json.load(f)
 
@@ -303,9 +303,16 @@ class Player:
     def summoners_mapping(self, lookup_table: dict):
         summoner1 = self.player_data.get("summoner1Id", "No data")
         summoner2 = self.player_data.get("summoner2Id", "No data")
-        self.summoner1Name = lookup_table[str(summoner1)]["name"]
-        self.summoner2Name = lookup_table[str(summoner2)]["name"]
+        self.summoner1 = lookup_table.get(str(summoner1), {})
+        self.summoner2 = lookup_table.get(str(summoner2), {})
         
+    def items_mapping(self, lookup_table: dict):
+        self.items = []
+        for n in range(7):  
+            item_id = self.player_data.get(f"item{n}", "No data")
+            mapped_item = lookup_table.get(str(item_id), {})
+            self.items.append(mapped_item)
+
     def to_dict(self):
         """
         Convert Player object into a serializable dictionary.

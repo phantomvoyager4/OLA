@@ -20,7 +20,7 @@ def structurize_data(input: list, live_patch):
     for n in input:
         spell_key = n["key"]
         summoners_lookup_storage[spell_key] = {}
-        attributes = ["name", "description", "cooldownBurn", "key"]
+        attributes = ["name", "description", "cooldownBurn"]
         for i in attributes:
             summoners_lookup_storage[spell_key][i] = n[i]
         summoners_lookup_storage[spell_key]["image_path"] = f"https://ddragon.leagueoflegends.com/cdn/{live_patch}/img/spell/{n['image']['full']}"

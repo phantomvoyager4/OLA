@@ -43,7 +43,7 @@ def structurize_data(input: dict, live_patch):
 def fr():
     patch, runes = fetch_latest_data()
     runes_dict = structurize_data(input = runes, live_patch=patch)
-    with open('data/static/patch_lookup_table.json', 'w') as f:
+    with open('data/static/runes_lookup_table.json', 'w') as f:
         json.dump(runes_dict, f)
     print("recent data saved in directory: data/patch_lookup_table.json")
 
