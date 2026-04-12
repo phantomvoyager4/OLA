@@ -39,18 +39,13 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
 
-        lookup_path_runes = data_dir / "static" / "runes_lookup_table.json"
-        lookup_path_summoners = data_dir / "static" / "summoners_lookup_table.json"
-        lookup_path_items = data_dir / "static" / "items_lookup_table.json"
-
-        with open(lookup_path_runes, "r") as f:
-            lookup_table_runes = json.load(f)
-
-        with open(lookup_path_summoners, "r") as f:
-            lookup_table_summoners = json.load(f)
-
-        with open(lookup_path_items, "r") as f:
-            lookup_table_items = json.load(f)
+        mapping_data = ['runes', 'summoners', 'items']
+        lookup_tables = {}
+        
+        for name in mapping_data:
+            path = data_dir / "static" / f"{name}_lookup_table.json"
+            with open(path, "r") as f:
+                lookup_tables[name] = json.load(f)
         
         combined_records = []
 
@@ -75,9 +70,9 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             participants = match_payload.get("info", {}).get("participants", [])
             for participant in participants:
                 player_object = Player(player_data=participant, game_duration_sec=game_duration)
-                player_object.summoners_mapping(lookup_table_summoners)
-                player_object.runes_mapping(lookup_table_runes)
-                player_object.items_mapping(lookup_table_items)
+                player_object.summoners_mapping(lookup_tables['summoners'])
+                player_object.runes_mapping(lookup_tables['runes'])
+                player_object.items_mapping(lookup_tables['items'])
                 
                 # Check if this participant is the one we instantiated the pipeline for
                 player_dict = player_object.to_dict()
