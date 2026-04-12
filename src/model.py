@@ -173,7 +173,6 @@ class Player:
         # Identity, Position and Summoners
         self.username = f'{player_data.get("riotIdGameName", default_value)} #{player_data.get("riotIdTagline", default_value)}'
         self.puuid = player_data.get("puuid", default_value)
-        self.lane = player_data.get("lane", default_value)
         self.teamPosition = player_data.get("teamPosition", default_value)
         self.championName = player_data.get("championName", default_value)
         self.championImageLink = f"https://ddragon.leagueoflegends.com/cdn/{currentPatch}/img/champion/{self.championName}.png"
@@ -303,8 +302,9 @@ class Player:
     def summoners_mapping(self, lookup_table: dict):
         summoner1 = self.player_data.get("summoner1Id", "No data")
         summoner2 = self.player_data.get("summoner2Id", "No data")
-        self.summoner1 = lookup_table.get(str(summoner1), {})
-        self.summoner2 = lookup_table.get(str(summoner2), {})
+        self.summoners = []
+        self.summoners.append(lookup_table.get(str(summoner1), {}))
+        self.summoners.append(lookup_table.get(str(summoner2), {}))
         
     def items_mapping(self, lookup_table: dict):
         self.items = []

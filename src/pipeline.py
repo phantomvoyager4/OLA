@@ -83,6 +83,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 match_entry["players"].append(player_dict)
 
             combined_records.append(match_entry)
+            print(f"Match object number {len(combined_records)} created")
 
         if not combined_records:
             raise RuntimeError("No matched elements built.")
