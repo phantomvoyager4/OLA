@@ -1,7 +1,18 @@
-from fastapi import FastAPI, HTTPException, Query
+import time
+
+from fastapi import FastAPI, HTTPException, Query, Request
 from pipeline import pipeline, load_api_key
 
 app = FastAPI()
+
+
+@app.middleware("http")
+async def add_process_time_header(request: Request, call_next):
+    start_time = time.perf_counter()
+    response = await call_next(request)
+    process_time_ms = (time.perf_counter() - start_time) * 1000
+    response.headers["Process-Time-ms"] = f"{process_time_ms:.2f}"
+    return response
 
 # Load our API key securely on the server side
 API_KEY = load_api_key()
