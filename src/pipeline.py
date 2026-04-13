@@ -44,7 +44,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
 
-        mapping_data = ['runes', 'summoners', 'items']
+        mapping_data = ['runes', 'summoners', 'items', 'icons']
         lookup_tables = {}
         
         for name in mapping_data:
@@ -85,12 +85,12 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 player_object.summoners_mapping(lookup_tables['summoners'])
                 player_object.runes_mapping(lookup_tables['runes'])
                 player_object.items_mapping(lookup_tables['items'])
+                player_object.icon_mapping(lookup_tables['icons'])
                 
                 # Check if this participant is the one we instantiated the pipeline for
                 player_dict = player_object.to_dict()
                 player_dict["caller"] = (participant.get("puuid") == puuidme)
                 player_dict['metadata'] = caller_metadata
-                
                 match_entry["players"].append(player_dict)
 
             combined_records.append(match_entry)

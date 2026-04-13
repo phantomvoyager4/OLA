@@ -274,6 +274,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/5435.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -471,6 +474,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6709.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -668,6 +674,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6923.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -865,6 +874,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/4778.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -1062,6 +1074,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/683.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -1259,6 +1274,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/1297.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -1456,6 +1474,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/8.png"
+        },
         "caller": true,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -1653,6 +1674,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/3152.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -1845,6 +1869,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6923.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
@@ -2042,6 +2069,9 @@
             "price": 0
           }
         ],
+        "icon": {
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/7044.png"
+        },
         "caller": false,
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",

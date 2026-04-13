@@ -334,6 +334,10 @@ class Player:
             mapped_item = lookup_table.get(str(item_id), {})
             self.items.append(mapped_item)
 
+    def icon_mapping(self, lookup_table: dict):
+        profileiconID = self.player_data.get("profileIcon", "No data")
+        self.icon = lookup_table.get(str(profileiconID), {})
+
     def to_dict(self):
         """
         Convert Player object into a serializable dictionary.
