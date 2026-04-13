@@ -8,7 +8,7 @@
       "platformId": "EUW1",
       "queueId": 420,
       "gameDate": "2026-03-24 08:54:52 - 09:25:52",
-      "gameDuration_min": 31,
+      "gameDuration_min": 31.0,
       "teams": [
         {
           "teamId": 100,
@@ -92,7 +92,6 @@
       {
         "username": "gurweefun #EUW",
         "puuid": "uz_o50GPpXos7S-oSvloxBAc2MuPRdxdXcZLXlwpMaPA1aGnT--LDk8OI16j4eD-siNHgA99253Q4w",
-        "lane": "JUNGLE",
         "teamPosition": "TOP",
         "championName": "Olaf",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Olaf.png",
@@ -123,7 +122,7 @@
         "itemsPurchased": 22,
         "totalMinionsKilled": 246,
         "totalJungleMinionsKilled": 3,
-        "cs_min": 8,
+        "cs_min": 8.0,
         "neutralMinionsKilled": 3,
         "totalAllyJungleMinionsKilled": 0,
         "totalEnemyJungleMinionsKilled": 3,
@@ -151,21 +150,22 @@
         "damageDealtToObjectives": 19106,
         "damageDealtToTurrets": 12868,
         "timeCCingOthers": 23,
-        "win": true,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 218,
-        "summoner1": {
-          "name": "Ignite",
-          "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
-          "cooldownBurn": "180",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
-        },
-        "summoner2": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
+        "summoners": [
+          {
+            "name": "Ignite",
+            "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
+            "cooldownBurn": "180",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+          },
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -274,12 +274,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "hugarma #8276",
         "puuid": "vNyB50wAPs7ysen9JeU8CbAefryU20OqkTRLWTF0LwLLhqXHnhhdmxPbfurTEpFtfs9BSV1QzbT7DA",
-        "lane": "JUNGLE",
         "teamPosition": "JUNGLE",
         "championName": "Ekko",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Ekko.png",
@@ -288,7 +297,7 @@
         "deaths": 4,
         "assists": 13,
         "champLevel": 18,
-        "KDA": 5,
+        "KDA": 5.0,
         "killParticipation": "42.55%",
         "skillshotsDodged": 21,
         "skillshotsHit": 32,
@@ -338,21 +347,22 @@
         "damageDealtToObjectives": 55360,
         "damageDealtToTurrets": 6548,
         "timeCCingOthers": 18,
-        "win": true,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 124,
-        "summoner1": {
-          "name": "Smite",
-          "description": "Deals true damage to a monster or minion.",
-          "cooldownBurn": "15",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
-        },
-        "summoner2": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
+        "summoners": [
+          {
+            "name": "Smite",
+            "description": "Deals true damage to a monster or minion.",
+            "cooldownBurn": "15",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
+          },
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -461,12 +471,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "PiGiNeM #EUW",
         "puuid": "d9ewNFZhicXCyN0PsRrg0rlhysvHWowoMRLC-MtJcHNDtwo-EOCipT2rr-irMbLMX1BTAPKo2xgx6A",
-        "lane": "MIDDLE",
         "teamPosition": "MIDDLE",
         "championName": "Ahri",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Ahri.png",
@@ -525,21 +544,22 @@
         "damageDealtToObjectives": 6518,
         "damageDealtToTurrets": 6518,
         "timeCCingOthers": 18,
-        "win": true,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 260,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Teleport",
-          "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Teleport",
+            "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -648,12 +668,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "DeTaLiF #EUW",
         "puuid": "h8niMVumpvJGsBwPeLK1FZwHsFJzIWwv-P0mwwaiVio1NYYLYwjcItgm3Pb6ryGRA3gZkXI3ow1cpw",
-        "lane": "BOTTOM",
         "teamPosition": "BOTTOM",
         "championName": "MissFortune",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/MissFortune.png",
@@ -712,21 +741,22 @@
         "damageDealtToObjectives": 18750,
         "damageDealtToTurrets": 7098,
         "timeCCingOthers": 10,
-        "win": true,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 139,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Barrier",
-          "description": "Gain a brief Shield.",
-          "cooldownBurn": "180",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Barrier",
+            "description": "Gain a brief Shield.",
+            "cooldownBurn": "180",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health",
@@ -835,12 +865,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "Femme ideale #EUW",
         "puuid": "fVS06k89fQ4my409W7dDnF9X-nIY5quP1iW8cW7b9BKsySES8htAMDqOvuHS-ppmIhOAwiP-DakWjQ",
-        "lane": "BOTTOM",
         "teamPosition": "UTILITY",
         "championName": "Lissandra",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Lissandra.png",
@@ -899,21 +938,22 @@
         "damageDealtToObjectives": 10930,
         "damageDealtToTurrets": 7155,
         "timeCCingOthers": 54,
-        "win": true,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 245,
-        "summoner1": {
-          "name": "Ignite",
-          "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
-          "cooldownBurn": "180",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
-        },
-        "summoner2": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
+        "summoners": [
+          {
+            "name": "Ignite",
+            "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
+            "cooldownBurn": "180",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+          },
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -1022,12 +1062,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "Qwstx #6060",
         "puuid": "ZJh1dz_QQDeAMxT87sj71ypjTE23aMxmYf82iNTIv2ctmRk2ebrjJ4u35kTj1rhXhVMpyoNcFH5bXg",
-        "lane": "TOP",
         "teamPosition": "TOP",
         "championName": "Kayle",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Kayle.png",
@@ -1086,21 +1135,22 @@
         "damageDealtToObjectives": 11074,
         "damageDealtToTurrets": 10934,
         "timeCCingOthers": 9,
-        "win": false,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 327,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Teleport",
-          "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Teleport",
+            "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -1209,12 +1259,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "401dmg #6969",
         "puuid": "TwphGUi7WmIN6lQ0PfBjODCgF7lcEO-RSa66Vg0ip0aWXECs6wg7ztdaakb6nDEm9Ah2tp0Wn8NwKA",
-        "lane": "JUNGLE",
         "teamPosition": "JUNGLE",
         "championName": "Jax",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Jax.png",
@@ -1233,7 +1292,7 @@
         "goldPerMinute": 395.18,
         "soloKills": 0,
         "visionScorePerMinute": 0.85,
-        "maxCsAdvantageOnLaneOpponent": 33,
+        "maxCsAdvantageOnLaneOpponent": 33.0,
         "doubleKills": 0,
         "tripleKills": 0,
         "quadraKills": 0,
@@ -1273,21 +1332,22 @@
         "damageDealtToObjectives": 9914,
         "damageDealtToTurrets": 2928,
         "timeCCingOthers": 16,
-        "win": false,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 300,
-        "summoner1": {
-          "name": "Smite",
-          "description": "Deals true damage to a monster or minion.",
-          "cooldownBurn": "15",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
-        },
-        "summoner2": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
+        "summoners": [
+          {
+            "name": "Smite",
+            "description": "Deals true damage to a monster or minion.",
+            "cooldownBurn": "15",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
+          },
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -1411,7 +1471,6 @@
       {
         "username": "DozySlidan #EUW",
         "puuid": "Obv4SsJEBGo1Afe5FQ7-01JlVGbvLTkp7pMv0FDCK1n5RlOtmdrCgNbzL_2LnOBhYYdR-foen26NdQ",
-        "lane": "MIDDLE",
         "teamPosition": "MIDDLE",
         "championName": "Talon",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Talon.png",
@@ -1427,7 +1486,7 @@
         "teamDamagePercentage": "25.7%",
         "damageTakenOnTeamPercentage": "17.14%",
         "damagePerMinute": 842.76,
-        "goldPerMinute": 491,
+        "goldPerMinute": 491.0,
         "soloKills": 4,
         "visionScorePerMinute": 1.2,
         "maxCsAdvantageOnLaneOpponent": 7,
@@ -1470,21 +1529,22 @@
         "damageDealtToObjectives": 4511,
         "damageDealtToTurrets": 4511,
         "timeCCingOthers": 2,
-        "win": false,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 282,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Ignite",
-          "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
-          "cooldownBurn": "180",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Ignite",
+            "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
+            "cooldownBurn": "180",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health",
@@ -1593,12 +1653,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
         "username": "vsaud #EUW",
         "puuid": "7c3gBRveR5Dn5KZaPHDDnoRfCkEASamj3oOq3as73cv6rimZcA_ZxjvRB4jMbpU8LFlr45moPMaWpg",
-        "lane": "BOTTOM",
         "teamPosition": "BOTTOM",
         "championName": "Kaisa",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Kaisa.png",
@@ -1657,21 +1726,22 @@
         "damageDealtToObjectives": 2996,
         "damageDealtToTurrets": 2996,
         "timeCCingOthers": 0,
-        "win": false,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 319,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Barrier",
-          "description": "Gain a brief Shield.",
-          "cooldownBurn": "180",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Barrier",
+            "description": "Gain a brief Shield.",
+            "cooldownBurn": "180",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health Scaling",
@@ -1775,12 +1845,21 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       },
       {
-        "username": "iConíx #EUW",
+        "username": "iConÃ­x #EUW",
         "puuid": "MRX9FtX5AjBDPanjr5E8s5-UEMF3ZeNSRnAM2cTMMMgXOn8Z63KvdzHiZFfiJxNXc3grg1KkCAlsrg",
-        "lane": "BOTTOM",
         "teamPosition": "UTILITY",
         "championName": "Lulu",
         "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Lulu.png",
@@ -1839,21 +1918,22 @@
         "damageDealtToObjectives": 2264,
         "damageDealtToTurrets": 1705,
         "timeCCingOthers": 43,
-        "win": false,
         "gameEndedInSurrender": true,
         "totalTimeSpentDead": 109,
-        "summoner1": {
-          "name": "Flash",
-          "description": "Teleports you a short distance toward your cursor.",
-          "cooldownBurn": "300",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
-        },
-        "summoner2": {
-          "name": "Heal",
-          "description": "Restores Health and grants Move Speed to you and target allied champion.",
-          "cooldownBurn": "240",
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerHeal.png"
-        },
+        "summoners": [
+          {
+            "name": "Flash",
+            "description": "Teleports you a short distance toward your cursor.",
+            "cooldownBurn": "300",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+          },
+          {
+            "name": "Heal",
+            "description": "Restores Health and grants Move Speed to you and target allied champion.",
+            "cooldownBurn": "240",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerHeal.png"
+          }
+        ],
         "runes": [
           {
             "name": "Health",
@@ -1962,7 +2042,17 @@
             "price": 0
           }
         ],
-        "caller": false
+        "caller": false,
+        "metadata": {
+          "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
+          "queueType": "RANKED_SOLO_5x5",
+          "tier": "GOLD",
+          "rank": "III",
+          "leaguePoints": 69,
+          "wins": 135,
+          "losses": 137,
+          "winrate": "49.63%"
+        }
       }
     ]
   }
