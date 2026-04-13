@@ -19,13 +19,7 @@ def script():
         print(f"Successfully saved API key to {env_file}")
     else:
         print(f"Existing .env file found at {env_file}.")
-
-    dependencies = input("Do you want to install python libraries required for this project globally? (y/n): ")
-    if dependencies.strip().lower() == 'y':
-        req_path = project_root / "requirements.txt"
-        # Use sys.executable to securely call the active global Python's pip
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', str(req_path)])
-
+        
     src_dir = project_root / "src"
     # Use sys.executable to securely call global uvicorn module
     subprocess.Popen([sys.executable, '-m', 'uvicorn', 'main:app', '--reload'], cwd=src_dir)
