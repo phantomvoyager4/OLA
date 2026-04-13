@@ -30,7 +30,9 @@ Here you can use swagger UI to easily test the endpoint by providing your parame
 
 Alternatively, you can call the endpoint directly in your browser or frontend application:
 ```text
-http://127.0.0.1:8000/api/matches/EUN1/softmax/EUNE1?count=1
+http://127.0.0.1:8000/api/matches/[platform]/[player_name]/[player_tag]?count=20
+For example:
+http://127.0.0.1:8000/api/matches/EUW/401dmg/6969?count=20
 ```
 If everything goes correctly, you will receive a JSON response containing the optimized match data! Our pipeline also securely saves a backup of this processed data inside the `data/` folder. 
 
