@@ -8,7 +8,7 @@
       "platformId": "EUW1",
       "queueId": 420,
       "gameDate": "2026-03-24 08:54:52 - 09:25:52",
-      "gameDuration_min": 31.0,
+      "gameDuration_min": 31,
       "teams": [
         {
           "teamId": 100,
@@ -91,10 +91,10 @@
     "players": [
       {
         "username": "gurweefun #EUW",
-        "puuid": "uz_o50GPpXos7S-oSvloxBAc2MuPRdxdXcZLXlwpMaPA1aGnT--LDk8OI16j4eD-siNHgA99253Q4w",
+        "puuid": "J0rJXSCxqml7dL4Ft3y7tqGBrweaqRL0xLIpudf-irRYN2EQUlIJk6g6M1Strsss9_8rHLcWWcHmog",
         "teamPosition": "TOP",
         "championName": "Olaf",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Olaf.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Olaf.png",
         "summonerLevel": 185,
         "kills": 11,
         "deaths": 5,
@@ -122,7 +122,7 @@
         "itemsPurchased": 22,
         "totalMinionsKilled": 246,
         "totalJungleMinionsKilled": 3,
-        "cs_min": 8.0,
+        "cs_min": 8,
         "neutralMinionsKilled": 3,
         "totalAllyJungleMinionsKilled": 0,
         "totalEnemyJungleMinionsKilled": 3,
@@ -131,6 +131,9 @@
         "wardsKilled": 1,
         "detectorWardsPlaced": 0,
         "visionWardsBoughtInGame": 0,
+        "enemyVisionPings": 1,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 0,
         "commandPings": 2,
         "dangerPings": 0,
@@ -157,13 +160,13 @@
             "name": "Ignite",
             "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
             "cooldownBurn": "180",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerDot.png"
           },
           {
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           }
         ],
         "runes": [
@@ -202,13 +205,13 @@
           {
             "name": "Triumph",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 5% of your missing health and grant an additional 20 gold. ",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E restore 5% of your missing health and grant an additional 20 gold. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/Triumph.png"
           },
           {
             "name": "Legend: Alacrity",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. ",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E on enemies grant permanent \u003Cb\u003EAttack Speed\u003C/b\u003E. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png"
           },
           {
@@ -220,62 +223,62 @@
           {
             "name": "Magical Footwear",
             "group": "Inspiration",
-            "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner.",
+            "description": "You get free boots at 12 min but you cannot buy boots before then. Each \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedown\u003C/lol-uikit-tooltipped-keyword\u003E you get makes your boots come 45s sooner.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png"
           },
           {
             "name": "Approach Velocity",
             "group": "Inspiration",
-            "description": "Bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword> towards nearby enemy champions that are <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairMov'>movement impaired</lol-uikit-tooltipped-keyword>, increased for enemy champions that you impair.",
+            "description": "Bonus \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'\u003EMS\u003C/lol-uikit-tooltipped-keyword\u003E towards nearby enemy champions that are \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairMov'\u003Emovement impaired\u003C/lol-uikit-tooltipped-keyword\u003E, increased for enemy champions that you impair.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Resolve/ApproachVelocity/ApproachVelocity.png"
           }
         ],
         "items": [
           {
             "name": "Stridebreaker",
-            "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>25%</attention> Attack Speed<br><attention>450</attention> Health</stats><br><br><passive>Cleave</passive><br>Attacks deal <physicalDamage>physical damage</physicalDamage> to nearby enemies.<br><active>Breaking Shockwave</active><br>Deal <physicalDamage>physical damage</physicalDamage> and <status>Slow</status> nearby enemies by 35%.<br>Gain <speed>35% decaying Move Speed</speed> per champion hit for 3 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6631.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E40\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E450\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ECleave\u003C/passive\u003E\u003Cbr\u003EAttacks deal \u003CphysicalDamage\u003Ephysical damage\u003C/physicalDamage\u003E to nearby enemies.\u003Cbr\u003E\u003Cactive\u003EBreaking Shockwave\u003C/active\u003E\u003Cbr\u003EDeal \u003CphysicalDamage\u003Ephysical damage\u003C/physicalDamage\u003E and \u003Cstatus\u003ESlow\u003C/status\u003E nearby enemies by 35%.\u003Cbr\u003EGain \u003Cspeed\u003E35% decaying Move Speed\u003C/speed\u003E per champion hit for 3 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6631.png",
             "price": 3300
           },
           {
             "name": "Death's Dance",
-            "description": "<mainText><stats><attention>60</attention> Attack Damage<br><attention>50</attention> Armor<br><attention>15</attention> Ability Haste</stats><br><br><passive>Ignore Pain</passive><br>A percentage of damage taken is dealt to you over 3 seconds instead.<br><br><passive>Defy</passive><br>When a champion that you damaged within 3 seconds dies, cleanse <passive>Ignore Pain's</passive> remaining damage and restore <healing>Health</healing> over 2 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6333.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E60\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E50\u003C/attention\u003E Armor\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EIgnore Pain\u003C/passive\u003E\u003Cbr\u003EA percentage of damage taken is dealt to you over 3 seconds instead.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EDefy\u003C/passive\u003E\u003Cbr\u003EWhen a champion that you damaged within 3 seconds dies, cleanse \u003Cpassive\u003EIgnore Pain's\u003C/passive\u003E remaining damage and restore \u003Chealing\u003EHealth\u003C/healing\u003E over 2 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6333.png",
             "price": 3300
           },
           {
             "name": "Plated Steelcaps",
-            "description": "<mainText><stats><attention>25</attention> Armor<br><attention>45</attention> Move Speed</stats><br><br><passive>Plating</passive><br>Reduces incoming damage from Attacks by 10%.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3047.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E25\u003C/attention\u003E Armor\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EPlating\u003C/passive\u003E\u003Cbr\u003EReduces incoming damage from Attacks by 10%.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3047.png",
             "price": 1200
           },
           {
             "name": "Experimental Hexplate",
-            "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>20%</attention> Attack Speed<br><attention>450</attention> Health</stats><br><br><passive>Hexcharged</passive><br>Gain 30 Ultimate Ability Haste.<br><br><passive>Overdrive</passive><br>After casting your Ultimate, gain <attackSpeed>50% Attack Speed</attackSpeed> and <speed>20% Move Speed</speed> for 8 seconds. </mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3073.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E40\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E20%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E450\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EHexcharged\u003C/passive\u003E\u003Cbr\u003EGain 30 Ultimate Ability Haste.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EOverdrive\u003C/passive\u003E\u003Cbr\u003EAfter casting your Ultimate, gain \u003CattackSpeed\u003E50% Attack Speed\u003C/attackSpeed\u003E and \u003Cspeed\u003E20% Move Speed\u003C/speed\u003E for 8 seconds. \u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3073.png",
             "price": 3000
           },
           {
             "name": "Blade of The Ruined King",
-            "description": "<mainText><stats><attention>40</attention> Attack Damage<br><attention>25%</attention> Attack Speed<br><attention>10%</attention> Life Steal</stats><br><br><passive>Mist's Edge</passive><br>Attacks deal <physicalDamage>a percentage</physicalDamage> of enemy's current Health as <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>.<br><br><passive>Clawing Shadows</passive><br>Attacking a champion 3 times <status>Slows</status> them by 30% for 1 second.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3153.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E40\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E10%\u003C/attention\u003E Life Steal\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EMist's Edge\u003C/passive\u003E\u003Cbr\u003EAttacks deal \u003CphysicalDamage\u003Ea percentage\u003C/physicalDamage\u003E of enemy's current Health as \u003CphysicalDamage\u003Ebonus physical damage\u003C/physicalDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EClawing Shadows\u003C/passive\u003E\u003Cbr\u003EAttacking a champion 3 times \u003Cstatus\u003ESlows\u003C/status\u003E them by 30% for 1 second.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3153.png",
             "price": 3200
           },
           {
             "name": "Ruby Crystal",
-            "description": "<mainText><stats><attention>150</attention> Health</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1028.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E150\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1028.png",
             "price": 400
           },
           {
             "name": "Stealth Ward",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3340.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E210 - 90\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision for \u003CscaleLevel\u003E90-120\u003C/scaleLevel\u003E seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3340.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/5435.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/5435.png"
         },
         "caller": false,
         "metadata": {
@@ -291,16 +294,16 @@
       },
       {
         "username": "hugarma #8276",
-        "puuid": "vNyB50wAPs7ysen9JeU8CbAefryU20OqkTRLWTF0LwLLhqXHnhhdmxPbfurTEpFtfs9BSV1QzbT7DA",
+        "puuid": "tLWVQ06z2H8ec11rnhAyx_9cXy1QWH4bQfaC5szlCNYvEqTkTIpXMkXNHv8IH-foOjzgtMYUTiWpMg",
         "teamPosition": "JUNGLE",
         "championName": "Ekko",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Ekko.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Ekko.png",
         "summonerLevel": 247,
         "kills": 7,
         "deaths": 4,
         "assists": 13,
         "champLevel": 18,
-        "KDA": 5.0,
+        "KDA": 5,
         "killParticipation": "42.55%",
         "skillshotsDodged": 21,
         "skillshotsHit": 32,
@@ -331,6 +334,9 @@
         "wardsKilled": 2,
         "detectorWardsPlaced": 3,
         "visionWardsBoughtInGame": 3,
+        "enemyVisionPings": 4,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 0,
         "commandPings": 0,
         "dangerPings": 0,
@@ -357,13 +363,13 @@
             "name": "Smite",
             "description": "Deals true damage to a monster or minion.",
             "cooldownBurn": "15",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerSmite.png"
           },
           {
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           }
         ],
         "runes": [
@@ -396,7 +402,7 @@
           {
             "name": "Dark Harvest",
             "group": "Domination",
-            "description": "Damaging a low health champion inflicts <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword> and harvests a soul from the victim.",
+            "description": "Damaging a low health champion inflicts \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003Eadaptive damage\u003C/lol-uikit-tooltipped-keyword\u003E and harvests a soul from the victim.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/DarkHarvest/DarkHarvest.png"
           },
           {
@@ -408,74 +414,74 @@
           {
             "name": "Grisly Mementos",
             "group": "Domination",
-            "description": "Collect 1 memento on champion <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword>, up to 18 total.<br><br>Gain 6 Trinket Haste for each collected.",
+            "description": "Collect 1 memento on champion \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E, up to 18 total.\u003Cbr\u003E\u003Cbr\u003EGain 6 Trinket Haste for each collected.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/GrislyMementos/GrislyMementos.png"
           },
           {
             "name": "Treasure Hunter",
             "group": "Domination",
-            "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant additional gold the first time they are collected. ",
+            "description": "\u003Cb\u003EUnique\u003C/b\u003E \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E grant additional gold the first time they are collected. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/TreasureHunter/TreasureHunter.png"
           },
           {
             "name": "Cosmic Insight",
             "group": "Inspiration",
-            "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste",
+            "description": "+\u003Cattention\u003E18\u003C/attention\u003E Summoner Spell Haste\u003Cbr\u003E+\u003Cattention\u003E10\u003C/attention\u003E Item Haste",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/CosmicInsight/CosmicInsight.png"
           },
           {
             "name": "Magical Footwear",
             "group": "Inspiration",
-            "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner.",
+            "description": "You get free boots at 12 min but you cannot buy boots before then. Each \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedown\u003C/lol-uikit-tooltipped-keyword\u003E you get makes your boots come 45s sooner.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png"
           }
         ],
         "items": [
           {
             "name": "Shadowflame",
-            "description": "<mainText><stats><attention>110</attention> Ability Power<br><attention>15</attention> Magic Penetration</stats><br><br><passive>Cinderbloom</passive><br><magicDamage>Magic</magicDamage> and <trueDamage>true damage</trueDamage> <attention>Critically Strikes</attention> enemies below 40% Health, dealing 20% increased damage. </mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/4645.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E110\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Magic Penetration\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ECinderbloom\u003C/passive\u003E\u003Cbr\u003E\u003CmagicDamage\u003EMagic\u003C/magicDamage\u003E and \u003CtrueDamage\u003Etrue damage\u003C/trueDamage\u003E \u003Cattention\u003ECritically Strikes\u003C/attention\u003E enemies below 40% Health, dealing 20% increased damage. \u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/4645.png",
             "price": 3200
           },
           {
             "name": "Dusk and Dawn",
-            "description": "<mainText><stats><attention>350</attention> Health<br><attention>70</attention> Ability Power<br><attention>20</attention> Ability Haste<br><attention>25%</attention> Attack Speed</stats><br><br><passive>Spellblade</passive> (0s)<br>After using an Ability, your next Attack deals <magicDamage> bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and applies <OnHit>On-Hit</OnHit> effects an additional time.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2510.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E350\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E70\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESpellblade\u003C/passive\u003E (0s)\u003Cbr\u003EAfter using an Ability, your next Attack deals \u003CmagicDamage\u003E bonus magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E and applies \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E effects an additional time.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2510.png",
             "price": 3100
           },
           {
             "name": "Rabadon's Deathcap",
-            "description": "<mainText><stats><attention>130</attention> Ability Power</stats><br><br><passive>Magical Opus</passive><br>Increases your total <scaleAP>Ability Power by 30%</scaleAP>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3089.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E130\u003C/attention\u003E Ability Power\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EMagical Opus\u003C/passive\u003E\u003Cbr\u003EIncreases your total \u003CscaleAP\u003EAbility Power by 30%\u003C/scaleAP\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3089.png",
             "price": 3500
           },
           {
             "name": "Needlessly Large Rod",
-            "description": "<mainText><stats><attention>65</attention> Ability Power</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1058.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E65\u003C/attention\u003E Ability Power\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1058.png",
             "price": 1200
           },
           {
             "name": "Dark Seal",
-            "description": "<mainText><stats><attention>15</attention> Ability Power<br><attention>50</attention> Health</stats><br><br><passive>Glory</passive><br><keyword>Takedowns</keyword> grant <passive>Glory</passive>, up to 10. 5 <passive>Glory</passive> is lost on death.<br>Gain <scaleAP>4 Ability Power</scaleAP> per <passive>Glory</passive>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1082.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E50\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EGlory\u003C/passive\u003E\u003Cbr\u003E\u003Ckeyword\u003ETakedowns\u003C/keyword\u003E grant \u003Cpassive\u003EGlory\u003C/passive\u003E, up to 10. 5 \u003Cpassive\u003EGlory\u003C/passive\u003E is lost on death.\u003Cbr\u003EGain \u003CscaleAP\u003E4 Ability Power\u003C/scaleAP\u003E per \u003Cpassive\u003EGlory\u003C/passive\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1082.png",
             "price": 350
           },
           {
             "name": "Sorcerer's Shoes",
-            "description": "<mainText><stats><attention>12</attention> Magic Penetration<br><attention>45</attention> Move Speed</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3020.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E12\u003C/attention\u003E Magic Penetration\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3020.png",
             "price": 1100
           },
           {
             "name": "Oracle Lens",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 8 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3364.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E160 - 100\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EReveals enemy Stealth Wards and traps around you for 8 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3364.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6709.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/6709.png"
         },
         "caller": false,
         "metadata": {
@@ -491,10 +497,10 @@
       },
       {
         "username": "PiGiNeM #EUW",
-        "puuid": "d9ewNFZhicXCyN0PsRrg0rlhysvHWowoMRLC-MtJcHNDtwo-EOCipT2rr-irMbLMX1BTAPKo2xgx6A",
+        "puuid": "QP9_XxVnueUED4xFLxsgu9kAubxcBYntjudMdVur_-JxqSzXqE7pA3jNKb6JvE7uyDbJzzPeZdwnug",
         "teamPosition": "MIDDLE",
         "championName": "Ahri",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Ahri.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Ahri.png",
         "summonerLevel": 546,
         "kills": 11,
         "deaths": 7,
@@ -531,6 +537,9 @@
         "wardsKilled": 1,
         "detectorWardsPlaced": 0,
         "visionWardsBoughtInGame": 1,
+        "enemyVisionPings": 0,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 5,
         "commandPings": 5,
         "dangerPings": 0,
@@ -557,13 +566,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Teleport",
             "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerTeleport.png"
           }
         ],
         "runes": [
@@ -596,7 +605,7 @@
           {
             "name": "Electrocute",
             "group": "Domination",
-            "description": "Hitting a champion with 3 <b>separate</b> attacks or abilities in 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>.",
+            "description": "Hitting a champion with 3 \u003Cb\u003Eseparate\u003C/b\u003E attacks or abilities in 3s deals bonus \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003Eadaptive damage\u003C/lol-uikit-tooltipped-keyword\u003E.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/Electrocute/Electrocute.png"
           },
           {
@@ -608,74 +617,74 @@
           {
             "name": "Grisly Mementos",
             "group": "Domination",
-            "description": "Collect 1 memento on champion <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword>, up to 18 total.<br><br>Gain 6 Trinket Haste for each collected.",
+            "description": "Collect 1 memento on champion \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E, up to 18 total.\u003Cbr\u003E\u003Cbr\u003EGain 6 Trinket Haste for each collected.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/GrislyMementos/GrislyMementos.png"
           },
           {
             "name": "Ultimate Hunter",
             "group": "Domination",
-            "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. ",
+            "description": "\u003Cb\u003EUnique\u003C/b\u003E \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E grant permanent cooldown reduction on your Ultimate. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png"
           },
           {
             "name": "Manaflow Band",
             "group": "Sorcery",
-            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
+            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.\u003Cbr\u003E\u003Cbr\u003EAfter reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ManaflowBand/ManaflowBand.png"
           },
           {
             "name": "Transcendence",
             "group": "Sorcery",
-            "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
+            "description": "Gain bonuses upon reaching the following levels:\u003Cbr\u003ELevel 5: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 8: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/Transcendence/Transcendence.png"
           }
         ],
         "items": [
           {
             "name": "Control Ward",
-            "description": "<mainText><stats></stats><br><br><active>Consume</active><br>Places a Control Ward that grants vision and reveals enemy Stealth Wards, traps and <keywordStealth>Camouflaged</keywordStealth> enemies.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2055.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EConsume\u003C/active\u003E\u003Cbr\u003EPlaces a Control Ward that grants vision and reveals enemy Stealth Wards, traps and \u003CkeywordStealth\u003ECamouflaged\u003C/keywordStealth\u003E enemies.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2055.png",
             "price": 75
           },
           {
             "name": "Blackfire Torch",
-            "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>600</attention> Mana<br><attention>20</attention> Ability Haste</stats><br><br><passive>Baleful Blaze</passive><br>Damaging Abilities deals <magicDamage>bonus magic damage</magicDamage> for 3 seconds.<br><br><passive>Blackfire</passive><br>For each enemy champion, epic and large monster affected by your <passive>Baleful Blaze</passive>, gain <scaleAP>4% Ability Power</scaleAP>. </mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2503.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E80\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E600\u003C/attention\u003E Mana\u003Cbr\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EBaleful Blaze\u003C/passive\u003E\u003Cbr\u003EDamaging Abilities deals \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E for 3 seconds.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EBlackfire\u003C/passive\u003E\u003Cbr\u003EFor each enemy champion, epic and large monster affected by your \u003Cpassive\u003EBaleful Blaze\u003C/passive\u003E, gain \u003CscaleAP\u003E4% Ability Power\u003C/scaleAP\u003E. \u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2503.png",
             "price": 2800
           },
           {
             "name": "Shattered Armguard",
-            "description": "<mainText><stats><attention>40</attention> Ability Power<br><attention>25</attention> Armor</stats><br><br><passive>Shattered Time</passive><br>Armguard is broken, but can still be upgraded.<br><br><rules>After breaking one Armguard, the shopkeeper will only sell you <rarityGeneric>Shattered Armguard.</rarityGeneric></rules><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2421.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E40\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E25\u003C/attention\u003E Armor\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EShattered Time\u003C/passive\u003E\u003Cbr\u003EArmguard is broken, but can still be upgraded.\u003Cbr\u003E\u003Cbr\u003E\u003Crules\u003EAfter breaking one Armguard, the shopkeeper will only sell you \u003CrarityGeneric\u003EShattered Armguard.\u003C/rarityGeneric\u003E\u003C/rules\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2421.png",
             "price": 1600
           },
           {
             "name": "Shadowflame",
-            "description": "<mainText><stats><attention>110</attention> Ability Power<br><attention>15</attention> Magic Penetration</stats><br><br><passive>Cinderbloom</passive><br><magicDamage>Magic</magicDamage> and <trueDamage>true damage</trueDamage> <attention>Critically Strikes</attention> enemies below 40% Health, dealing 20% increased damage. </mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/4645.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E110\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Magic Penetration\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ECinderbloom\u003C/passive\u003E\u003Cbr\u003E\u003CmagicDamage\u003EMagic\u003C/magicDamage\u003E and \u003CtrueDamage\u003Etrue damage\u003C/trueDamage\u003E \u003Cattention\u003ECritically Strikes\u003C/attention\u003E enemies below 40% Health, dealing 20% increased damage. \u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/4645.png",
             "price": 3200
           },
           {
             "name": "Spellslinger's Shoes",
-            "description": "<mainText><stats><attention>18</attention> Magic Penetration<br><attention>8%</attention> Magic Penetration<br><attention>45</attention> Move Speed</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3175.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E18\u003C/attention\u003E Magic Penetration\u003Cbr\u003E\u003Cattention\u003E8%\u003C/attention\u003E Magic Penetration\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3175.png",
             "price": 1100
           },
           {
             "name": "Malignance",
-            "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>600</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Scorn</passive><br>Gain 20 Ultimate Ability Haste.<br><br><passive>Hatefog</passive><br>Damaging a champion with your Ultimate burns the ground beneath them for 3s, dealing <magicDamage>magic damage</magicDamage> per second and reducing their <scaleMR>Magic Resist</scaleMR>. <br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3118.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E90\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E600\u003C/attention\u003E Mana\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EScorn\u003C/passive\u003E\u003Cbr\u003EGain 20 Ultimate Ability Haste.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EHatefog\u003C/passive\u003E\u003Cbr\u003EDamaging a champion with your Ultimate burns the ground beneath them for 3s, dealing \u003CmagicDamage\u003Emagic damage\u003C/magicDamage\u003E per second and reducing their \u003CscaleMR\u003EMagic Resist\u003C/scaleMR\u003E. \u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3118.png",
             "price": 2700
           },
           {
             "name": "Farsight Alteration",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>198 - 99</scaleLevel>s)<br>Reveals a distant area for 2 seconds and leaves a Ward that expires upon spotting an enemy champion.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3363.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E198 - 99\u003C/scaleLevel\u003Es)\u003Cbr\u003EReveals a distant area for 2 seconds and leaves a Ward that expires upon spotting an enemy champion.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3363.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6923.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/6923.png"
         },
         "caller": false,
         "metadata": {
@@ -691,10 +700,10 @@
       },
       {
         "username": "DeTaLiF #EUW",
-        "puuid": "h8niMVumpvJGsBwPeLK1FZwHsFJzIWwv-P0mwwaiVio1NYYLYwjcItgm3Pb6ryGRA3gZkXI3ow1cpw",
+        "puuid": "mSVDeSUC1LfbLuUUM5ACZ2itvox04ZXSuq5pbxh8F38H-Dqr32-Y_x73YB3h2JvXpBGPLGmu0k7uOg",
         "teamPosition": "BOTTOM",
         "championName": "MissFortune",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/MissFortune.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/MissFortune.png",
         "summonerLevel": 321,
         "kills": 13,
         "deaths": 5,
@@ -731,6 +740,9 @@
         "wardsKilled": 4,
         "detectorWardsPlaced": 1,
         "visionWardsBoughtInGame": 1,
+        "enemyVisionPings": 8,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 5,
         "commandPings": 9,
         "dangerPings": 0,
@@ -757,13 +769,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Barrier",
             "description": "Gain a brief Shield.",
             "cooldownBurn": "180",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerBarrier.png"
           }
         ],
         "runes": [
@@ -802,7 +814,7 @@
           {
             "name": "Magical Footwear",
             "group": "Inspiration",
-            "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner.",
+            "description": "You get free boots at 12 min but you cannot buy boots before then. Each \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedown\u003C/lol-uikit-tooltipped-keyword\u003E you get makes your boots come 45s sooner.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png"
           },
           {
@@ -814,68 +826,68 @@
           {
             "name": "Cosmic Insight",
             "group": "Inspiration",
-            "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste",
+            "description": "+\u003Cattention\u003E18\u003C/attention\u003E Summoner Spell Haste\u003Cbr\u003E+\u003Cattention\u003E10\u003C/attention\u003E Item Haste",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/CosmicInsight/CosmicInsight.png"
           },
           {
             "name": "Gathering Storm",
             "group": "Sorcery",
-            "description": "Gain increasing amounts of AD or AP, <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> over the course of the game.",
+            "description": "Gain increasing amounts of AD or AP, \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'\u003Eadaptive\u003C/lol-uikit-tooltipped-keyword\u003E over the course of the game.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/GatheringStorm/GatheringStorm.png"
           },
           {
             "name": "Manaflow Band",
             "group": "Sorcery",
-            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
+            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.\u003Cbr\u003E\u003Cbr\u003EAfter reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ManaflowBand/ManaflowBand.png"
           }
         ],
         "items": [
           {
             "name": "Doran's Blade",
-            "description": "<mainText><stats><attention>10</attention> Attack Damage<br><attention>80</attention> Health<br><attention>2.5%</attention> Omnivamp</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1055.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E10\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E80\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E2.5%\u003C/attention\u003E Omnivamp\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1055.png",
             "price": 450
           },
           {
             "name": "The Collector",
-            "description": "<mainText><stats><attention>50</attention> Attack Damage<br><attention>10</attention> Lethality<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Death</passive><br>Your damage executes champions that are below 5% Health.<br><br><passive>Taxes</passive><br>Champion kills grant <gold>25 bonus gold</gold>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6676.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E50\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E10\u003C/attention\u003E Lethality\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Critical Strike Chance\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EDeath\u003C/passive\u003E\u003Cbr\u003EYour damage executes champions that are below 5% Health.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ETaxes\u003C/passive\u003E\u003Cbr\u003EChampion kills grant \u003Cgold\u003E25 bonus gold\u003C/gold\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6676.png",
             "price": 3000
           },
           {
             "name": "Infinity Edge",
-            "description": "<mainText><stats><attention>75</attention> Attack Damage<br><attention>25%</attention> Critical Strike Chance<br><attention>30%</attention> Critical Strike Damage</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3031.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E75\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Critical Strike Chance\u003Cbr\u003E\u003Cattention\u003E30%\u003C/attention\u003E Critical Strike Damage\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3031.png",
             "price": 3500
           },
           {
             "name": "Lord Dominik's Regards",
-            "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>35%</attention> Armor Penetration<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Giant Slayer</passive><br>Deal up to 15% bonus damage against champions based on their bonus Health. Maximum damage bonus reached at 1500 bonus Health.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3036.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E35\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E35%\u003C/attention\u003E Armor Penetration\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Critical Strike Chance\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EGiant Slayer\u003C/passive\u003E\u003Cbr\u003EDeal up to 15% bonus damage against champions based on their bonus Health. Maximum damage bonus reached at 1500 bonus Health.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3036.png",
             "price": 3300
           },
           {
             "name": "B. F. Sword",
-            "description": "<mainText><stats><attention>40</attention> Attack Damage</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1038.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E40\u003C/attention\u003E Attack Damage\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1038.png",
             "price": 1300
           },
           {
             "name": "Vampiric Scepter",
-            "description": "<mainText><stats><attention>15</attention> Attack Damage<br><attention>7%</attention> Life Steal</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1053.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E15\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E7%\u003C/attention\u003E Life Steal\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1053.png",
             "price": 900
           },
           {
             "name": "Stealth Ward",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3340.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E210 - 90\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision for \u003CscaleLevel\u003E90-120\u003C/scaleLevel\u003E seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3340.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/4778.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/4778.png"
         },
         "caller": false,
         "metadata": {
@@ -891,10 +903,10 @@
       },
       {
         "username": "Femme ideale #EUW",
-        "puuid": "fVS06k89fQ4my409W7dDnF9X-nIY5quP1iW8cW7b9BKsySES8htAMDqOvuHS-ppmIhOAwiP-DakWjQ",
+        "puuid": "R6oKjolxRgsUNPUpybBs0e_9yJbPndz82x-6AcK0OiEmMNBjQM6nTJWNK4LAoSSdk9n00r6NsyOIhA",
         "teamPosition": "UTILITY",
         "championName": "Lissandra",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Lissandra.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Lissandra.png",
         "summonerLevel": 964,
         "kills": 5,
         "deaths": 9,
@@ -931,6 +943,9 @@
         "wardsKilled": 7,
         "detectorWardsPlaced": 2,
         "visionWardsBoughtInGame": 2,
+        "enemyVisionPings": 2,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 5,
         "commandPings": 4,
         "dangerPings": 0,
@@ -957,13 +972,13 @@
             "name": "Ignite",
             "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
             "cooldownBurn": "180",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerDot.png"
           },
           {
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           }
         ],
         "runes": [
@@ -1002,13 +1017,13 @@
           {
             "name": "Manaflow Band",
             "group": "Sorcery",
-            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
+            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.\u003Cbr\u003E\u003Cbr\u003EAfter reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ManaflowBand/ManaflowBand.png"
           },
           {
             "name": "Transcendence",
             "group": "Sorcery",
-            "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
+            "description": "Gain bonuses upon reaching the following levels:\u003Cbr\u003ELevel 5: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 8: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/Transcendence/Transcendence.png"
           },
           {
@@ -1020,62 +1035,62 @@
           {
             "name": "Cheap Shot",
             "group": "Domination",
-            "description": "Deal bonus true damage to enemy champions with <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairAct'>impaired movement or actions</lol-uikit-tooltipped-keyword>. ",
+            "description": "Deal bonus true damage to enemy champions with \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_ImpairAct'\u003Eimpaired movement or actions\u003C/lol-uikit-tooltipped-keyword\u003E. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/CheapShot/CheapShot.png"
           },
           {
             "name": "Ultimate Hunter",
             "group": "Domination",
-            "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. ",
+            "description": "\u003Cb\u003EUnique\u003C/b\u003E \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E grant permanent cooldown reduction on your Ultimate. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png"
           }
         ],
         "items": [
           {
             "name": "Malignance",
-            "description": "<mainText><stats><attention>90</attention> Ability Power<br><attention>600</attention> Mana<br><attention>15</attention> Ability Haste</stats><br><br><passive>Scorn</passive><br>Gain 20 Ultimate Ability Haste.<br><br><passive>Hatefog</passive><br>Damaging a champion with your Ultimate burns the ground beneath them for 3s, dealing <magicDamage>magic damage</magicDamage> per second and reducing their <scaleMR>Magic Resist</scaleMR>. <br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3118.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E90\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E600\u003C/attention\u003E Mana\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EScorn\u003C/passive\u003E\u003Cbr\u003EGain 20 Ultimate Ability Haste.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EHatefog\u003C/passive\u003E\u003Cbr\u003EDamaging a champion with your Ultimate burns the ground beneath them for 3s, dealing \u003CmagicDamage\u003Emagic damage\u003C/magicDamage\u003E per second and reducing their \u003CscaleMR\u003EMagic Resist\u003C/scaleMR\u003E. \u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3118.png",
             "price": 2700
           },
           {
             "name": "Sorcerer's Shoes",
-            "description": "<mainText><stats><attention>12</attention> Magic Penetration<br><attention>45</attention> Move Speed</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3020.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E12\u003C/attention\u003E Magic Penetration\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3020.png",
             "price": 1100
           },
           {
             "name": "Zhonya's Hourglass",
-            "description": "<mainText><stats><attention>105</attention> Ability Power<br><attention>50</attention> Armor</stats><br><br><br><br><active>Time Stop</active><br>Enter <keyword>Stasis</keyword> for 2.5 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3157.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E105\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E50\u003C/attention\u003E Armor\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003ETime Stop\u003C/active\u003E\u003Cbr\u003EEnter \u003Ckeyword\u003EStasis\u003C/keyword\u003E for 2.5 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3157.png",
             "price": 3250
           },
           {
             "name": "Liandry's Torment",
-            "description": "<mainText><stats><attention>60</attention> Ability Power<br><attention>300</attention> Health</stats><br><br><passive>Torment</passive><br>Damaging Abilities burn enemies for <magicDamage>2% max Health magic damage</magicDamage> per second for 3 seconds.<br><br><passive>Suffering</passive><br>For each second in combat with enemy champions, deal 2% bonus damage, up to 6%.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6653.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E60\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E300\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ETorment\u003C/passive\u003E\u003Cbr\u003EDamaging Abilities burn enemies for \u003CmagicDamage\u003E2% max Health magic damage\u003C/magicDamage\u003E per second for 3 seconds.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESuffering\u003C/passive\u003E\u003Cbr\u003EFor each second in combat with enemy champions, deal 2% bonus damage, up to 6%.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6653.png",
             "price": 3000
           },
           {
             "name": "Hextech Alternator",
-            "description": "<mainText><stats><attention>45</attention> Ability Power</stats><br><br><passive>Revved</passive><br>Damaging a champion deals <magicDamage>bonus magic damage</magicDamage>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3145.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Ability Power\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ERevved\u003C/passive\u003E\u003Cbr\u003EDamaging a champion deals \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3145.png",
             "price": 1100
           },
           {
             "name": "Zaz'Zak's Realmspike",
-            "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>9</attention> Gold Per 10 Seconds</stats><br><br><passive>Void Explosion</passive><br>Dealing Ability damage to a champion causes an explosion that deals <magicDamage>magic damage</magicDamage>.<br><br><active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3871.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E200\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E75%\u003C/attention\u003E Base Health Regen\u003Cbr\u003E\u003Cattention\u003E75%\u003C/attention\u003E Base Mana Regen\u003Cbr\u003E\u003Cattention\u003E9\u003C/attention\u003E Gold Per 10 Seconds\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EVoid Explosion\u003C/passive\u003E\u003Cbr\u003EDealing Ability damage to a champion causes an explosion that deals \u003CmagicDamage\u003Emagic damage\u003C/magicDamage\u003E.\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (4 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3871.png",
             "price": 400
           },
           {
             "name": "Oracle Lens",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 8 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3364.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E160 - 100\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EReveals enemy Stealth Wards and traps around you for 8 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3364.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/683.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/683.png"
         },
         "caller": false,
         "metadata": {
@@ -1091,10 +1106,10 @@
       },
       {
         "username": "Qwstx #6060",
-        "puuid": "ZJh1dz_QQDeAMxT87sj71ypjTE23aMxmYf82iNTIv2ctmRk2ebrjJ4u35kTj1rhXhVMpyoNcFH5bXg",
+        "puuid": "sQ5w3Cl6d6CYb6lj9-vtgaaJoxMpWjtOj-nSY5RTgudNVZqxuO4l6S14G023P1jAvMLtYmHkdQ1kkg",
         "teamPosition": "TOP",
         "championName": "Kayle",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Kayle.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Kayle.png",
         "summonerLevel": 566,
         "kills": 2,
         "deaths": 11,
@@ -1131,6 +1146,9 @@
         "wardsKilled": 0,
         "detectorWardsPlaced": 1,
         "visionWardsBoughtInGame": 1,
+        "enemyVisionPings": 0,
+        "allInPings": 0,
+        "pushPings": 1,
         "assistMePings": 2,
         "commandPings": 9,
         "dangerPings": 0,
@@ -1157,13 +1175,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Teleport",
             "description": "After a brief channel, become untargetable and travel to an allied unit. Upgrades into Unleashed Teleport, which significantly increases travel speed. ",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerTeleport.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerTeleport.png"
           }
         ],
         "runes": [
@@ -1208,7 +1226,7 @@
           {
             "name": "Legend: Alacrity",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. ",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E on enemies grant permanent \u003Cb\u003EAttack Speed\u003C/b\u003E. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png"
           },
           {
@@ -1220,62 +1238,62 @@
           {
             "name": "Celerity",
             "group": "Sorcery",
-            "description": "All <speed>Move Speed</speed> bonuses are 7% more effective on you and gain <speed>1% Move Speed</speed>.",
+            "description": "All \u003Cspeed\u003EMove Speed\u003C/speed\u003E bonuses are 7% more effective on you and gain \u003Cspeed\u003E1% Move Speed\u003C/speed\u003E.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/Celerity/CelerityTemp.png"
           },
           {
             "name": "Gathering Storm",
             "group": "Sorcery",
-            "description": "Gain increasing amounts of AD or AP, <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'>adaptive</lol-uikit-tooltipped-keyword> over the course of the game.",
+            "description": "Gain increasing amounts of AD or AP, \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Adaptive'\u003Eadaptive\u003C/lol-uikit-tooltipped-keyword\u003E over the course of the game.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/GatheringStorm/GatheringStorm.png"
           }
         ],
         "items": [
           {
             "name": "Doran's Blade",
-            "description": "<mainText><stats><attention>10</attention> Attack Damage<br><attention>80</attention> Health<br><attention>2.5%</attention> Omnivamp</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1055.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E10\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E80\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E2.5%\u003C/attention\u003E Omnivamp\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1055.png",
             "price": 450
           },
           {
             "name": "Boots of Swiftness",
-            "description": "<mainText><stats><attention>55</attention> Move Speed</stats><br><br><passive>Fleetfooted</passive><br>Reduce the effectiveness of <keyword>Slows</keyword> by 25%.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3009.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E55\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EFleetfooted\u003C/passive\u003E\u003Cbr\u003EReduce the effectiveness of \u003Ckeyword\u003ESlows\u003C/keyword\u003E by 25%.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3009.png",
             "price": 1000
           },
           {
             "name": "Nashor's Tooth",
-            "description": "<mainText><stats><attention>80</attention> Ability Power<br><attention>50%</attention> Attack Speed<br><attention>15</attention> Ability Haste</stats><br><br><passive>Icathian Bite</passive><br>Attacks deal <magicDamage>bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3115.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E80\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E50%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EIcathian Bite\u003C/passive\u003E\u003Cbr\u003EAttacks deal \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3115.png",
             "price": 2900
           },
           {
             "name": "Dusk and Dawn",
-            "description": "<mainText><stats><attention>350</attention> Health<br><attention>70</attention> Ability Power<br><attention>20</attention> Ability Haste<br><attention>25%</attention> Attack Speed</stats><br><br><passive>Spellblade</passive> (0s)<br>After using an Ability, your next Attack deals <magicDamage> bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and applies <OnHit>On-Hit</OnHit> effects an additional time.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2510.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E350\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E70\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESpellblade\u003C/passive\u003E (0s)\u003Cbr\u003EAfter using an Ability, your next Attack deals \u003CmagicDamage\u003E bonus magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E and applies \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E effects an additional time.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2510.png",
             "price": 3100
           },
           {
             "name": "Rylai's Crystal Scepter",
-            "description": "<mainText><stats><attention>65</attention> Ability Power<br><attention>400</attention> Health</stats><br><br><passive>Rimefrost</passive><br>Damaging Abilities <keyword>Slow</keyword> enemies by 30% for 1 second.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3116.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E65\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E400\u003C/attention\u003E Health\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ERimefrost\u003C/passive\u003E\u003Cbr\u003EDamaging Abilities \u003Ckeyword\u003ESlow\u003C/keyword\u003E enemies by 30% for 1 second.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3116.png",
             "price": 2600
           },
           {
             "name": "Hextech Alternator",
-            "description": "<mainText><stats><attention>45</attention> Ability Power</stats><br><br><passive>Revved</passive><br>Damaging a champion deals <magicDamage>bonus magic damage</magicDamage>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3145.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Ability Power\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ERevved\u003C/passive\u003E\u003Cbr\u003EDamaging a champion deals \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3145.png",
             "price": 1100
           },
           {
             "name": "Stealth Ward",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3340.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E210 - 90\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision for \u003CscaleLevel\u003E90-120\u003C/scaleLevel\u003E seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3340.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/1297.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/1297.png"
         },
         "caller": false,
         "metadata": {
@@ -1291,10 +1309,10 @@
       },
       {
         "username": "401dmg #6969",
-        "puuid": "TwphGUi7WmIN6lQ0PfBjODCgF7lcEO-RSa66Vg0ip0aWXECs6wg7ztdaakb6nDEm9Ah2tp0Wn8NwKA",
+        "puuid": "njn3IPxmtGYAdIgld_knYUrh2lMOzfvFLc9gRpifDoX6GCn0MFNOaDjzMcnbGTSOChznx36nPgrwJg",
         "teamPosition": "JUNGLE",
         "championName": "Jax",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Jax.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Jax.png",
         "summonerLevel": 337,
         "kills": 2,
         "deaths": 10,
@@ -1310,7 +1328,7 @@
         "goldPerMinute": 395.18,
         "soloKills": 0,
         "visionScorePerMinute": 0.85,
-        "maxCsAdvantageOnLaneOpponent": 33.0,
+        "maxCsAdvantageOnLaneOpponent": 33,
         "doubleKills": 0,
         "tripleKills": 0,
         "quadraKills": 0,
@@ -1331,6 +1349,9 @@
         "wardsKilled": 3,
         "detectorWardsPlaced": 0,
         "visionWardsBoughtInGame": 0,
+        "enemyVisionPings": 2,
+        "allInPings": 0,
+        "pushPings": 1,
         "assistMePings": 3,
         "commandPings": 6,
         "dangerPings": 0,
@@ -1357,13 +1378,13 @@
             "name": "Smite",
             "description": "Deals true damage to a monster or minion.",
             "cooldownBurn": "15",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerSmite.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerSmite.png"
           },
           {
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           }
         ],
         "runes": [
@@ -1396,19 +1417,19 @@
           {
             "name": "Lethal Tempo",
             "group": "Precision",
-            "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>bonus adaptive damage</font></lol-uikit-tooltipped-keyword> On-Attack.",
+            "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003E\u003Cfont color='#48C4B7'\u003Ebonus adaptive damage\u003C/font\u003E\u003C/lol-uikit-tooltipped-keyword\u003E On-Attack.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png"
           },
           {
             "name": "Triumph",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> restore 5% of your missing health and grant an additional 20 gold. ",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E restore 5% of your missing health and grant an additional 20 gold. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/Triumph.png"
           },
           {
             "name": "Legend: Alacrity",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent <b>Attack Speed</b>. ",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E on enemies grant permanent \u003Cb\u003EAttack Speed\u003C/b\u003E. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LegendAlacrity/LegendAlacrity.png"
           },
           {
@@ -1420,64 +1441,84 @@
           {
             "name": "Cosmic Insight",
             "group": "Inspiration",
-            "description": "+<attention>18</attention> Summoner Spell Haste<br>+<attention>10</attention> Item Haste",
+            "description": "+\u003Cattention\u003E18\u003C/attention\u003E Summoner Spell Haste\u003Cbr\u003E+\u003Cattention\u003E10\u003C/attention\u003E Item Haste",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/CosmicInsight/CosmicInsight.png"
           },
           {
             "name": "Magical Footwear",
             "group": "Inspiration",
-            "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner.",
+            "description": "You get free boots at 12 min but you cannot buy boots before then. Each \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedown\u003C/lol-uikit-tooltipped-keyword\u003E you get makes your boots come 45s sooner.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png"
           }
         ],
         "items": [
           {
             "name": "Mercury's Treads",
-            "description": "<mainText><stats><attention>20</attention> Magic Resist<br><attention>45</attention> Move Speed<br><attention>30%</attention> Tenacity</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3111.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E20\u003C/attention\u003E Magic Resist\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003Cbr\u003E\u003Cattention\u003E30%\u003C/attention\u003E Tenacity\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3111.png",
             "price": 1250
           },
           {
             "name": "Dagger",
-            "description": "<mainText><stats><attention>10%</attention> Attack Speed</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1042.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E10%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1042.png",
             "price": 250
           },
           {
             "name": "Zhonya's Hourglass",
-            "description": "<mainText><stats><attention>105</attention> Ability Power<br><attention>50</attention> Armor</stats><br><br><br><br><active>Time Stop</active><br>Enter <keyword>Stasis</keyword> for 2.5 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3157.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E105\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E50\u003C/attention\u003E Armor\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003ETime Stop\u003C/active\u003E\u003Cbr\u003EEnter \u003Ckeyword\u003EStasis\u003C/keyword\u003E for 2.5 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3157.png",
             "price": 3250
           },
           {
             "name": "Trinity Force",
-            "description": "<mainText><stats><attention>36</attention> Attack Damage<br><attention>30%</attention> Attack Speed<br><attention>333</attention> Health<br><attention>15</attention> Ability Haste</stats><br><br><passive>Spellblade</passive><br>After using an Ability, your next Attack deals <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>.<br> <br><passive>Quicken</passive><br>Attacking grants <speed>20 Move Speed</speed> for 2 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3078.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E36\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E30%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E333\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESpellblade\u003C/passive\u003E\u003Cbr\u003EAfter using an Ability, your next Attack deals \u003CphysicalDamage\u003Ebonus physical damage\u003C/physicalDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E.\u003Cbr\u003E \u003Cbr\u003E\u003Cpassive\u003EQuicken\u003C/passive\u003E\u003Cbr\u003EAttacking grants \u003Cspeed\u003E20 Move Speed\u003C/speed\u003E for 2 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3078.png",
             "price": 3333
           },
           {
             "name": "Sundered Sky",
-            "description": "<mainText><stats><attention>45</attention> Attack Damage<br><attention>400</attention> Health<br><attention>10</attention> Ability Haste</stats><br><br><passive>Lightshield Strike</passive><br>Your first Attack against a champion <attention>Critically Strikes</attention> and <healing>restores Health</healing>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6610.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E400\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E10\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ELightshield Strike\u003C/passive\u003E\u003Cbr\u003EYour first Attack against a champion \u003Cattention\u003ECritically Strikes\u003C/attention\u003E and \u003Chealing\u003Erestores Health\u003C/healing\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6610.png",
             "price": 3100
           },
           {
             "name": "Negatron Cloak",
-            "description": "<mainText><stats><attention>45</attention> Magic Resist</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/1057.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Magic Resist\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/1057.png",
             "price": 850
           },
           {
             "name": "Oracle Lens",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 8 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3364.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E160 - 100\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EReveals enemy Stealth Wards and traps around you for 8 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3364.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/8.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/8.png"
         },
         "caller": true,
+        "masteries": [
+          {
+            "championLevel": 21,
+            "championPoints": 206367,
+            "championName": "Shyvana",
+            "championIcon": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Shyvana.png"
+          },
+          {
+            "championLevel": 13,
+            "championPoints": 135643,
+            "championName": "Vi",
+            "championIcon": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Vi.png"
+          },
+          {
+            "championLevel": 13,
+            "championPoints": 124569,
+            "championName": "Lee Sin",
+            "championIcon": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/LeeSin.png"
+          }
+        ],
         "metadata": {
           "leagueId": "034842ab-6cb0-460e-aa3f-fa3c25343830",
           "queueType": "RANKED_SOLO_5x5",
@@ -1491,10 +1532,10 @@
       },
       {
         "username": "DozySlidan #EUW",
-        "puuid": "Obv4SsJEBGo1Afe5FQ7-01JlVGbvLTkp7pMv0FDCK1n5RlOtmdrCgNbzL_2LnOBhYYdR-foen26NdQ",
+        "puuid": "7GLI2uYF4kd9i4XUkTjBbZphMXg7-Dh8Zkgin8y_jIARoGMJwlS3t8stN_DRW11UYpx5PKNnH0LMMw",
         "teamPosition": "MIDDLE",
         "championName": "Talon",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Talon.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Talon.png",
         "summonerLevel": 96,
         "kills": 13,
         "deaths": 8,
@@ -1507,7 +1548,7 @@
         "teamDamagePercentage": "25.7%",
         "damageTakenOnTeamPercentage": "17.14%",
         "damagePerMinute": 842.76,
-        "goldPerMinute": 491.0,
+        "goldPerMinute": 491,
         "soloKills": 4,
         "visionScorePerMinute": 1.2,
         "maxCsAdvantageOnLaneOpponent": 7,
@@ -1531,6 +1572,9 @@
         "wardsKilled": 2,
         "detectorWardsPlaced": 3,
         "visionWardsBoughtInGame": 3,
+        "enemyVisionPings": 1,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 0,
         "commandPings": 2,
         "dangerPings": 0,
@@ -1557,13 +1601,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Ignite",
             "description": "Deals true damage over time to target enemy champion and reduces healing effects on them for the duration.",
             "cooldownBurn": "180",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerDot.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerDot.png"
           }
         ],
         "runes": [
@@ -1596,7 +1640,7 @@
           {
             "name": "Electrocute",
             "group": "Domination",
-            "description": "Hitting a champion with 3 <b>separate</b> attacks or abilities in 3s deals bonus <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>.",
+            "description": "Hitting a champion with 3 \u003Cb\u003Eseparate\u003C/b\u003E attacks or abilities in 3s deals bonus \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003Eadaptive damage\u003C/lol-uikit-tooltipped-keyword\u003E.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/Electrocute/Electrocute.png"
           },
           {
@@ -1608,19 +1652,19 @@
           {
             "name": "Grisly Mementos",
             "group": "Domination",
-            "description": "Collect 1 memento on champion <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword>, up to 18 total.<br><br>Gain 6 Trinket Haste for each collected.",
+            "description": "Collect 1 memento on champion \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E, up to 18 total.\u003Cbr\u003E\u003Cbr\u003EGain 6 Trinket Haste for each collected.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/GrislyMementos/GrislyMementos.png"
           },
           {
             "name": "Ultimate Hunter",
             "group": "Domination",
-            "description": "<b>Unique</b> <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedowns</lol-uikit-tooltipped-keyword> grant permanent cooldown reduction on your Ultimate. ",
+            "description": "\u003Cb\u003EUnique\u003C/b\u003E \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedowns\u003C/lol-uikit-tooltipped-keyword\u003E grant permanent cooldown reduction on your Ultimate. ",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/UltimateHunter/UltimateHunter.png"
           },
           {
             "name": "Absolute Focus",
             "group": "Sorcery",
-            "description": "While above 70% health, gain extra <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'>adaptive damage</lol-uikit-tooltipped-keyword>.",
+            "description": "While above 70% health, gain extra \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003Eadaptive damage\u003C/lol-uikit-tooltipped-keyword\u003E.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/AbsoluteFocus/AbsoluteFocus.png"
           },
           {
@@ -1633,49 +1677,49 @@
         "items": [
           {
             "name": "Youmuu's Ghostblade",
-            "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>18</attention> Lethality<br><attention>4%</attention> Move Speed</stats><br><br><passive>Haunt</passive> <br>Gain <speed> Move Speed</speed> while out of combat.<br><br><active>Wraith Step</active><br>Gain <speed>Move Speed</speed> and <keyword>Ghosting</keyword> for  seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3142.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E55\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E18\u003C/attention\u003E Lethality\u003Cbr\u003E\u003Cattention\u003E4%\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EHaunt\u003C/passive\u003E \u003Cbr\u003EGain \u003Cspeed\u003E Move Speed\u003C/speed\u003E while out of combat.\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EWraith Step\u003C/active\u003E\u003Cbr\u003EGain \u003Cspeed\u003EMove Speed\u003C/speed\u003E and \u003Ckeyword\u003EGhosting\u003C/keyword\u003E for  seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3142.png",
             "price": 2800
           },
           {
             "name": "Eclipse",
-            "description": "<mainText><stats><attention>60</attention> Attack Damage<br><attention>15</attention> Ability Haste</stats><br><br><passive>Ever Rising Moon</passive><br>Hitting a champion with 2 separate Attacks or Abilities within 2 seconds grants you a <shield>Shield</shield> for 2 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6692.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E60\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EEver Rising Moon\u003C/passive\u003E\u003Cbr\u003EHitting a champion with 2 separate Attacks or Abilities within 2 seconds grants you a \u003Cshield\u003EShield\u003C/shield\u003E for 2 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6692.png",
             "price": 2900
           },
           {
             "name": "Crimson Lucidity",
-            "description": "<mainText><stats><attention>20</attention> Ability Haste<br><attention>45</attention> Move Speed</stats><br><br><passive>Ionian Insight</passive><br>Gain 20 Summoner Spell Haste.<br><br><passive>Noxian Haste</passive><br>Empowering or protecting allies with abilities, dealing damage to enemy Champions with abilities, or casting a Summoner Spell grants <speed> Move Speed</speed> for 4 seconds.<br><br><rules>Noxian Haste can only be triggered once per Ability cast.</rules></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3171.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EIonian Insight\u003C/passive\u003E\u003Cbr\u003EGain 20 Summoner Spell Haste.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ENoxian Haste\u003C/passive\u003E\u003Cbr\u003EEmpowering or protecting allies with abilities, dealing damage to enemy Champions with abilities, or casting a Summoner Spell grants \u003Cspeed\u003E Move Speed\u003C/speed\u003E for 4 seconds.\u003Cbr\u003E\u003Cbr\u003E\u003Crules\u003ENoxian Haste can only be triggered once per Ability cast.\u003C/rules\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3171.png",
             "price": 900
           },
           {
             "name": "Mortal Reminder",
-            "description": "<mainText><stats><attention>35</attention> Attack Damage<br><attention>30%</attention> Armor Penetration<br><attention>25%</attention> Critical Strike Chance</stats><br><br><passive>Grievous Wounds</passive><br>Dealing physical damage applies <keyword>40% Wounds</keyword> to enemy champions for 3 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3033.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E35\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E30%\u003C/attention\u003E Armor Penetration\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Critical Strike Chance\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EGrievous Wounds\u003C/passive\u003E\u003Cbr\u003EDealing physical damage applies \u003Ckeyword\u003E40% Wounds\u003C/keyword\u003E to enemy champions for 3 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3033.png",
             "price": 3000
           },
           {
             "name": "Opportunity",
-            "description": "<mainText><stats><attention>55</attention> Attack Damage<br><attention>18</attention> Lethality</stats><br><br><passive>Preparation</passive><br>After being out of combat with Champions for 8 seconds gain <scaleLethality>Lethality</scaleLethality>. This Lethality lasts for 3 seconds after dealing damage to champions.<br><br><passive>Extraction</passive><br>When a champion that you damaged within 3 seconds dies, gain <speed>200 decaying Move Speed</speed> for 1.5 seconds.<br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6701.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E55\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E18\u003C/attention\u003E Lethality\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EPreparation\u003C/passive\u003E\u003Cbr\u003EAfter being out of combat with Champions for 8 seconds gain \u003CscaleLethality\u003ELethality\u003C/scaleLethality\u003E. This Lethality lasts for 3 seconds after dealing damage to champions.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EExtraction\u003C/passive\u003E\u003Cbr\u003EWhen a champion that you damaged within 3 seconds dies, gain \u003Cspeed\u003E200 decaying Move Speed\u003C/speed\u003E for 1.5 seconds.\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6701.png",
             "price": 2700
           },
           {
             "name": "Serrated Dirk",
-            "description": "<mainText><stats><attention>20</attention> Attack Damage<br><attention>10</attention> Lethality</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3134.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E20\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E10\u003C/attention\u003E Lethality\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3134.png",
             "price": 1000
           },
           {
             "name": "Stealth Ward",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3340.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E210 - 90\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision for \u003CscaleLevel\u003E90-120\u003C/scaleLevel\u003E seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3340.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/3152.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/3152.png"
         },
         "caller": false,
         "metadata": {
@@ -1691,10 +1735,10 @@
       },
       {
         "username": "vsaud #EUW",
-        "puuid": "7c3gBRveR5Dn5KZaPHDDnoRfCkEASamj3oOq3as73cv6rimZcA_ZxjvRB4jMbpU8LFlr45moPMaWpg",
+        "puuid": "kXEfZx5Nhd7PWUahLKZ8WlJJJtHBAF2Si6YybOhpse9XQTEhITBI3BAVbcoHp35SFv-r7X5abWtwqA",
         "teamPosition": "BOTTOM",
         "championName": "Kaisa",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Kaisa.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Kaisa.png",
         "summonerLevel": 452,
         "kills": 10,
         "deaths": 11,
@@ -1731,6 +1775,9 @@
         "wardsKilled": 2,
         "detectorWardsPlaced": 2,
         "visionWardsBoughtInGame": 2,
+        "enemyVisionPings": 2,
+        "allInPings": 0,
+        "pushPings": 3,
         "assistMePings": 8,
         "commandPings": 7,
         "dangerPings": 0,
@@ -1757,13 +1804,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Barrier",
             "description": "Gain a brief Shield.",
             "cooldownBurn": "180",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerBarrier.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerBarrier.png"
           }
         ],
         "runes": [
@@ -1796,7 +1843,7 @@
           {
             "name": "Lethal Tempo",
             "group": "Precision",
-            "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'><font color='#48C4B7'>bonus adaptive damage</font></lol-uikit-tooltipped-keyword> On-Attack.",
+            "description": "Attacking an enemy champion grants you Attack Speed, up to 6 stacks. At max stacks, deal \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_AdaptiveDmg'\u003E\u003Cfont color='#48C4B7'\u003Ebonus adaptive damage\u003C/font\u003E\u003C/lol-uikit-tooltipped-keyword\u003E On-Attack.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LethalTempo/LethalTempoTemp.png"
           },
           {
@@ -1808,7 +1855,7 @@
           {
             "name": "Legend: Bloodline",
             "group": "Precision",
-            "description": "<lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>Takedowns</lol-uikit-tooltipped-keyword> on enemies grant permanent<b> Life Steal</b>, up to a cap. Once the cap is reached, increase your max health. Weaker earlier but stronger later game than other Legend Runes.",
+            "description": "\u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003ETakedowns\u003C/lol-uikit-tooltipped-keyword\u003E on enemies grant permanent\u003Cb\u003E Life Steal\u003C/b\u003E, up to a cap. Once the cap is reached, increase your max health. Weaker earlier but stronger later game than other Legend Runes.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Precision/LegendBloodline/LegendBloodline.png"
           },
           {
@@ -1826,51 +1873,53 @@
           {
             "name": "Magical Footwear",
             "group": "Inspiration",
-            "description": "You get free boots at 12 min but you cannot buy boots before then. Each <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'>takedown</lol-uikit-tooltipped-keyword> you get makes your boots come 45s sooner.",
+            "description": "You get free boots at 12 min but you cannot buy boots before then. Each \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_Takedown'\u003Etakedown\u003C/lol-uikit-tooltipped-keyword\u003E you get makes your boots come 45s sooner.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Inspiration/MagicalFootwear/MagicalFootwear.png"
           }
         ],
         "items": [
           {
             "name": "Dusk and Dawn",
-            "description": "<mainText><stats><attention>350</attention> Health<br><attention>70</attention> Ability Power<br><attention>20</attention> Ability Haste<br><attention>25%</attention> Attack Speed</stats><br><br><passive>Spellblade</passive> (0s)<br>After using an Ability, your next Attack deals <magicDamage> bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and applies <OnHit>On-Hit</OnHit> effects an additional time.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2510.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E350\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E70\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESpellblade\u003C/passive\u003E (0s)\u003Cbr\u003EAfter using an Ability, your next Attack deals \u003CmagicDamage\u003E bonus magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E and applies \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E effects an additional time.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2510.png",
             "price": 3100
           },
           {
             "name": "Zhonya's Hourglass",
-            "description": "<mainText><stats><attention>105</attention> Ability Power<br><attention>50</attention> Armor</stats><br><br><br><br><active>Time Stop</active><br>Enter <keyword>Stasis</keyword> for 2.5 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3157.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E105\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E50\u003C/attention\u003E Armor\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003ETime Stop\u003C/active\u003E\u003Cbr\u003EEnter \u003Ckeyword\u003EStasis\u003C/keyword\u003E for 2.5 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3157.png",
             "price": 3250
           },
           {
             "name": "Guinsoo's Rageblade",
-            "description": "<mainText><stats><attention>30</attention> Attack Damage<br><attention>30</attention> Ability Power<br><attention>25%</attention> Attack Speed</stats><br><br><passive>Wrath</passive><br>Attacks deal <magicDamage>30 bonus magic damage <OnHit>On-Hit</OnHit></magicDamage>.<br><br><passive>Seething Strike</passive><br>Attacks grant <attackSpeed>8% Attack Speed</attackSpeed> for 3 seconds. (stacks 4 times). <br>While fully stacked, every third Attack applies <OnHit>On-Hit</OnHit> effects twice.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3124.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E30\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E30\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E25%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EWrath\u003C/passive\u003E\u003Cbr\u003EAttacks deal \u003CmagicDamage\u003E30 bonus magic damage \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E\u003C/magicDamage\u003E.\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESeething Strike\u003C/passive\u003E\u003Cbr\u003EAttacks grant \u003CattackSpeed\u003E8% Attack Speed\u003C/attackSpeed\u003E for 3 seconds. (stacks 4 times). \u003Cbr\u003EWhile fully stacked, every third Attack applies \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E effects twice.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3124.png",
             "price": 3000
           },
           {
             "name": "Kraken Slayer",
-            "description": "<mainText><stats><attention>45</attention> Attack Damage<br><attention>40%</attention> Attack Speed<br><attention>4%</attention> Move Speed</stats><br><br><passive>Bring It Down</passive><br>Every third Attack deals <physicalDamage>bonus physical damage</physicalDamage> <OnHit>On-Hit</OnHit>, increased based on their missing Health.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6672.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Attack Damage\u003Cbr\u003E\u003Cattention\u003E40%\u003C/attention\u003E Attack Speed\u003Cbr\u003E\u003Cattention\u003E4%\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EBring It Down\u003C/passive\u003E\u003Cbr\u003EEvery third Attack deals \u003CphysicalDamage\u003Ebonus physical damage\u003C/physicalDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E, increased based on their missing Health.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6672.png",
             "price": 3000
           },
           {
             "name": "Scout's Slingshot",
-            "description": "<mainText><stats><attention>20%</attention> Attack Speed</stats><br><br><passive>Bullseye</passive><br>Damaging a champion deals <magicDamage>bonus magic damage</magicDamage>. <br>Attacks reduce this cooldown by 1 second.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3144.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E20%\u003C/attention\u003E Attack Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EBullseye\u003C/passive\u003E\u003Cbr\u003EDamaging a champion deals \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E. \u003Cbr\u003EAttacks reduce this cooldown by 1 second.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3144.png",
             "price": 600
           },
-          {},
+          {
+
+          },
           {
             "name": "Stealth Ward",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>210 - 90</scaleLevel>s, max 2 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision for <scaleLevel>90-120</scaleLevel> seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3340.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E210 - 90\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision for \u003CscaleLevel\u003E90-120\u003C/scaleLevel\u003E seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3340.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/6923.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/6923.png"
         },
         "caller": false,
         "metadata": {
@@ -1885,11 +1934,11 @@
         }
       },
       {
-        "username": "iConÃ­x #EUW",
-        "puuid": "MRX9FtX5AjBDPanjr5E8s5-UEMF3ZeNSRnAM2cTMMMgXOn8Z63KvdzHiZFfiJxNXc3grg1KkCAlsrg",
+        "username": "iConíx #EUW",
+        "puuid": "k3D1NeO6quhL6lpkVcwBunWiAG8y_hHpVX87uBJ5Hdpnuavq6nwppcc1hGsJBCp8VPh-J2YCc9XqeA",
         "teamPosition": "UTILITY",
         "championName": "Lulu",
-        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/champion/Lulu.png",
+        "championImageLink": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/champion/Lulu.png",
         "summonerLevel": 467,
         "kills": 3,
         "deaths": 7,
@@ -1926,6 +1975,9 @@
         "wardsKilled": 3,
         "detectorWardsPlaced": 1,
         "visionWardsBoughtInGame": 3,
+        "enemyVisionPings": 0,
+        "allInPings": 0,
+        "pushPings": 0,
         "assistMePings": 1,
         "commandPings": 1,
         "dangerPings": 0,
@@ -1952,13 +2004,13 @@
             "name": "Flash",
             "description": "Teleports you a short distance toward your cursor.",
             "cooldownBurn": "300",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerFlash.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerFlash.png"
           },
           {
             "name": "Heal",
             "description": "Restores Health and grants Move Speed to you and target allied champion.",
             "cooldownBurn": "240",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/spell/SummonerHeal.png"
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/spell/SummonerHeal.png"
           }
         ],
         "runes": [
@@ -1997,13 +2049,13 @@
           {
             "name": "Manaflow Band",
             "group": "Sorcery",
-            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.<br><br>After reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
+            "description": "Hitting an enemy champion with an ability permanently increases your maximum mana by 25, up to 250 mana.\u003Cbr\u003E\u003Cbr\u003EAfter reaching 250 bonus mana, restore 1% of your missing mana every 5 seconds.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ManaflowBand/ManaflowBand.png"
           },
           {
             "name": "Transcendence",
             "group": "Sorcery",
-            "description": "Gain bonuses upon reaching the following levels:<br>Level 5: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 8: +5 <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'>Ability Haste</lol-uikit-tooltipped-keyword> <br>Level 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
+            "description": "Gain bonuses upon reaching the following levels:\u003Cbr\u003ELevel 5: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 8: +5 \u003Clol-uikit-tooltipped-keyword key='LinkTooltip_Description_CDR'\u003EAbility Haste\u003C/lol-uikit-tooltipped-keyword\u003E \u003Cbr\u003ELevel 11: On Champion takedown, reduce the remaining cooldown of basic abilities by 20%.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/Transcendence/Transcendence.png"
           },
           {
@@ -2015,62 +2067,62 @@
           {
             "name": "Bone Plating",
             "group": "Resolve",
-            "description": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage.<br><br>Duration: 1.5s<br>Cooldown: 55s",
+            "description": "After taking damage from an enemy champion, the next 3 spells or attacks you receive from them deal 30-60 (based on level) less damage.\u003Cbr\u003E\u003Cbr\u003EDuration: 1.5s\u003Cbr\u003ECooldown: 55s",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Resolve/BonePlating/BonePlating.png"
           },
           {
             "name": "Revitalize",
             "group": "Resolve",
-            "description": "Gain 5% Heal and Shield Power.<br><br>Heals and shields you cast or receive are 10% stronger on targets below 40% health.",
+            "description": "Gain 5% Heal and Shield Power.\u003Cbr\u003E\u003Cbr\u003EHeals and shields you cast or receive are 10% stronger on targets below 40% health.",
             "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Resolve/Revitalize/Revitalize.png"
           }
         ],
         "items": [
           {
             "name": "Dream Maker",
-            "description": "<mainText><stats><attention>200</attention> Health<br><attention>75%</attention> Base Health Regen<br><attention>75%</attention> Base Mana Regen<br><attention>9</attention> Gold Per 10 Seconds</stats><br><br><passive>Dream Maker</passive><br>Healing or Shielding another ally blows Dream Bubbles to them for 3 seconds. Their next Attack deals <magicDamage>bonus magic damage</magicDamage> <OnHit>On-Hit</OnHit> and the next damage they take is reduced.<active>Active</active> (4 charges)<br>Places an <keyword>Invisible</keyword> Stealth Ward that grants vision.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3870.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E200\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E75%\u003C/attention\u003E Base Health Regen\u003Cbr\u003E\u003Cattention\u003E75%\u003C/attention\u003E Base Mana Regen\u003Cbr\u003E\u003Cattention\u003E9\u003C/attention\u003E Gold Per 10 Seconds\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EDream Maker\u003C/passive\u003E\u003Cbr\u003EHealing or Shielding another ally blows Dream Bubbles to them for 3 seconds. Their next Attack deals \u003CmagicDamage\u003Ebonus magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E and the next damage they take is reduced.\u003Cactive\u003EActive\u003C/active\u003E (4 charges)\u003Cbr\u003EPlaces an \u003Ckeyword\u003EInvisible\u003C/keyword\u003E Stealth Ward that grants vision.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3870.png",
             "price": 400
           },
           {
             "name": "Moonstone Renewer",
-            "description": "<mainText><stats><attention>25</attention> Ability Power<br><attention>200</attention> Health<br><attention>20</attention> Ability Haste<br><attention>125%</attention> Base Mana Regen</stats><br><br><passive>Starlit Grace</passive><br>Healing or shielding an ally chains the effect to another ally (excluding yourself), <healing>healing 30%</healing> or <shield>shielding 35%</shield> of the original amount.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/6617.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E25\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E200\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E20\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E125%\u003C/attention\u003E Base Mana Regen\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EStarlit Grace\u003C/passive\u003E\u003Cbr\u003EHealing or shielding an ally chains the effect to another ally (excluding yourself), \u003Chealing\u003Ehealing 30%\u003C/healing\u003E or \u003Cshield\u003Eshielding 35%\u003C/shield\u003E of the original amount.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/6617.png",
             "price": 2200
           },
           {
             "name": "Ionian Boots of Lucidity",
-            "description": "<mainText><stats><attention>10</attention> Ability Haste<br><attention>45</attention> Move Speed</stats><br><br><passive>Ionian Insight</passive><br>Gain 10 Summoner Spell Haste.<br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3158.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E10\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E45\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003EIonian Insight\u003C/passive\u003E\u003Cbr\u003EGain 10 Summoner Spell Haste.\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3158.png",
             "price": 900
           },
           {
             "name": "Shurelya's Battlesong",
-            "description": "<mainText><stats><attention>50</attention> Ability Power<br><attention>15</attention> Ability Haste<br><attention>4%</attention> Move Speed<br><attention>125%</attention> Base Mana Regen</stats><br><br><active>Inspiring Speech</active><br>Grant nearby allies <speed>30% Move Speed</speed> for 4 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/2065.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E50\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E15\u003C/attention\u003E Ability Haste\u003Cbr\u003E\u003Cattention\u003E4%\u003C/attention\u003E Move Speed\u003Cbr\u003E\u003Cattention\u003E125%\u003C/attention\u003E Base Mana Regen\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EInspiring Speech\u003C/active\u003E\u003Cbr\u003EGrant nearby allies \u003Cspeed\u003E30% Move Speed\u003C/speed\u003E for 4 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/2065.png",
             "price": 2200
           },
           {
             "name": "Ardent Censer",
-            "description": "<mainText><stats><attention>45</attention> Ability Power<br><attention>10%</attention> Heal and Shield Power<br><attention>125%</attention> Base Mana Regen<br><attention>4%</attention> Move Speed</stats><br><br><passive>Sanctify</passive><br>Healing or Shielding an ally enhances you both for 6 seconds, granting <attackSpeed>25% Attack Speed</attackSpeed> and <magicDamage>20 magic damage</magicDamage> <OnHit>On-Hit</OnHit>.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3504.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E45\u003C/attention\u003E Ability Power\u003Cbr\u003E\u003Cattention\u003E10%\u003C/attention\u003E Heal and Shield Power\u003Cbr\u003E\u003Cattention\u003E125%\u003C/attention\u003E Base Mana Regen\u003Cbr\u003E\u003Cattention\u003E4%\u003C/attention\u003E Move Speed\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cpassive\u003ESanctify\u003C/passive\u003E\u003Cbr\u003EHealing or Shielding an ally enhances you both for 6 seconds, granting \u003CattackSpeed\u003E25% Attack Speed\u003C/attackSpeed\u003E and \u003CmagicDamage\u003E20 magic damage\u003C/magicDamage\u003E \u003COnHit\u003EOn-Hit\u003C/OnHit\u003E.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3504.png",
             "price": 2200
           },
           {
             "name": "Kindlegem",
-            "description": "<mainText><stats><attention>200</attention> Health<br><attention>10</attention> Ability Haste</stats><br><br></mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3067.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003Cattention\u003E200\u003C/attention\u003E Health\u003Cbr\u003E\u003Cattention\u003E10\u003C/attention\u003E Ability Haste\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3067.png",
             "price": 800
           },
           {
             "name": "Oracle Lens",
-            "description": "<mainText><stats></stats><br><br><active>Active</active> (<scaleLevel>160 - 100</scaleLevel>s, max 2 charges)<br>Reveals enemy Stealth Wards and traps around you for 8 seconds.</mainText>",
-            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/item/3364.png",
+            "description": "\u003CmainText\u003E\u003Cstats\u003E\u003C/stats\u003E\u003Cbr\u003E\u003Cbr\u003E\u003Cactive\u003EActive\u003C/active\u003E (\u003CscaleLevel\u003E160 - 100\u003C/scaleLevel\u003Es, max 2 charges)\u003Cbr\u003EReveals enemy Stealth Wards and traps around you for 8 seconds.\u003C/mainText\u003E",
+            "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/item/3364.png",
             "price": 0
           }
         ],
         "icon": {
-          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.7.1/img/profileicon/7044.png"
+          "image_path": "https://ddragon.leagueoflegends.com/cdn/16.8.1/img/profileicon/7044.png"
         },
         "caller": false,
         "metadata": {

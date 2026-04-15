@@ -285,6 +285,10 @@ class Player:
         self.visionWardsBoughtInGame = player_data.get("visionWardsBoughtInGame", 0)
 
         # Communication and Pings
+        self.needVisionPings = player_data.get("needVisionPings", 0)
+        self.enemyVisionPings = player_data.get("enemyVisionPings", 0)
+        self.allInPings = player_data.get("allInPings", 0)
+        self.pushPings = player_data.get("pushPings", 0)
         self.assistMePings = player_data.get("assistMePings", 0)
         self.commandPings = player_data.get("commandPings", 0)
         self.dangerPings = player_data.get("dangerPings", 0)
