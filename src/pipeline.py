@@ -44,7 +44,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         project_root = Path(__file__).resolve().parent.parent
         data_dir = project_root / "data"
 
-        mapping_data = ['runes', 'summoners', 'items', 'icons']
+        mapping_data = ['runes', 'summoners', 'items', 'icons', 'champions']
         lookup_tables = {}
         
         for name in mapping_data:
@@ -54,6 +54,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 
         # Fetch the metadata ONCE before the loop to save massive API time
         caller_metadata = usercall.player_metadata_call()
+        caller_masteries = usercall.player_mastery(lookup_table=lookup_tables['champions'])
         
         combined_records = []
 
@@ -87,9 +88,12 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 player_object.items_mapping(lookup_tables['items'])
                 player_object.icon_mapping(lookup_tables['icons'])
                 
+
                 # Check if this participant is the one we instantiated the pipeline for
                 player_dict = player_object.to_dict()
                 player_dict["caller"] = (participant.get("puuid") == puuidme)
+                if player_dict['caller']:
+                    player_dict['masteries'] = caller_masteries
                 player_dict['metadata'] = caller_metadata
                 match_entry["players"].append(player_dict)
 
@@ -142,4 +146,4 @@ def load_api_key():
 
 if __name__ == '__main__':
     api_key = load_api_key()
-    pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=1, save=True) #H2P_Gucio
+    pipeline(api_key=api_key, platform='EUW1', player_name='aesx', player_tag='EUW0', count=1, save=True) #H2P_Gucio

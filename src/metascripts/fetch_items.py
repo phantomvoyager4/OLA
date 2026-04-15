@@ -21,11 +21,11 @@ def structurize_data(input: dict, live_patch: str):
         items_lookup_storage[item_id]["price"] = item_data["gold"]["total"]
     return items_lookup_storage
 
-def fi():
+def fi2():
     patch, items = fetch_latest_items()
     items_dict = structurize_data(input=items, live_patch=patch)
     with open('data/static/items_lookup_table.json', 'w') as f:
         json.dump(items_dict, f)
     print("recent data saved in directory: data/static/items_lookup_table.json")
 
-fi()
+fi2()

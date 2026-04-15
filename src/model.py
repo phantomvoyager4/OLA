@@ -155,7 +155,6 @@ class Caller:
         if response.status_code == 200:
             player_metadata = response.json()
             ranked_data = next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {})
-            #winrate calc
             to_pop = ["veteran", "freshBlood", "hotStreak", "inactive", "puuid"]
             for n in to_pop:
                 ranked_data.pop(n)
@@ -167,6 +166,33 @@ class Caller:
         else:
             return f'Error getting user metadata: {response.status_code}'
         return ranked_data
+    
+    def player_mastery(self, lookup_table):
+        url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
+        params = {'api_key': self.api_key}
+        response = requests.get(url, params)
+
+        mastery_raw = response.json()[:3]
+        top_three_masteries = []
+        to_use = ["championLevel", "championPoints"]
+
+        for champ in mastery_raw:
+            champ_data = {}
+            for attribute in to_use:
+                    champ_data[attribute] = champ.get(attribute)
+
+            champ_id_str = str(champ.get("championId"))
+            champ_info = lookup_table.get(champ_id_str, {})
+            
+            # Add Name and Image Path from the lookup table
+            champ_data["championName"] = champ_info.get("name", "Unknown")
+            champ_data["championIcon"] = champ_info.get("image_path", "")
+            
+            top_three_masteries.append(champ_data)
+            
+        return top_three_masteries         
+        
+        
 
 class Player:
     def __init__(self, player_data: dict, game_duration_sec: int, runes_lookup: dict = None):
