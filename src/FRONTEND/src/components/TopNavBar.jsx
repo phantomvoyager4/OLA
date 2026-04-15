@@ -54,7 +54,7 @@ export default function TopNavBar() {
         <span className="material-symbols-outlined text-[#a8acab] cursor-pointer hover:text-[#53eede] transition-colors">
           settings
         </span>
-        <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_20px_rgba(83,238,222,0.4)] transition-all duration-300 font-headline px-5 py-2 text-sm rounded-md flex items-center justify-center gap-2 active:scale-95">
+        <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline px-5 py-2 text-sm rounded-md flex items-center justify-center gap-2 active:scale-95">
           Sign In
         </button>
       </div>

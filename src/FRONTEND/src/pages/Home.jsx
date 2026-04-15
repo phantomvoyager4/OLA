@@ -1,4 +1,23 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function Home() {
+  const [nickname, setNickname] = useState('');
+  const [tag, setTag] = useState('');
+  const [region, setRegion] = useState('EUW');
+  const navigate = useNavigate();
+
+  const handleAnalyze = () => {
+    if (!nickname || !tag) return;
+    
+    // Clean up inputs (remove # from tag if included)
+    const cleanTag = tag.replace('#', '');
+    // Standardize URL by removing spaces and making uppercase
+    const cleanRegion = region.replace(/\s+/g, '').toUpperCase();
+    
+    navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
+  };
+
   return (
     <>
       <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
@@ -26,6 +45,8 @@ export default function Home() {
                   className="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="Nickname"
                   type="text"
+                  value={nickname}
+                  onChange={(e) => setNickname(e.target.value)}
                 />
               </div>
               {/* Tag Input */}
@@ -34,26 +55,32 @@ export default function Home() {
                   className="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline text-sm"
                   placeholder="#TAG"
                   type="text"
+                  value={tag}
+                  onChange={(e) => setTag(e.target.value)}
                 />
               </div>
               {/* Region Select */}
               <div className="relative w-full md:w-64 md:w-80">
-                <select className="custom-select-appearance w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer">
-                  <option>North America</option>
-                  <option>Middle East</option>
-                  <option>Europe West</option>
-                  <option>Europe Nordic & East</option>
-                  <option>Oceania</option>
-                  <option>Korea</option>
-                  <option>Japan</option>
-                  <option>Brazil</option>
-                  <option>LAS</option>
-                  <option>LAN</option>
-                  <option>Russia</option>
-                  <option>Türkiye</option>
-                  <option>Southeast Asia</option>
-                  <option>Taiwan</option>
-                  <option>Vietnam</option>
+                <select 
+                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                >
+                  <option value="EUW">EUW</option>
+                  <option value="EUNE">EUNE</option> 
+                  <option value="NA">NA</option>
+                  <option value="Middle East">Middle East</option>
+                  <option value="Oceania">Oceania</option>
+                  <option value="Korea">Korea</option>
+                  <option value="Japan">Japan</option>
+                  <option value="Brazil">Brazil</option>
+                  <option value="LAS">LAS</option>
+                  <option value="LAN">LAN</option>
+                  <option value="Russia">Russia</option>
+                  <option value="Türkiye">Türkiye</option>
+                  <option value="Southeast Asia">Southeast Asia</option>
+                  <option value="Taiwan">Taiwan</option>
+                  <option value="Vietnam">Vietnam</option>
                 </select>
                 <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline">
                   expand_more
@@ -61,7 +88,10 @@ export default function Home() {
               </div>
             </div>
             {/* Search Button */}
-            <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_20px_rgba(83,238,222,0.4)] transition-all duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95">
+            <button 
+              onClick={handleAnalyze}
+              className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95"
+            >
               <span className="material-symbols-outlined">insert_chart</span>{" "}
               ANALYZE
             </button>
