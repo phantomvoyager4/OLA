@@ -1,4 +1,30 @@
 import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+
+import noIcon from "../../../../data/static/icons/noicon.jpg";
+
+import assistMeIcon from "../../../../data/static/pings/assistMePings.png";
+import allInIcon from "../../../../data/static/pings/allInPings.png";
+import enemyMissingIcon from "../../../../data/static/pings/enemyMissingPings.png";
+import enemyVisionIcon from "../../../../data/static/pings/enemyVisionPings.png";
+import needVisionIcon from "../../../../data/static/pings/needVisionPings.png";
+import onMyWayIcon from "../../../../data/static/pings/onMyWayPings.png";
+import pushIcon from "../../../../data/static/pings/pushPings.png";
+import retreatIcon from "../../../../data/static/pings/retreatPings.png";
+
+import unrankedIcon from "../../../../data/static/tiers/unranked.png";
+import ironIcon from "../../../../data/static/tiers/iron.png";
+import bronzeIcon from "../../../../data/static/tiers/bronze.png";
+import silverIcon from "../../../../data/static/tiers/silver.png";
+import goldIcon from "../../../../data/static/tiers/gold.png";
+import platinumIcon from "../../../../data/static/tiers/platinum.png";
+import emeraldIcon from "../../../../data/static/tiers/emerald.png";
+import diamondIcon from "../../../../data/static/tiers/diamond.png";
+import masterIcon from "../../../../data/static/tiers/master.png";
+import grandmasterIcon from "../../../../data/static/tiers/grandmaster.png";
+import challengerIcon from "../../../../data/static/tiers/challenger.png";
+
+
 
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
@@ -8,11 +34,36 @@ export default function PlayerProfile() {
   const nickname = lastDashIndex !== -1 ? riotId.substring(0, lastDashIndex) : riotId;
   const tag = lastDashIndex !== -1 ? riotId.substring(lastDashIndex + 1) : '';
 
+  const [playerData, setPlayerData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchPlayerData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/matches/${region}/${nickname}/${tag}?save=false&count=20`);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log("Fetched Player Data:", data);
+        setPlayerData(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (region && nickname && tag) {
+      fetchPlayerData();
+    }
+  }, [region, nickname, tag]);
+
   // -----------------------------------------------------
   // PLACHOLDER DATA
   // -----------------------------------------------------
-  const mockWinrate = "55.4%";
-  const mockLevel = 185;
   const baseMatches = [
     { win: true, champ: 'Olaf', k: 11, d: 5, a: 6, duration: '31:00', type: 'Ranked Solo' },
     { win: false, champ: 'LeeSin', k: 4, d: 8, a: 12, duration: '28:14', type: 'Ranked Solo' },
@@ -22,24 +73,115 @@ export default function PlayerProfile() {
   ];
   // Replicate array to have 20 matches for infinite scrolling appearance
   const mockMatches = [...baseMatches, ...baseMatches, ...baseMatches, ...baseMatches];
-
-  const mockMasteries = [
-    { name: 'Olaf', img: 'Olaf', points: '1,250,000', level: 10 },
-    { name: 'Lee Sin', img: 'LeeSin', points: '850,000', level: 8 },
-    { name: 'Aatrox', img: 'Aatrox', points: '420,000', level: 7 }
-  ];
-
   const mockPings = [
-    { name: 'Assist Me', value: 2.4, icon: 'front_hand' },
-    { name: 'Danger', value: 1.1, icon: 'warning' },
-    { name: 'Missing', value: 5.2, icon: 'question_mark' },
-    { name: 'On My Way', value: 3.8, icon: 'directions_run' }
+        { name: 'Assist Me', value: 2.4, icon: assistMeIcon },
+        { name: 'Danger', value: 1.1, icon: retreatIcon }, // Note: Using retreat icon for danger
+        { name: 'Enemy Missing', value: 5.2, icon: enemyMissingIcon },
+        { name: 'On My Way', value: 3.8, icon: onMyWayIcon },
+        { name: 'Push', value: 3.8, icon: pushIcon },
+        { name: 'All In', value: 3.8, icon: allInIcon },
+        { name: 'Enemy Vision', value: 3.8, icon: enemyVisionIcon },
+        { name: 'Need Vision', value: 3.8, icon: needVisionIcon }
+      ];
+
+
+
+
+
+
+  const ranks = [
+    { name: 'Unranked', icon: unrankedIcon },
+    { name: 'Iron', icon: ironIcon },
+    { name: 'Bronze', icon: bronzeIcon },
+    { name: 'Silver', icon: silverIcon },
+    { name: 'Gold', icon: goldIcon },
+    { name: 'Platinum', icon: platinumIcon },
+    { name: 'Emerald', icon: emeraldIcon },
+    { name: 'Diamond', icon: diamondIcon },
+    { name: 'Master', icon: masterIcon },
+    { name: 'Grandmaster', icon: grandmasterIcon },
+    { name: 'Challenger', icon: challengerIcon }
   ];
+  // Extract Caller's Rank details
+  let displayTierImg = unrankedIcon;
+  let displayRankText = "Unranked";
+  let displayLp = "";
+  let wins = 0;
+  let losses = 0
+  let winrate = "0.0%";
+  let iconLink = noIcon;
+  let level = 0;
+  let masteries = []
+
+  if (playerData && Array.isArray(playerData) && playerData.length > 0) {
+    const firstMatch = playerData[0];
+    if (firstMatch && firstMatch.players) {
+      const callerPlayer = firstMatch.players.find(p => p.caller === true || p.caller === "true");
+      
+      if (callerPlayer && callerPlayer.metadata && callerPlayer.metadata.tier) {
+        const tierStr = callerPlayer.metadata.tier; // e.g., "GOLD"
+        const rankDiv = callerPlayer.metadata.rank; // e.g., "III"
+        const lp = callerPlayer.metadata.leaguePoints; // e.g., 69
+        wins = callerPlayer.metadata.wins
+        losses = callerPlayer.metadata.losses
+        winrate = callerPlayer.metadata.winrate
+        iconLink = callerPlayer.icon.image_path
+        level = callerPlayer.summonerLevel
+        masteries = [
+        { name: callerPlayer.masteries[0].championName , img: callerPlayer.masteries[0].championIcon, points: callerPlayer.masteries[0].championPoints, level: callerPlayer.masteries[0].championLevel},
+        { name: callerPlayer.masteries[1].championName , img: callerPlayer.masteries[1].championIcon, points: callerPlayer.masteries[1].championPoints, level: callerPlayer.masteries[1].championLevel},
+        { name: callerPlayer.masteries[2].championName , img: callerPlayer.masteries[2].championIcon, points: callerPlayer.masteries[2].championPoints, level: callerPlayer.masteries[2].championLevel},
+      ];
+
+
+        // Format label "Gold 3" or "Gold III"
+        displayRankText = `${tierStr.charAt(0) + tierStr.slice(1).toLowerCase()} ${rankDiv}`;
+        if (lp !== undefined) {
+          displayLp = `${lp} LP`;
+        }
+        
+        // Find matching icon
+        const matchedRank = ranks.find(r => r.name.toLowerCase() === tierStr.toLowerCase());
+        if (matchedRank) {
+          displayTierImg = matchedRank.icon;
+        }
+      }
+    }
+  }
+
+  // Generate stable mock heatmap data (13 weeks * 7 days for approx 90 days)
+  const mockHeatmap = Array.from({ length: 13 }, () => 
+    Array.from({ length: 7 }, () => {
+      const rand = Math.random();
+      if (rand < 0.4) return 0; // 40% chance of 0 games
+      if (rand < 0.7) return Math.floor(Math.random() * 3) + 1; // 1-3 games
+      if (rand < 0.9) return Math.floor(Math.random() * 4) + 4; // 4-7 games
+      return Math.floor(Math.random() * 4) + 8; // 8-11 games
+    })
+  );
+
+  if (loading) {
+    return (
+      <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
+        <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        <h2 className="mt-4 text-xl font-headline text-on-surface">Analyzing matches...</h2>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-headline text-error">Summoner not found!</h2>
+        <p className="mt-2 text-on-surface-variant font-bold uppercase">{error}</p>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen pt-24 pb-12 flex flex-col items-center">
       {/* Expanded to 1600px for full PC width, 2 columns on extra large screens */}
-      <div className="w-full max-w-[1600px] px-6 grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+      <div className="w-full max-w-400 px-6 grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
         
         {/* ========================================== */}
         {/* LEFT SIDE: Caller Data & Statistics          */}
@@ -49,7 +191,7 @@ export default function PlayerProfile() {
           {/* 1. TOP SECTION: General Info --- */}
           <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
             <div className="w-24 h-24 rounded-full bg-surface-container-highest border-2 border-primary flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(83,238,222,0.3)] shrink-0">
-                <img src="https://ddragon.leagueoflegends.com/cdn/14.3.1/img/profileicon/6212.png" alt="Profile Icon" className="w-full h-full object-cover" />
+                <img src={iconLink} alt="Profile Icon" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col text-center md:text-left">
                 <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
@@ -57,7 +199,7 @@ export default function PlayerProfile() {
                 </h1>
                 <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
                   <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                    Level: <span className="text-on-surface font-bold">{mockLevel}</span>
+                    Level: <span className="text-on-surface font-bold">{level}</span>
                   </span>
                   <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
                     Region: <span className="text-on-surface font-bold">{region}</span>
@@ -71,21 +213,97 @@ export default function PlayerProfile() {
             {/* 2. RANK, WINRATE AND W/L --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
-                 <div className="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center">
-                    <span className="material-symbols-outlined text-4xl text-primary drop-shadow-[0_0_10px_rgba(83,238,222,0.5)]">military_tech</span>
+                 <div className="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
+                    <img src={displayTierImg} alt={displayRankText} className="w-full h-full object-cover p-2" />
                  </div>
                  <div className="text-center md:text-left">
                     <h2 className="font-headline font-bold text-2xl text-on-surface flex items-center gap-2">
-                      Emerald II <span className="text-on-surface-variant font-normal text-lg">54 LP</span>
+                      {displayRankText} <span className="text-on-surface-variant font-normal text-lg">{displayLp}</span>
                     </h2>
                     <p className="text-sm text-outline">Ranked Solo</p>
                  </div>
               </div>
               <div className="text-center md:text-right">
-                 <h2 className="font-headline font-bold text-3xl text-primary">{mockWinrate}</h2>
-                 <p className="text-sm text-on-surface-variant font-bold mt-1">24W <span className="text-outline font-normal">-</span> 20L</p>
+                 <h2 className="font-headline font-bold text-3xl text-primary">{winrate}</h2>
+                 <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p>
               </div>
             </div>
+
+            {/* NEW: ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
+            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
+              
+              {/* Left Side: Activity Heatmap */}
+              <div className="flex flex-col">
+                <div className="flex justify-between items-end mb-4">
+                  <h2 className="font-headline font-bold text-xl text-on-surface">Activity</h2>
+                  <span className="text-xs text-outline font-bold">Past 91 Days</span>
+                </div>
+                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-surface-container-highest scrollbar-track-transparent">
+                  <div className="flex flex-col gap-1 text-[10px] text-outline justify-around font-bold uppercase tracking-wider pr-1">
+                    <span>Mon</span>
+                    <span>Wed</span>
+                    <span>Fri</span>
+                  </div>
+                  <div className="flex gap-0.5">
+                    {mockHeatmap.map((week, colIndex) => (
+                      <div key={colIndex} className="flex flex-col gap-0.5">
+                        {week.map((count, rowIndex) => {
+                          let bgClass = "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
+                          if (count > 0 && count <= 2) bgClass = "bg-primary/20 border-primary/20 border";
+                          else if (count > 2 && count <= 5) bgClass = "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
+                          else if (count > 5 && count <= 8) bgClass = "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
+                          else if (count > 8) bgClass = "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
+                          
+                          return (
+                            <div 
+                              key={rowIndex} 
+                              className={`w-3 h-3 md:w-4 md:h-4 rounded-sm transition-colors hover:ring-2 hover:ring-primary hover:scale-110 cursor-help ${bgClass}`} 
+                              title={`${count} games played`}
+                            ></div>
+                          );
+                        })}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-2 mt-4 text-xs text-outline font-medium">
+                  <span>Less</span>
+                  <div className="w-3 h-3 rounded-sm bg-surface-container-highest/40 border border-outline-variant/10"></div>
+                  <div className="w-3 h-3 rounded-sm bg-primary/20 border border-primary/20"></div>
+                  <div className="w-3 h-3 rounded-sm bg-primary/50 border border-primary/30"></div>
+                  <div className="w-3 h-3 rounded-sm bg-primary/80 border border-primary/50"></div>
+                  <div className="w-3 h-3 rounded-sm bg-primary shadow-[0_0_5px_rgba(83,238,222,0.4)]"></div>
+                  <span>More</span>
+                </div>
+              </div>
+
+              {/* Right Side: Total Summary */}
+              <div className="flex flex-col justify-center">
+                <div className="flex justify-between items-end mb-4">
+                  <h2 className="font-headline font-bold text-xl text-on-surface">90-Day Summary</h2>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Total Games</span>
+                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">42</span>
+                  </div>
+                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Win Rate</span>
+                    <span className="font-headline font-bold text-2xl text-primary mt-1">62%</span>
+                  </div>
+                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Avg KDA</span>
+                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">2.8</span>
+                  </div>
+                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">CS / Min</span>
+                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">6.9</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
 
             {/* 3. RECENT MATCHES STATISTICS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
@@ -111,9 +329,9 @@ export default function PlayerProfile() {
             <div className="glass-panel ghost-border rounded-xl p-6">
               <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Masteries</h2>
               <div className="flex flex-col gap-3">
-                 {mockMasteries.map((champ, i) => (
+                 {masteries.map((champ, i) => (
                     <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors cursor-pointer">
-                       <img src={`https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/${champ.img}.png`} className="w-12 h-12 rounded-md" alt={champ.name} />
+                       <img src={champ.img} className="w-12 h-12 rounded-md" alt={champ.name} />
                        <div className="flex-1 flex flex-col">
                           <div className="flex justify-between items-center">
                             <p className="font-bold text-on-surface text-base">{champ.name}</p>
@@ -128,7 +346,7 @@ export default function PlayerProfile() {
 
             {/* 5. TOP CHAMPIONS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Top Champions</h2>
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Top Champions <span className="text-sm font-normal text-outline">(this season)</span></h2>
               <div className="flex flex-col gap-3">
                  {[
                    { name: 'Olaf', kda: '3.40 KDA', wr: '60% WR' },
@@ -152,7 +370,7 @@ export default function PlayerProfile() {
                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                  {mockPings.map((ping, i) => (
                     <div key={i} className="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 text-center">
-                       <span className="material-symbols-outlined text-outline mb-2 text-3xl opacity-80">{ping.icon}</span>
+                       <img src={ping.icon} alt={`${ping.name} ping icon`} className="w-10 h-10 mb-2 opacity-90 drop-shadow-md" />
                        <span className="font-bold text-on-surface text-xl">{ping.value}</span>
                        <span className="text-xs text-on-surface-variant mt-1">{ping.name}</span>
                     </div>
@@ -208,9 +426,9 @@ export default function PlayerProfile() {
                   </div>
                   
                   {/* Items Grid */}
-                  <div className="flex gap-1 flex-wrap w-full md:w-48 justify-center ml-auto">
+                  <div className="grid grid-cols-3 gap-1 w-max mx-auto md:ml-auto md:mx-0">
                      {[...Array(6)].map((_, i) => (
-                        <div key={i} className="w-9 h-9 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"></div>
+                        <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"></div>
                      ))}
                   </div>
                </div>

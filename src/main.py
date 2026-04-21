@@ -1,7 +1,7 @@
 import time
-
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
+
 from pipeline import pipeline, load_api_key
 
 app = FastAPI()
@@ -27,7 +27,8 @@ API_KEY = load_api_key()
 
 @app.get('/')
 def root():
-    return {"instruction": "Open this link: http://127.0.0.1:8000/docs#/", "status": "Running"}
+    return {"instruction": "Open this link: http://127.0.0.1:8000/docs#/",
+             "status": "Running"}
 
 @app.get('/api/matches/{platform}/{player_name}/{player_tag}')
 def get_matches(
@@ -35,7 +36,7 @@ def get_matches(
     player_tag: str, 
     platform: str, 
     save: bool = Query(False),
-    count: int = Query(5, ge=1, le=100), # Query parameter for count with validation
+    count: int = Query(20, ge=1, le=100), # Query parameter for count with validation
 ):
     if not API_KEY:
         raise HTTPException(status_code=500, detail="API Key not configured on the server")

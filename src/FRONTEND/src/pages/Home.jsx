@@ -1,4 +1,4 @@
-import { useState } from 'react';
+ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
@@ -15,6 +15,8 @@ export default function Home() {
     // Standardize URL by removing spaces and making uppercase
     const cleanRegion = region.replace(/\s+/g, '').toUpperCase();
     
+    // Navigate to the player profile React route using React Router.
+    // The PlayerProfile component itself will handle the backend data fetch.
     navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
   };
 
@@ -23,7 +25,7 @@ export default function Home() {
       <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-[800px] h-[800px] rounded-full bg-primary/[0.08] blur-[120px]"></div>
+          <div className="w-200 h-200 rounded-full bg-primary/8 blur-[120px]"></div>
         </div>
 
         {/* Search Section (The Core) */}

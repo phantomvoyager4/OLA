@@ -1,6 +1,7 @@
 import sys
 import os
 from pathlib import Path
+import shutil
 import subprocess
 import webbrowser
 
@@ -25,7 +26,11 @@ def script():
     subprocess.Popen([sys.executable, '-m', 'uvicorn', 'main:app', '--reload'], cwd=src_dir)
     print("Server is ready and working! :)")
 
-    webbrowser.open("http://127.0.0.1:8000/docs")
+    front_dir = project_root / "src" / "FRONTEND"
+    npm_path = shutil.which("npm")
+    if npm_path:
+        subprocess.Popen([npm_path, 'run', 'dev'], cwd=front_dir)
 
 if __name__ == "__main__":
     script()
+    webbrowser.open("http://localhost:5173/")

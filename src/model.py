@@ -420,7 +420,8 @@ class Match:
         self.gameDate = f"{gameStartDate} - {gameEndDate}"
         duration_sec = int(info.get("gameDuration", 0))
         self.gameDuration_min = float(f"{duration_sec // 60}.{duration_sec % 60:02d}")
-        
+        self.gameDateDay = datetime.fromtimestamp(info["gameStartTimestamp"] / 1000).strftime('%Y-%m-%d')
+
         # Team Results Summary (store list of team IDs and their win status)
         self.teams = []
         for team in info.get("teams", []):
