@@ -237,7 +237,7 @@ class Player:
         
         # Crucial Advanced Metrics (Challenges)
         challenges = player_data.get("challenges", {})
-        self.killParticipation = f"{round(challenges.get('killParticipation', 0) * 100, 2)}%"
+        self.killParticipation = round(challenges.get('killParticipation', 0) * 100, 2)
         self.skillshotsDodged = challenges.get("skillshotsDodged", 0)
         self.skillshotsHit = challenges.get("skillshotsHit", 0)
         self.teamDamagePercentage = f"{round(challenges.get('teamDamagePercentage', 0) * 100, 2)}%"
@@ -284,7 +284,7 @@ class Player:
         self.detectorWardsPlaced = player_data.get("detectorWardsPlaced", 0)
         self.visionWardsBoughtInGame = player_data.get("visionWardsBoughtInGame", 0)
 
-        # Communication and Pings
+        # Pings
         self.needVisionPings = player_data.get("needVisionPings", 0)
         self.enemyVisionPings = player_data.get("enemyVisionPings", 0)
         self.allInPings = player_data.get("allInPings", 0)
@@ -450,3 +450,69 @@ class Match:
                 json.dump(data_to_serialize, f, indent=4)
 
         return json.dumps(data_to_serialize, indent=4)
+
+def summarizer(input: list):
+    count = 0
+    kda_sum = cs_sum = kp_sum = 0.0
+    need_vision_sum = enemy_vision_sum = all_in_sum = push_sum = 0.0
+    assist_me_sum = command_sum = danger_sum = missing_sum = 0.0
+    on_my_way_sum = retreat_sum = 0.0
+
+    for match in input:
+        if "players" not in match:
+            continue
+        for player in match['players']:
+            if player.get("caller"):
+                kda_sum += float(player.get("KDA", 0))
+                cs_sum += float(player.get("cs_min", 0))
+                kp_sum += float(player.get("killParticipation", 0))
+
+                need_vision_sum += float(player.get("needVisionPings", 0))
+                enemy_vision_sum += float(player.get("enemyVisionPings", 0))
+                all_in_sum += float(player.get("allInPings", 0))
+                push_sum += float(player.get("pushPings", 0))
+                assist_me_sum += float(player.get("assistMePings", 0))
+                command_sum += float(player.get("commandPings", 0))
+                danger_sum += float(player.get("dangerPings", 0))
+                missing_sum += float(player.get("enemyMissingPings", 0))
+                on_my_way_sum += float(player.get("onMyWayPings", 0))
+                retreat_sum += float(player.get("retreatPings", 0))
+                
+                count += 1
+                break 
+                
+    if count == 0:
+        return {
+            "stats": {
+                "KDA": 0, "CS": 0, "KP": 0,
+                "needVisionPings": 0, "enemyVisionPings": 0, "allInPings": 0,
+                "pushPings": 0, "assistMePings": 0, "commandPings": 0,
+                "dangerPings": 0, "enemyMissingPings": 0, "onMyWayPings": 0,
+                "retreatPings": 0
+            }
+        }
+    elif count == 1:
+        return {
+            "stats": "Not enough matches fetched"
+        }
+    
+        
+    return {
+        "stats": {
+            "KDA": round(kda_sum / count, 2),
+            "CS": round(cs_sum / count, 2),
+            "KP": round(kp_sum / count, 2),
+            "needVisionPings": round(need_vision_sum / count, 2),
+            "enemyVisionPings": round(enemy_vision_sum / count, 2),
+            "allInPings": round(all_in_sum / count, 2),
+            "pushPings": round(push_sum / count, 2),
+            "assistMePings": round(assist_me_sum / count, 2),
+            "commandPings": round(command_sum / count, 2),
+            "dangerPings": round(danger_sum / count, 2),
+            "enemyMissingPings": round(missing_sum / count, 2),
+            "onMyWayPings": round(on_my_way_sum / count, 2),
+            "retreatPings": round(retreat_sum / count, 2)
+        }
+    }
+    
+    

@@ -2,7 +2,7 @@ import os
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-from model import Caller, Player, Match
+from model import Caller, Player, Match, summarizer
 import time
 
 
@@ -100,20 +100,25 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             combined_records.append(match_entry)
             print(f"Match object number {len(combined_records)} created")
 
+
         if not combined_records:
             raise RuntimeError("No matched elements built.")
         else: 
             print(f"objects created sucessfuly :) \n Timer: {round(time.time() - start_timer,2)}")
         
         # Ensure data folder exists relative to project root
-        os.makedirs(data_dir, exist_ok=True)
+        example_data_dir = data_dir / "example_data"
+        os.makedirs(example_data_dir, exist_ok=True)
+        
+        stats20 = summarizer(combined_records)
+        combined_records.append(stats20)
+
         if save:
             # eg. softmax#EUNE1_1 <- last softmax#EUNE1 match data
-            output_path = data_dir / f"{player_name}#{player_tag}_{count}.json"
+            output_path = example_data_dir / f"{player_name}#{player_tag}_{count}.json"
             with open(output_path, "w") as f:
                 json.dump(combined_records, f, indent=4)
             
-
         return combined_records
     except (ValueError, RuntimeError, OSError) as error:
         print(f"Pipeline error: {error}")
@@ -146,4 +151,4 @@ def load_api_key():
 
 if __name__ == '__main__':
     api_key = load_api_key()
-    pipeline(api_key=api_key, platform='EUW1', player_name='41dmg', player_tag='6969', count=20, save=True) #H2P_Gucio
+    pipeline(api_key=api_key, platform='EUW1', player_name='401dmg', player_tag='6969', count=20, save=True) #H2P_Gucio

@@ -70,16 +70,6 @@ export default function PlayerProfile() {
   ];
   // Replicate array to have 20 matches for infinite scrolling appearance
   const mockMatches = [...baseMatches, ...baseMatches, ...baseMatches, ...baseMatches];
-  const mockPings = [
-        { name: 'Assist Me', value: 2.4, icon: assistMeIcon },
-        { name: 'Danger', value: 1.1, icon: retreatIcon }, // Note: Using retreat icon for danger
-        { name: 'Enemy Missing', value: 5.2, icon: enemyMissingIcon },
-        { name: 'On My Way', value: 3.8, icon: onMyWayIcon },
-        { name: 'Push', value: 3.8, icon: pushIcon },
-        { name: 'All In', value: 3.8, icon: allInIcon },
-        { name: 'Enemy Vision', value: 3.8, icon: enemyVisionIcon },
-        { name: 'Need Vision', value: 3.8, icon: needVisionIcon }
-      ];
 
   const ranks = [
     { name: 'Unranked', icon: unrankedIcon },
@@ -94,6 +84,51 @@ export default function PlayerProfile() {
     { name: 'Grandmaster', icon: grandmasterIcon },
     { name: 'Challenger', icon: challengerIcon }
   ];
+
+let KDA_mean = 0;
+let CS_mean = 0;
+let KP_mean = 0;
+let needVisionPings_mean = 0;
+let enemyVisionPings_mean = 0;
+let allInPings_mean = 0;
+let pushPings_mean = 0;
+let assistMePings_mean = 0;
+let commandPings_mean = 0;
+let dangerPings_mean = 0;
+let enemyMissingPings_mean = 0;
+let onMyWayPings_mean = 0;
+let retreatPings_mean = 0;
+
+if (playerData && Array.isArray(playerData) && playerData.length > 0) {
+  const stats = playerData.at(-1).stats;
+  if (stats) {
+    KDA_mean = stats.KDA;
+    CS_mean = stats.CS;
+    KP_mean = stats.KP;
+    needVisionPings_mean = stats.needVisionPings;
+    enemyVisionPings_mean = stats.enemyVisionPings;
+    allInPings_mean = stats.allInPings;
+    pushPings_mean = stats.pushPings;
+    assistMePings_mean = stats.assistMePings;
+    commandPings_mean = stats.commandPings;
+    dangerPings_mean = stats.dangerPings;
+    enemyMissingPings_mean = stats.enemyMissingPings;
+    onMyWayPings_mean = stats.onMyWayPings;
+    retreatPings_mean = stats.retreatPings;
+  }
+}
+
+const mockPings = [
+        { name: 'Assist Me', value: assistMePings_mean, icon: assistMeIcon },
+        { name: 'Danger', value: dangerPings_mean, icon: retreatIcon }, 
+        { name: 'Enemy Missing', value: enemyMissingPings_mean, icon: enemyMissingIcon },
+        { name: 'On My Way', value: onMyWayPings_mean, icon: onMyWayIcon },
+        { name: 'Push', value: pushPings_mean, icon: pushIcon },
+        { name: 'All In', value: allInPings_mean, icon: allInIcon },
+        { name: 'Enemy Vision', value: enemyMissingPings_mean, icon: enemyVisionIcon },
+        { name: 'Need Vision', value: needVisionPings_mean, icon: needVisionIcon }
+      ];
+
 
   // Extract Caller's Rank details
   let displayTierImg = unrankedIcon;
@@ -216,27 +251,28 @@ export default function PlayerProfile() {
                     <p className="text-sm text-outline">Ranked Solo/Duo</p>
                  </div>
               </div>
-              <div className="text-center md:text-right">
+              <div className="text-center md:text-right items-center">
                  <h2 className="font-headline font-bold text-3xl text-primary">{winrate}</h2>
-                 <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p>
+                 {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
+                 <p className="text-sm text-on-surface-variant font-bold mt-1">({wins}W <span className="text-outline font-normal">/</span> {losses}L)</p>
               </div>
             </div>
             {/* 3. RECENT MATCHES STATISTICS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
-               <h2 className="font-headline font-bold text-xl text-on-surface mb-2">Recent Matches Statistics</h2>
-               <p className="text-sm text-outline mb-4">Based on last 20 matches</p>
+               <h2 className="font-headline font-bold text-xl text-on-surface mb-2">Recent Statistics</h2>
+               <p className="text-sm text-outline mb-4">Last 20 matches</p>
                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                  <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
                    <span className="text-sm text-on-surface-variant">Average CS/min</span>
-                   <span className="text-2xl font-bold text-on-surface">6.8</span>
+                   <span className="text-2xl font-bold text-on-surface">{CS_mean}</span>
                  </div>
                  <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                   <span className="text-sm text-on-surface-variant">Vision Score/min</span>
-                   <span className="text-2xl font-bold text-on-surface">1.2</span>
+                   <span className="text-sm text-on-surface-variant">KDA</span>
+                   <span className="text-2xl font-bold text-on-surface">{KDA_mean}</span>
                  </div>
                  <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
                    <span className="text-sm text-on-surface-variant">Kill Participation</span>
-                   <span className="text-2xl font-bold text-on-surface">52%</span>
+                   <span className="text-2xl font-bold text-on-surface">{KP_mean}%</span>
                  </div>
                </div>
             </div>
@@ -326,9 +362,6 @@ export default function PlayerProfile() {
               </div>
 
             </div>
-            
-
-
 
             {/* 4. MASTERIES --- */}
             <div className="glass-panel ghost-border rounded-xl p-6">

@@ -1,5 +1,9 @@
 export const API_BASE_URL = '/api';
 
+// Cache to survive Vite HMR (Hot Module Replacement) during development
+// This prevents refetching data every time you save a file
+const apiCache = window.__API_CACHE__ || (window.__API_CACHE__ = new Map());
+
 /**
  * Fetches player data and recent matches from the backend.
  * 
@@ -15,11 +19,22 @@ export const getPlayerData = async (region, nickname, tag, options = { save: fal
   const { save, count } = options;
   const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}`;
   
+  // Return cached data if available (very helpful when saving files in Vite)
+  if (apiCache.has(url)) {
+    console.log("Returning cached data for", url);
+    return apiCache.get(url);
+  }
+
   const response = await fetch(url);
   
   if (!response.ok) {
     throw new Error(`Failed to fetch: ${response.statusText}`);
   }
   
-  return await response.json();
+  const data = await response.json();
+  
+  // Save to cache
+  apiCache.set(url, data);
+  
+  return data;
 };
