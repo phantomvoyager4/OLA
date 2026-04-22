@@ -21,10 +21,11 @@ export default function TopNavBar() {
           >
             Dashboard
           </NavLink>
+          {/* Invisible tier list link */}
           <NavLink
             to="/tier-list"
             className={({ isActive }) =>
-              `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
+              `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
                   ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
                   : 'text-[#a8acab] hover:text-[#53eede]'
@@ -33,10 +34,11 @@ export default function TopNavBar() {
           >
             Tier list
           </NavLink>
+          {/* Invisible prediction link */}
           <NavLink
             to="/prediction"
             className={({ isActive }) =>
-              `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
+              `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
                   ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
                   : 'text-[#a8acab] hover:text-[#53eede]'

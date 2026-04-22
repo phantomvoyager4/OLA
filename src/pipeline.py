@@ -146,4 +146,4 @@ def load_api_key():
 
 if __name__ == '__main__':
     api_key = load_api_key()
-    pipeline(api_key=api_key, platform='EUW1', player_name='aesx', player_tag='EUW0', count=1, save=True) #H2P_Gucio
+    pipeline(api_key=api_key, platform='EUW1', player_name='41dmg', player_tag='6969', count=20, save=True) #H2P_Gucio

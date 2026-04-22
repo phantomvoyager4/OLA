@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { getPlayerData } from '../services/api';
 
 import noIcon from "../../../../data/static/icons/noicon.jpg";
 
@@ -39,14 +40,10 @@ export default function PlayerProfile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchPlayerData = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`/api/matches/${region}/${nickname}/${tag}?save=false&count=20`);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch: ${response.statusText}`);
-        }
-        const data = await response.json();
+        const data = await getPlayerData(region, nickname, tag, { save: false, count: 20 });
         console.log("Fetched Player Data:", data);
         setPlayerData(data);
       } catch (err) {
@@ -57,7 +54,7 @@ export default function PlayerProfile() {
     };
 
     if (region && nickname && tag) {
-      fetchPlayerData();
+      fetchData();
     }
   }, [region, nickname, tag]);
 
@@ -84,11 +81,6 @@ export default function PlayerProfile() {
         { name: 'Need Vision', value: 3.8, icon: needVisionIcon }
       ];
 
-
-
-
-
-
   const ranks = [
     { name: 'Unranked', icon: unrankedIcon },
     { name: 'Iron', icon: ironIcon },
@@ -102,6 +94,7 @@ export default function PlayerProfile() {
     { name: 'Grandmaster', icon: grandmasterIcon },
     { name: 'Challenger', icon: challengerIcon }
   ];
+
   // Extract Caller's Rank details
   let displayTierImg = unrankedIcon;
   let displayRankText = "Unranked";
@@ -190,7 +183,7 @@ export default function PlayerProfile() {
           
           {/* 1. TOP SECTION: General Info --- */}
           <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
-            <div className="w-24 h-24 rounded-full bg-surface-container-highest border-2 border-primary flex items-center justify-center overflow-hidden shadow-[0_0_15px_rgba(83,238,222,0.3)] shrink-0">
+            <div className="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-[0_0_4px_rgba(,0,0,1)] shrink-0">
                 <img src={iconLink} alt="Profile Icon" className="w-full h-full object-cover" />
             </div>
             <div className="flex flex-col text-center md:text-left">
@@ -213,14 +206,14 @@ export default function PlayerProfile() {
             {/* 2. RANK, WINRATE AND W/L --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
-                 <div className="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
+                 <div className="w-18 h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
                     <img src={displayTierImg} alt={displayRankText} className="w-full h-full object-cover p-2" />
                  </div>
                  <div className="text-center md:text-left">
                     <h2 className="font-headline font-bold text-2xl text-on-surface flex items-center gap-2">
                       {displayRankText} <span className="text-on-surface-variant font-normal text-lg">{displayLp}</span>
                     </h2>
-                    <p className="text-sm text-outline">Ranked Solo</p>
+                    <p className="text-sm text-outline">Ranked Solo/Duo</p>
                  </div>
               </div>
               <div className="text-center md:text-right">
@@ -228,52 +221,82 @@ export default function PlayerProfile() {
                  <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p>
               </div>
             </div>
-
+            {/* 3. RECENT MATCHES STATISTICS --- */}
+            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
+               <h2 className="font-headline font-bold text-xl text-on-surface mb-2">Recent Matches Statistics</h2>
+               <p className="text-sm text-outline mb-4">Based on last 20 matches</p>
+               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
+                   <span className="text-sm text-on-surface-variant">Average CS/min</span>
+                   <span className="text-2xl font-bold text-on-surface">6.8</span>
+                 </div>
+                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
+                   <span className="text-sm text-on-surface-variant">Vision Score/min</span>
+                   <span className="text-2xl font-bold text-on-surface">1.2</span>
+                 </div>
+                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
+                   <span className="text-sm text-on-surface-variant">Kill Participation</span>
+                   <span className="text-2xl font-bold text-on-surface">52%</span>
+                 </div>
+               </div>
+            </div>
             {/* NEW: ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
               
               {/* Left Side: Activity Heatmap */}
-              <div className="flex flex-col">
-                <div className="flex justify-between items-end mb-4">
+              <div className="flex flex-col w-max mx-auto lg:mx-0">
+                <div className="flex justify-between items-end mb-1">
                   <h2 className="font-headline font-bold text-xl text-on-surface">Activity</h2>
-                  <span className="text-xs text-outline font-bold">Past 91 Days</span>
+                  <span className="text-[11px] text-outline font-bold uppercase tracking-wide pb-1">
+                    Past 91 Days
+                  </span>
                 </div>
-                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-surface-container-highest scrollbar-track-transparent">
-                  <div className="flex flex-col gap-1 text-[10px] text-outline justify-around font-bold uppercase tracking-wider pr-1">
-                    <span>Mon</span>
-                    <span>Wed</span>
-                    <span>Fri</span>
+                
+                <div className="flex flex-col">
+                  {/* Heatmap wrapper (w-max ensures container naturally fits its children width) */}
+                  <div className="flex gap-2 pt-5 pb-2">
+                    <div className="flex flex-col gap-1 text-[10px] text-outline justify-around font-bold uppercase tracking-wider pr-1">
+                      <span>Mon</span>
+                      <span>Wed</span>
+                      <span>Fri</span>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {mockHeatmap.map((week, colIndex) => (
+                        <div key={colIndex} className="flex flex-col gap-0.5">
+                          {week.map((count, rowIndex) => {
+                            let bgClass = "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
+                            if (count > 0 && count <= 2) bgClass = "bg-primary/20 border-primary/20 border";
+                            else if (count > 2 && count <= 5) bgClass = "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
+                            else if (count > 5 && count <= 8) bgClass = "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
+                            else if (count > 8) bgClass = "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
+                            
+                            return (
+                              <div 
+                                key={rowIndex} 
+                                className={`group relative w-3 h-3 md:w-4 md:h-4 rounded-sm transition-all duration-200 hover:ring-1 hover:ring-primary hover:scale-110 hover:z-20 ${bgClass}`} 
+                              >
+                                {/* Custom Hover Tooltip */}
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                  {count} games played
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <div className="flex gap-0.5">
-                    {mockHeatmap.map((week, colIndex) => (
-                      <div key={colIndex} className="flex flex-col gap-0.5">
-                        {week.map((count, rowIndex) => {
-                          let bgClass = "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
-                          if (count > 0 && count <= 2) bgClass = "bg-primary/20 border-primary/20 border";
-                          else if (count > 2 && count <= 5) bgClass = "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
-                          else if (count > 5 && count <= 8) bgClass = "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
-                          else if (count > 8) bgClass = "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
-                          
-                          return (
-                            <div 
-                              key={rowIndex} 
-                              className={`w-3 h-3 md:w-4 md:h-4 rounded-sm transition-colors hover:ring-2 hover:ring-primary hover:scale-110 cursor-help ${bgClass}`} 
-                              title={`${count} games played`}
-                            ></div>
-                          );
-                        })}
-                      </div>
-                    ))}
+
+                  {/* Right-aligned Legend */}
+                  <div className="flex items-center gap-1.5 self-end mt-1 text-[11px] text-outline font-medium">
+                    <span>Less</span>
+                    <div className="w-3 h-3 rounded-sm bg-surface-container-highest/40 border border-outline-variant/10"></div>
+                    <div className="w-3 h-3 rounded-sm bg-primary/20 border border-primary/20"></div>
+                    <div className="w-3 h-3 rounded-sm bg-primary/50 border border-primary/30"></div>
+                    <div className="w-3 h-3 rounded-sm bg-primary/80 border border-primary/50"></div>
+                    <div className="w-3 h-3 rounded-sm bg-primary shadow-[0_0_5px_rgba(83,238,222,0.4)]"></div>
+                    <span>More</span>
                   </div>
-                </div>
-                <div className="flex items-center justify-end gap-2 mt-4 text-xs text-outline font-medium">
-                  <span>Less</span>
-                  <div className="w-3 h-3 rounded-sm bg-surface-container-highest/40 border border-outline-variant/10"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/20 border border-primary/20"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/50 border border-primary/30"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary/80 border border-primary/50"></div>
-                  <div className="w-3 h-3 rounded-sm bg-primary shadow-[0_0_5px_rgba(83,238,222,0.4)]"></div>
-                  <span>More</span>
                 </div>
               </div>
 
@@ -305,25 +328,7 @@ export default function PlayerProfile() {
             </div>
             
 
-            {/* 3. RECENT MATCHES STATISTICS --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
-               <h2 className="font-headline font-bold text-xl text-on-surface mb-2">Recent Matches Statistics</h2>
-               <p className="text-sm text-outline mb-4">Based on last 20 matches</p>
-               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                   <span className="text-sm text-on-surface-variant">Average CS/min</span>
-                   <span className="text-2xl font-bold text-on-surface">6.8</span>
-                 </div>
-                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                   <span className="text-sm text-on-surface-variant">Vision Score/min</span>
-                   <span className="text-2xl font-bold text-on-surface">1.2</span>
-                 </div>
-                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                   <span className="text-sm text-on-surface-variant">Kill Participation</span>
-                   <span className="text-2xl font-bold text-on-surface">52%</span>
-                 </div>
-               </div>
-            </div>
+
 
             {/* 4. MASTERIES --- */}
             <div className="glass-panel ghost-border rounded-xl p-6">
@@ -332,10 +337,10 @@ export default function PlayerProfile() {
                  {masteries.map((champ, i) => (
                     <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors cursor-pointer">
                        <img src={champ.img} className="w-12 h-12 rounded-md" alt={champ.name} />
-                       <div className="flex-1 flex flex-col">
+                       <div className="flex-1 flex flex-col justify-between">
                           <div className="flex justify-between items-center">
                             <p className="font-bold text-on-surface text-base">{champ.name}</p>
-                            <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">Lvl {champ.level}</span>
+                            <span className="text-xs font-bold text-primary bg-primary/8 py-0.5 rounded w-12 flex justify-center shrink-0">Lvl {champ.level}</span>
                           </div>
                           <p className="text-xs text-on-surface-variant">{champ.points} PTS</p>
                        </div>
