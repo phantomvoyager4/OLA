@@ -67,6 +67,7 @@ export default function PlayerProfile() {
     { win: true, champ: 'Olaf', k: 18, d: 2, a: 5, duration: '24:45', type: 'Ranked Solo' },
     { win: false, champ: 'Aatrox', k: 3, d: 9, a: 4, duration: '35:20', type: 'Ranked Solo' },
     { win: true, champ: 'Olaf', k: 9, d: 1, a: 14, duration: '21:10', type: 'Ranked Solo' },
+    { win: false, champ: 'Ezreal', k: 6, d: 4, a: 4, duration: '16:10', type: 'Ranked Solo' }
   ];
   // Replicate array to have 20 matches for infinite scrolling appearance
   const mockMatches = [...baseMatches, ...baseMatches, ...baseMatches, ...baseMatches];
@@ -139,13 +140,13 @@ const mockPings = [
   let winrate = "0.0%";
   let iconLink = noIcon;
   let level = 0;
-  let masteries = []
+  let masteries = [];
+  let MatchesCD = [];
 
   if (playerData && Array.isArray(playerData) && playerData.length > 0) {
     const firstMatch = playerData[0];
     if (firstMatch && firstMatch.players) {
       const callerPlayer = firstMatch.players.find(p => p.caller === true || p.caller === "true");
-      
       if (callerPlayer && callerPlayer.metadata && callerPlayer.metadata.tier) {
         const tierStr = callerPlayer.metadata.tier; // e.g., "GOLD"
         const rankDiv = callerPlayer.metadata.rank; // e.g., "III"
@@ -156,10 +157,66 @@ const mockPings = [
         iconLink = callerPlayer.icon.image_path
         level = callerPlayer.summonerLevel
         masteries = [
-        { name: callerPlayer.masteries[0].championName , img: callerPlayer.masteries[0].championIcon, points: callerPlayer.masteries[0].championPoints, level: callerPlayer.masteries[0].championLevel},
-        { name: callerPlayer.masteries[1].championName , img: callerPlayer.masteries[1].championIcon, points: callerPlayer.masteries[1].championPoints, level: callerPlayer.masteries[1].championLevel},
-        { name: callerPlayer.masteries[2].championName , img: callerPlayer.masteries[2].championIcon, points: callerPlayer.masteries[2].championPoints, level: callerPlayer.masteries[2].championLevel},
+        { name: callerPlayer.masteries[0].championName , img: callerPlayer.masteries[0].championIcon, points: callerPlayer.masteries[0].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[0].championLevel},
+        { name: callerPlayer.masteries[1].championName , img: callerPlayer.masteries[1].championIcon, points: callerPlayer.masteries[1].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[1].championLevel},
+        { name: callerPlayer.masteries[2].championName , img: callerPlayer.masteries[2].championIcon, points: callerPlayer.masteries[2].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[2].championLevel},
       ];
+
+// Extract caller details from match
+
+        Object.values(playerData).forEach(match => {
+          const callerPlayer = match.players?.find(p => p.caller === true || p.caller === "true");
+          
+          if (callerPlayer) {
+            const itemsData = callerPlayer.items || [];
+            const getItemImage = (index) => itemsData[index]?.image_path || null;
+            const getItemName = (index) => itemsData[index]?.name || null;
+
+            const summonersData = callerPlayer.summoners || [];
+            const getSummonerImage = (index) => summonersData[index]?.image_path || null;
+            const getSummonerName = (index) => summonersData[index]?.name || null;
+
+            const MatchCallerData = { 
+              win: typeof callerPlayer.win === 'boolean' ? callerPlayer.win : true, 
+              champ: callerPlayer.championName, 
+              champimageLink: callerPlayer.championImageLink,
+              duration: match.metadata?.gameDuration_min ? match.metadata.gameDuration_min.toFixed(2).replace('.', ':') : '30:00',
+              type: 'Ranked Solo', 
+              k: callerPlayer.kills, 
+              d: callerPlayer.deaths, 
+              a: callerPlayer.assists, 
+              kda: callerPlayer.KDA,
+              champLevel: callerPlayer.champLevel || 18,
+              items: [
+                getItemImage(0), 
+                getItemImage(1), 
+                getItemImage(2),
+                getItemImage(3), 
+                getItemImage(4), 
+                getItemImage(5)
+              ],
+              itemsNames: [
+                getItemName(0),
+                getItemName(1),
+                getItemName(2),
+                getItemName(3),
+                getItemName(4),
+                getItemName(5)
+              ],
+              summoners: [
+                getSummonerImage(0),
+                getSummonerImage(1)
+              ],
+              summonersNames: [
+                getSummonerName(0),
+                getSummonerName(1)
+              ]
+
+            };
+
+            MatchesCD.push(MatchCallerData);
+          }
+        });
 
 
         // Format label "Gold 3" or "Gold III"
@@ -429,7 +486,7 @@ const mockPings = [
           </div>
           
           <div className="flex flex-col gap-3">
-             {mockMatches.map((match, idx) => (
+             {(MatchesCD.length > 0 ? MatchesCD : mockMatches).map((match, idx) => (
                <div 
                  key={idx} 
                  className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer 
@@ -445,11 +502,28 @@ const mockPings = [
                      <p className="text-xs text-outline">{match.duration}</p>
                   </div>
                   
-                  {/* Champ Icon */}
+                  {/* Summoners & Champ Icon */}
                   <div className="flex items-center gap-2 shrink-0">
+                     {/* Summoner Spells Placeholders */}
+                     <div className="flex flex-col gap-1">
+                        <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                          <img src={match.summoners[0]} />
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                              {match.summonersNames[0]}
+                          </div>
+                        </div>
+                      <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                        <img src={match.summoners[1]} />
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          {match.summonersNames[1]}
+                        </div>                        
+                      
+                      </div>
+                     </div>
+                     {/* Champ Icon */}
                      <div className="relative">
-                        <img src={`https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/${match.champ}.png`} className="w-16 h-16 rounded-full border-2 border-surface-container shadow-sm" alt={match.champ} />
-                        <div className="absolute -bottom-1 -right-1 bg-surface-container-highest rounded-full w-6 h-6 flex items-center justify-center text-[10px] border border-outline/30 font-bold">18</div>
+                        <img src={match.champimageLink} className="w-16 h-16 rounded-full border-2 border-surface-container shadow-sm" alt={match.champ} />
+                        <div className="absolute -bottom-1 -right-1 bg-surface-container-highest rounded-full w-6 h-6 flex items-center justify-center text-[10px] border border-outline/30 font-bold">{match.champLevel || 18}</div>
                      </div>
                   </div>
                   
@@ -459,13 +533,27 @@ const mockPings = [
                        {match.k} <span className="text-on-surface-variant font-normal">/</span> <span className="text-error">{match.d}</span> <span className="text-on-surface-variant font-normal">/</span> {match.a}
                      </p>
                      <p className="text-xs text-outline font-bold mt-1">
-                       {((match.k + match.a) / (match.d || 1)).toFixed(2)} KDA
+                       {match.kda ? `${parseFloat(match.kda).toFixed(2)} KDA` : "KDA"}
                      </p>
                   </div>
                   
                   {/* Items Grid */}
                   <div className="grid grid-cols-3 gap-1 w-max mx-auto md:ml-auto md:mx-0">
-                     {[...Array(6)].map((_, i) => (
+                     {match.items ? match.items.map((itemImg, i) => (
+                        <div key={i} className="group relative w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner align-middle flex items-center justify-center">
+                           {itemImg && (
+                             <>
+                               <img src={itemImg} alt="item" className="w-full h-full object-cover rounded-md" />
+                               {/* Hover Tooltip */}
+                               {match.itemsNames && match.itemsNames[i] && (
+                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                   {match.itemsNames[i]}
+                                 </div>
+                               )}
+                             </>
+                           )}
+                        </div>
+                     )) : [...Array(6)].map((_, i) => (
                         <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"></div>
                      ))}
                   </div>

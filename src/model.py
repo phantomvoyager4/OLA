@@ -256,6 +256,10 @@ class Player:
         self.killingSprees = player_data.get("killingSprees", 0)
         self.largestKillingSpree = player_data.get("largestKillingSpree", 0)
         
+        # Win & Team Info
+        self.win = player_data.get("win")
+        self.teamId = player_data.get("teamId")
+
         # Economy and Items
         self.goldEarned = player_data.get("goldEarned", 0)
         self.goldSpent = player_data.get("goldSpent", 0)
