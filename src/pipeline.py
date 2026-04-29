@@ -27,18 +27,18 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
 
         usercall = Caller(platform=platform, api_key=api_key, player_name=player_name, player_tag=player_tag, count=count)
         puuidme = usercall.get_puuid()
-        print("Caller puuid fetched")
+        print(f"Caller puuid fetched {round(time.time() - start_timer,2)}")
 
         matches_id = usercall.last_matches_id_call(puuidme)
         if not isinstance(matches_id, list) or not matches_id:
             raise RuntimeError(f"No valid match IDs returned from Riot API: {matches_id}")
-        else: print("Matches ID fetched")
+        else: print(f"Matches ID fetched {round(time.time() - start_timer,2)}")
 
         matches_data = usercall.last_matches_data_call(matches_id)
         if not matches_data:
             raise RuntimeError("No match payloads returned from Riot API")
         else:
-            print("Matches raw data fetched")
+            print(f"Matches raw data fetched {round(time.time() - start_timer,2)}")
 
         # Ensure we are looking in the project root correctly
         project_root = Path(__file__).resolve().parent.parent
@@ -98,7 +98,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
                 match_entry["players"].append(player_dict)
 
             combined_records.append(match_entry)
-            print(f"Match object number {len(combined_records)} created")
+            print(f"Match object number {len(combined_records)} created. {round(time.time() - start_timer,5)}")
 
 
         if not combined_records:

@@ -343,30 +343,22 @@ class Player:
             for i in n.get("selections", []):
                 self.perks.append(i.get("perk"))
         all_ids = self.stat_perks + self.style_names + self.perks
-        all_ids_strings = []
-        for n in all_ids:
-            if n is not None:
-                all_ids_strings.append(str(n))
-
-        self.runes = []
-        for rune_id in all_ids_strings:
-            mapped_rune = lookup_table.get(rune_id)
-            if mapped_rune:
-                self.runes.append(mapped_rune)
+        self.runes = [lookup_table[str(n)] for n in all_ids if n is not None and str(n) in lookup_table]
     
     def summoners_mapping(self, lookup_table: dict):
         summoner1 = self.player_data.get("summoner1Id", "No data")
         summoner2 = self.player_data.get("summoner2Id", "No data")
-        self.summoners = []
-        self.summoners.append(lookup_table.get(str(summoner1), {}))
-        self.summoners.append(lookup_table.get(str(summoner2), {}))
+        self.summoners = [
+            lookup_table.get(str(summoner1), {}),
+            lookup_table.get(str(summoner2), {})
+        ]
         
     def items_mapping(self, lookup_table: dict):
-        self.items = []
-        for n in range(7):  
-            item_id = self.player_data.get(f"item{n}", "No data")
-            mapped_item = lookup_table.get(str(item_id), {})
-            self.items.append(mapped_item)
+        self.items = [
+            lookup_table.get(str(self.player_data.get(f"item{n}", "No data")), {})
+            for n in range(7)
+        ]
+
 
     def icon_mapping(self, lookup_table: dict):
         profileiconID = self.player_data.get("profileIcon", "No data")
