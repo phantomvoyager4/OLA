@@ -1,8 +1,9 @@
 {
-    "patch": "16.8.1",
+    "patch": "16.9.1",
     "8100": {
         "name": "Domination",
-        "group": "Style"
+        "group": "Style",
+        "styleIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7200_Domination.png"
     },
     "8112": {
         "name": "Electrocute",
@@ -19,7 +20,7 @@
     "9923": {
         "name": "Hail of Blades",
         "group": "Domination",
-        "description": "Gain a large amount of Attack Speed for the first 3 attacks made against enemy champions.",
+        "description": "Gain a large amount of Attack Speed and <trueDamage>bonus true damage</trueDamage> for the first 3 attacks made against enemy champions.",
         "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Domination/HailOfBlades/HailOfBlades.png"
     },
     "8126": {
@@ -78,7 +79,8 @@
     },
     "8300": {
         "name": "Inspiration",
-        "group": "Style"
+        "group": "Style",
+        "styleIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7203_Whimsy.png"
     },
     "8351": {
         "name": "Glacial Augment",
@@ -154,7 +156,8 @@
     },
     "8000": {
         "name": "Precision",
-        "group": "Style"
+        "group": "Style",
+        "styleIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7201_Precision.png"
     },
     "8005": {
         "name": "Press the Attack",
@@ -236,7 +239,8 @@
     },
     "8400": {
         "name": "Resolve",
-        "group": "Style"
+        "group": "Style",
+        "styleIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7204_Resolve.png"
     },
     "8437": {
         "name": "Grasp of the Undying",
@@ -312,7 +316,8 @@
     },
     "8200": {
         "name": "Sorcery",
-        "group": "Style"
+        "group": "Style",
+        "styleIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/7202_Sorcery.png"
     },
     "8214": {
         "name": "Summon Aery",
@@ -327,10 +332,16 @@
         "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/ArcaneComet/ArcaneComet.png"
     },
     "8230": {
-        "name": "Phase Rush",
+        "name": "Stormraider's Surge",
         "group": "Sorcery",
-        "description": "Hitting an enemy champion with 3 <b>separate</b> attacks or abilities grants a burst of <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword> and Slow Resist. ",
-        "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/PhaseRush/PhaseRush.png"
+        "description": "Dealing 25% of a champion's maximum health grants a burst of <lol-uikit-tooltipped-keyword key='LinkTooltip_Description_MS'>MS</lol-uikit-tooltipped-keyword> and Slow Resist. ",
+        "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/PhaseRush/StormraidersSurgeRuneIcon2.png"
+    },
+    "8992": {
+        "name": "Deathfire Touch",
+        "group": "Sorcery",
+        "description": "Damaging a champion with an ability burns them over time.",
+        "runeIconLink": "https://ddragon.leagueoflegends.com/cdn/img/perk-images/Styles/Sorcery/DeathfireTouch/DEATHFIRE_TOUCH_KEYSTONE.png"
     },
     "8224": {
         "name": "Axiom Arcanist",
