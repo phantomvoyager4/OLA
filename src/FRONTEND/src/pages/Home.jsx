@@ -104,7 +104,7 @@ export default function Home() {
         <div className="w-full max-w-4xl px-6 mt-24 relative z-10 flex flex-col gap-4">
           <div className="flex items-center justify-between border-b border-outline-variant/30 pb-2">
             <h2 className="font-headline text-sm font-bold text-on-surface tracking-widest">
-              RECENT ARCHIVES
+              Popular Players 
             </h2>
             <button className="text-primary text-xs font-bold tracking-widest hover:underline transition-all">
               VIEW ALL

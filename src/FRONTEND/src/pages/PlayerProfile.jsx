@@ -61,16 +61,7 @@ export default function PlayerProfile() {
   // -----------------------------------------------------
   // PLACHOLDER DATA
   // -----------------------------------------------------
-  const baseMatches = [
-    { win: true, champ: 'Olaf', k: 11, d: 5, a: 6, duration: '31:00', type: 'Ranked Solo' },
-    { win: false, champ: 'LeeSin', k: 4, d: 8, a: 12, duration: '28:14', type: 'Ranked Solo' },
-    { win: true, champ: 'Olaf', k: 18, d: 2, a: 5, duration: '24:45', type: 'Ranked Solo' },
-    { win: false, champ: 'Aatrox', k: 3, d: 9, a: 4, duration: '35:20', type: 'Ranked Solo' },
-    { win: true, champ: 'Olaf', k: 9, d: 1, a: 14, duration: '21:10', type: 'Ranked Solo' },
-    { win: false, champ: 'Ezreal', k: 6, d: 4, a: 4, duration: '16:10', type: 'Ranked Solo' }
-  ];
-  // Replicate array to have 20 matches for infinite scrolling appearance
-  const mockMatches = [...baseMatches, ...baseMatches, ...baseMatches, ...baseMatches];
+
 
   const ranks = [
     { name: 'Unranked', icon: unrankedIcon },
@@ -177,6 +168,7 @@ const mockPings = [
             const getSummonerName = (index) => summonersData[index]?.name || null;
 
             const MatchCallerData = { 
+              date: match.metadata.gameDateDay,
               win: typeof callerPlayer.win === 'boolean' ? callerPlayer.win : true, 
               champ: callerPlayer.championName, 
               champimageLink: callerPlayer.championImageLink,
@@ -440,7 +432,7 @@ const mockPings = [
             </div>
 
             {/* 5. TOP CHAMPIONS --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6">
+            <div className="glass-panel ghost-border sr-only rounded-xl p-6">
               <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Top Champions <span className="text-sm font-normal text-outline">(this season)</span></h2>
               <div className="flex flex-col gap-3">
                  {[
@@ -477,7 +469,7 @@ const mockPings = [
         </div>
 
         {/* ========================================== */}
-        {/* RIGHT SIDE: Recent Matches Grid              */}
+        {/* RIGHT SIDE: Recent Matches Grid            */}
         {/* ========================================== */}
         <div className="flex flex-col gap-4 w-full">
           <div className="flex justify-between items-end mb-2 bg-surface/90 backdrop-blur-md pb-2 z-10">
@@ -499,7 +491,8 @@ const mockPings = [
                      </p>
                      <p className="text-xs text-outline mt-0.5">{match.type}</p>
                      <div className="w-12 md:w-full h-px bg-outline-variant/30 my-2"></div>
-                     <p className="text-xs text-outline">{match.duration}</p>
+                     <p className="text-xs text-outline">{match.duration} min</p>
+                     <p className="text-xs text-outline">{match.date}</p>
                   </div>
                   
                   {/* Summoners & Champ Icon */}
@@ -533,8 +526,12 @@ const mockPings = [
                        {match.k} <span className="text-on-surface-variant font-normal">/</span> <span className="text-error">{match.d}</span> <span className="text-on-surface-variant font-normal">/</span> {match.a}
                      </p>
                      <p className="text-xs text-outline font-bold mt-1">
-                       {match.kda ? `${parseFloat(match.kda).toFixed(2)} KDA` : "KDA"}
-                     </p>
+                      {match.kda !== undefined && match.kda !== null 
+                        ? parseFloat(match.kda) === 0 
+                          ? "0.00 KDA" 
+                          : `${parseFloat(match.kda).toFixed(2)} KDA` 
+                        : "KDA"}
+                    </p>
                   </div>
                   
                   {/* Items Grid */}
