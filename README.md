@@ -1,6 +1,8 @@
 # Open League Analyzer (OLA)
 
-
+<p align="center">
+<img src="https://github.com/phantomvoyager4/OLA/blob/main/data/static/logo/ola%20logo.png" width='300'>
+</p>
 
 ### This repository contains source code for OLA, open-source league of legends player performance analyzer.
 
