@@ -58,10 +58,6 @@ export default function PlayerProfile() {
     }
   }, [region, nickname, tag]);
 
-  // -----------------------------------------------------
-  // PLACHOLDER DATA
-  // -----------------------------------------------------
-
 
   const ranks = [
     { name: 'Unranked', icon: unrankedIcon },
@@ -134,6 +130,7 @@ export default function PlayerProfile() {
   let masteries = [];
   let MatchesCD = [];
   let dates = [];
+  let topDuoPlayers = [];
 
   if (playerData && Array.isArray(playerData) && playerData.length > 0) {
     const firstMatch = playerData[0];
@@ -156,6 +153,8 @@ export default function PlayerProfile() {
 
         // Extract caller details from match
 
+        let teammatesMap = {};
+
         Object.values(playerData).forEach(match => {
           if (match?.metadata?.gameDateDay) {
             dates.push(match.metadata.gameDateDay);
@@ -163,6 +162,21 @@ export default function PlayerProfile() {
           const callerPlayer = match.players?.find(p => p.caller === true || p.caller === "true");
 
           if (callerPlayer) {
+            match.players.forEach(p => {
+              if (p.username !== callerPlayer.username && p.win === callerPlayer.win) {
+                if (!teammatesMap[p.username]) {
+                  teammatesMap[p.username] = { name: p.username, icon: null, wins: 0, losses: 0, total: 0 };
+                }
+                teammatesMap[p.username].total += 1;
+                teammatesMap[p.username].icon = p.icon?.image_path || noIcon; // Ensure icon path from latest match
+                if (callerPlayer.win === true || callerPlayer.win === "true") {
+                  teammatesMap[p.username].wins += 1;
+                } else {
+                  teammatesMap[p.username].losses += 1;
+                }
+              }
+            });
+
             const itemsData = callerPlayer.items || [];
             const getItemImage = (index) => itemsData[index]?.image_path || null;
             const getItemName = (index) => itemsData[index]?.name || null;
@@ -216,6 +230,9 @@ export default function PlayerProfile() {
           }
         });
 
+        topDuoPlayers = Object.values(teammatesMap)
+          .filter(p => p.total > 1)
+          .sort((a, b) => b.total - a.total || b.wins - a.wins);
 
         // Format label "Gold 3" or "Gold III"
         displayRankText = `${tierStr.charAt(0) + tierStr.slice(1).toLowerCase()} ${rankDiv}`;
@@ -342,7 +359,7 @@ export default function PlayerProfile() {
               <div className="text-center md:text-right items-center">
                 <h2 className="font-headline font-bold text-3xl text-primary">{winrate}</h2>
                 {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
-                <p className="text-sm text-on-surface-variant font-bold mt-1">({wins}W <span className="text-outline font-normal">/</span> {losses}L)</p>
+                <p className="text-sm text-on-surface-variant font-bold mt-1">{wins + losses}M • {wins}W <span className="text-outline font-normal">/</span> {losses}L</p>
               </div>
             </div>
             {/* 3. RECENT MATCHES STATISTICS --- */}
@@ -438,7 +455,7 @@ export default function PlayerProfile() {
                 <div className="flex flex-col gap-3 pt-5 h-full">
                   <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
                     <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Avg Games / Active Day</span>
-                    <span className="font-headline font-bold text-3xl text-primary mt-1">{avgGamesPerActiveDay}</span>
+                    <span className="font-headline font-bold text-3xl mt-1">{avgGamesPerActiveDay}</span>
                   </div>
                   <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
                     <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Days Since Last Activity</span>
@@ -454,7 +471,7 @@ export default function PlayerProfile() {
               <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Masteries</h2>
               <div className="flex flex-col gap-3">
                 {masteries.map((champ, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors cursor-pointer">
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer">
                     <img src={champ.img} className="w-12 h-12 rounded-md" alt={champ.name} />
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="flex justify-between items-center">
@@ -468,23 +485,25 @@ export default function PlayerProfile() {
               </div>
             </div>
 
-            {/* 5. TOP CHAMPIONS --- */}
-            <div className="glass-panel ghost-border sr-only rounded-xl p-6">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Top Champions <span className="text-sm font-normal text-outline">(this season)</span></h2>
+            {/* 5. TOP DUO PLAYERS --- */}
+            <div className="glass-panel ghost-border rounded-xl p-6">
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Duo Players <span className="text-sm font-normal text-outline">(recent 20 matches)</span></h2>
               <div className="flex flex-col gap-3">
-                {[
-                  { name: 'Olaf', kda: '3.40 KDA', wr: '60% WR' },
-                  { name: 'Lee Sin', img: 'LeeSin', kda: '2.80 KDA', wr: '52% WR' },
-                  { name: 'Aatrox', kda: '2.10 KDA', wr: '48% WR' }
-                ].map((champ, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 hover:border-primary/50 transition-colors cursor-pointer">
-                    <img src={`https://ddragon.leagueoflegends.com/cdn/14.3.1/img/champion/${champ.img || champ.name}.png`} className="w-12 h-12 rounded-md" alt={champ.name} />
-                    <div className="flex-1">
-                      <p className="font-bold text-on-surface text-base">{champ.name}</p>
-                      <p className="text-xs text-on-surface-variant">{champ.kda} • {champ.wr}</p>
+                {topDuoPlayers.length > 0 ? (
+                  topDuoPlayers.map((player, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer">
+                      <img src={player.icon} className="w-12 h-12 rounded-md object-cover" alt={player.name} />
+                      <div className="flex-1">
+                        <p className="font-bold text-on-surface text-base">{player.name}</p>
+                        <p className="text-xs text-on-surface-variant">
+                          {((player.wins / player.total) * 100).toFixed(0)}% WR • {player.wins}W / {player.losses}L • {player.wins + player.losses} Matches
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-sm text-outline p-3">No duo teammates found in recent matches.</p>
+                )}
               </div>
             </div>
 
@@ -578,6 +597,11 @@ export default function PlayerProfile() {
                         : `${parseFloat(match.kda).toFixed(2)} KDA`
                       : "KDA"}
                   </p>
+                  {match.duration && parseInt(match.duration.split(':')[0], 10) < 5 && (
+                    <span className="mt-1 px-2 py-0.5 bg-secondary text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
+                      Remake
+                    </span>
+                  )}
                 </div>
 
                 {/* Items Grid */}
