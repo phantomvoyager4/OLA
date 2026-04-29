@@ -1,5 +1,7 @@
 # Open League Analyzer (OLA)
 
+
+
 ### This repository contains source code for OLA, open-source league of legends player performance analyzer.
 
 ## Current state
@@ -20,13 +22,12 @@ python script.py
 # Sript will ask you for it:
 Insert your riot API key: [Your key here]
 ```
-Once server will start up, it will automatically open docs link for you to use it 
+Once server will start up, it will automatically website for you to use
 4. Test it :)
-Here you can use swagger UI to easily test the endpoint by providing your parameters:
+Here you can use UI to easily test the endpoint by providing your parameters:
 - `platform`: e.g., `EUNE`
 - `player_name`: e.g., `softmax`
 - `player_tag`: e.g., `EUNE1`
-- `count`: quantity of matches you want to fetch
 
 Alternatively, you can call the endpoint directly in your browser or frontend application:
 ```text
@@ -37,6 +38,4 @@ http://127.0.0.1:8000/api/matches/EUW/401dmg/6969?count=20
 If everything goes correctly, you will receive a JSON response containing the optimized match data! Our pipeline also securely saves a backup of this processed data inside the `data/` folder. 
 
 ## What's next
-
 1. ML model for player performance analysis
-2. Frontend template + backend connection
