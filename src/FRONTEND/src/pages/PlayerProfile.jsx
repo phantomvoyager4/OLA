@@ -133,6 +133,7 @@ export default function PlayerProfile() {
   let level = 0;
   let masteries = [];
   let MatchesCD = [];
+  let dates = [];
 
   if (playerData && Array.isArray(playerData) && playerData.length > 0) {
     const firstMatch = playerData[0];
@@ -156,6 +157,9 @@ export default function PlayerProfile() {
         // Extract caller details from match
 
         Object.values(playerData).forEach(match => {
+          if (match?.metadata?.gameDateDay) {
+            dates.push(match.metadata.gameDateDay);
+          }
           const callerPlayer = match.players?.find(p => p.caller === true || p.caller === "true");
 
           if (callerPlayer) {
@@ -228,14 +232,47 @@ export default function PlayerProfile() {
     }
   }
 
-  // Generate stable mock heatmap data (13 weeks * 7 days for approx 90 days)
-  const mockHeatmap = Array.from({ length: 13 }, () =>
-    Array.from({ length: 7 }, () => {
-      const rand = Math.random();
-      if (rand < 0.4) return 0; // 40% chance of 0 games
-      if (rand < 0.7) return Math.floor(Math.random() * 3) + 1; // 1-3 games
-      if (rand < 0.9) return Math.floor(Math.random() * 4) + 4; // 4-7 games
-      return Math.floor(Math.random() * 4) + 8; // 8-11 games
+  // Generate activity heatmap data from actual matches dates
+  const dateCounts = {};
+  dates.forEach(d => {
+    if (!d) return;
+    try {
+      const dateObj = new Date(d);
+      const dateKey = dateObj.toDateString();
+      dateCounts[dateKey] = (dateCounts[dateKey] || 0) + 1;
+    } catch (e) {}
+  });
+
+  const today = new Date();
+  // Calculate Activity Summary Details
+  const activeDaysCount = Object.keys(dateCounts).length;
+  const totalGamesInActiveDays = Object.values(dateCounts).reduce((sum, count) => sum + count, 0);
+  const avgGamesPerActiveDay = activeDaysCount > 0 ? (totalGamesInActiveDays / activeDaysCount).toFixed(1) : 0;
+
+  let daysSinceLastActivity = "N/A";
+  if (dates.length > 0) {
+    const validDates = dates.map(d => new Date(d).getTime()).filter(t => !isNaN(t));
+    if (validDates.length > 0) {
+      const maxDate = new Date(Math.max(...validDates));
+      const diffTime = Math.abs(today - maxDate);
+      daysSinceLastActivity = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+  }
+
+  const mockHeatmap = Array.from({ length: 13 }, (_, colIndex) =>
+    Array.from({ length: 7 }, (_, rowIndex) => {
+      const daysAgo = (12 - colIndex) * 7 + (6 - rowIndex);
+      const targetDate = new Date();
+      targetDate.setDate(today.getDate() - daysAgo);
+      const count = dateCounts[targetDate.toDateString()] || 0;
+      
+      // Format to YYYY-MM-DD
+      const year = targetDate.getFullYear();
+      const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+      const day = String(targetDate.getDate()).padStart(2, '0');
+      const dateStr = `${year}-${month}-${day}`;
+
+      return { count, dateStr };
     })
   );
 
@@ -292,7 +329,7 @@ export default function PlayerProfile() {
             {/* 2. RANK, WINRATE AND W/L --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
-                <div className="w-18 h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
+                <div className="w- h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
                   <img src={displayTierImg} alt={displayRankText} className="w-full h-full object-cover p-2" />
                 </div>
                 <div className="text-center md:text-left">
@@ -327,7 +364,7 @@ export default function PlayerProfile() {
                 </div>
               </div>
             </div>
-            {/* NEW: ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
+            {/* ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
             <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
 
               {/* Left Side: Activity Heatmap */}
@@ -342,15 +379,20 @@ export default function PlayerProfile() {
                 <div className="flex flex-col">
                   {/* Heatmap wrapper (w-max ensures container naturally fits its children width) */}
                   <div className="flex gap-2 pt-5 pb-2">
-                    <div className="flex flex-col gap-1 text-[10px] text-outline justify-around font-bold uppercase tracking-wider pr-1">
+                    <div className="flex flex-col gap-0.9 text-[10px] text-outline justify-around font-bold uppercase tracking-wider pr-1">
                       <span>Mon</span>
+                      <span>Tue</span>
                       <span>Wed</span>
+                      <span>Thu</span>
                       <span>Fri</span>
+                      <span>Sat</span>
+                      <span>Sun</span>
                     </div>
                     <div className="flex gap-0.5">
                       {mockHeatmap.map((week, colIndex) => (
                         <div key={colIndex} className="flex flex-col gap-0.5">
-                          {week.map((count, rowIndex) => {
+                          {week.map((item, rowIndex) => {
+                            const { count, dateStr } = item;
                             let bgClass = "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
                             if (count > 0 && count <= 2) bgClass = "bg-primary/20 border-primary/20 border";
                             else if (count > 2 && count <= 5) bgClass = "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
@@ -363,8 +405,9 @@ export default function PlayerProfile() {
                                 className={`group relative w-3 h-3 md:w-4 md:h-4 rounded-sm transition-all duration-200 hover:ring-1 hover:ring-primary hover:scale-110 hover:z-20 ${bgClass}`}
                               >
                                 {/* Custom Hover Tooltip */}
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                                  {count} games played
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col items-center w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                  <span className="text-outline text-[10px] font-bold mb-0.5">{dateStr}</span>
+                                  <span className="text-on-surface text-[10px] uppercase font-bold">{count} {count === 1 ? 'game' : 'games'} played</span>
                                 </div>
                               </div>
                             );
@@ -388,26 +431,18 @@ export default function PlayerProfile() {
               </div>
 
               {/* Right Side: Total Summary */}
-              <div className="flex flex-col justify-center">
-                <div className="flex justify-between items-end mb-4">
+              <div className="flex flex-col h-full">
+                <div className="flex justify-between items-end mb-1">
                   <h2 className="font-headline font-bold text-xl text-on-surface">90-Day Summary</h2>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Total Games</span>
-                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">42</span>
+                <div className="flex flex-col gap-3 pt-5 h-full">
+                  <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Avg Games / Active Day</span>
+                    <span className="font-headline font-bold text-3xl text-primary mt-1">{avgGamesPerActiveDay}</span>
                   </div>
-                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Win Rate</span>
-                    <span className="font-headline font-bold text-2xl text-primary mt-1">62%</span>
-                  </div>
-                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">Avg KDA</span>
-                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">2.8</span>
-                  </div>
-                  <div className="bg-surface-container-low rounded-lg p-3 border border-outline-variant/30 flex flex-col justify-center items-center">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide">CS / Min</span>
-                    <span className="font-headline font-bold text-2xl text-on-surface mt-1">6.9</span>
+                  <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Days Since Last Activity</span>
+                    <span className="font-headline font-bold text-3xl text-on-surface mt-1">{daysSinceLastActivity}</span>
                   </div>
                 </div>
               </div>
