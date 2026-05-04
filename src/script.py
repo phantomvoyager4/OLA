@@ -4,6 +4,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import webbrowser
+import time
 
 def script():
     project_root = Path(__file__).resolve().parent.parent
@@ -22,6 +23,9 @@ def script():
         print(f"Existing .env file found at {env_file}.")
         
     src_dir = project_root / "src"
+    # kill uvicorn instances
+    subprocess.run(["pkill", "-f", "uvicorn"])
+    time.sleep(0.5)
     # Use sys.executable to securely call global uvicorn module
     subprocess.Popen([sys.executable, '-m', 'uvicorn', 'main:app', '--reload'], cwd=src_dir)
     print("Server is ready and working! :)")
@@ -33,4 +37,5 @@ def script():
 
 if __name__ == "__main__":
     script()
+    time.sleep(0.5)
     webbrowser.open("http://localhost:5173/")
