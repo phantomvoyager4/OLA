@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getPlayerData } from '../services/api';
+import { Link, NavLink } from 'react-router-dom';
 
 import noIcon from "../../../../data/static/icons/noicon.jpg";
 
@@ -190,8 +191,10 @@ export default function PlayerProfile() {
               win: typeof callerPlayer.win === 'boolean' ? callerPlayer.win : true,
               champ: callerPlayer.championName,
               champimageLink: callerPlayer.championImageLink,
-              mainRune: callerPlayer["runes"][5]["runeIconLink"],
-              secondaryRune: callerPlayer["runes"][4]["styleIconLink"],
+              mainRune: callerPlayer.runes?.[5]?.runeIconLink,
+              mainRuneName: callerPlayer.runes?.[5]?.name,
+              secondaryRune: callerPlayer.runes?.[4]?.styleIconLink,
+              secondaryRuneName: callerPlayer.runes?.[4]?.name,
               duration: match.metadata?.gameDuration_min ? match.metadata.gameDuration_min.toFixed(2).replace('.', ':') : '30:00',
               type: 'Ranked Solo',
               k: callerPlayer.kills,
@@ -304,9 +307,10 @@ export default function PlayerProfile() {
 
   if (error) {
     return (
-      <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
+      <main className="min-h-screen pt-24 pb-12 flex flex-col gap-3 items-center justify-center">
         <h2 className="text-2xl font-headline text-error">Summoner not found!</h2>
         <p className="mt-2 text-on-surface-variant font-bold uppercase">{error}</p>
+        <Link to="/" className='mt-1 px-2 py-0.5 text-lg bg-secondary text-black uppercase font-bold rounded-sm tracking-wider'>Try again</Link>
       </main>
     );
   }
@@ -459,7 +463,11 @@ export default function PlayerProfile() {
                   </div>
                   <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
                     <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Days Since Last Activity</span>
-                    <span className="font-headline font-bold text-3xl text-on-surface mt-1">{daysSinceLastActivity}</span>
+                    {daysSinceLastActivity === 0 ? (
+                      <span className="font-headline font-bold text-xl mt-1 uppercase tracking-wide">Active Today</span>
+                    ) : (
+                      <span className="font-headline font-bold text-3xl text-on-surface mt-1">{daysSinceLastActivity}</span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -576,11 +584,21 @@ export default function PlayerProfile() {
                   </div>
                   {/* Rune Display  */}
                   <div className="flex flex-col gap-1">
-                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner overflow-hidden">
-                      <img src={match.mainRune} className="w-full h-full object-cover transform" />
+                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                      <img src={match.mainRune} className="w-full h-full object-cover transform rounded-full" />
+                      {match.mainRuneName && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          {match.mainRuneName}
+                        </div>
+                      )}
                     </div>
-                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner overflow-hidden">
-                      <img src={match.secondaryRune} className="w-full h-full object-cover p-1" />
+                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                      <img src={match.secondaryRune} className="w-full h-full object-cover p-1 rounded-full" />
+                      {match.secondaryRuneName && (
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          {match.secondaryRuneName}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
