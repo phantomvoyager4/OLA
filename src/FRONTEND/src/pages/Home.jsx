@@ -42,7 +42,7 @@ export default function Home() {
           <div className="w-full glass-panel ghost-border rounded-lg p-2 md:p-4 flex flex-col md:flex-row items-stretch gap-2">
             <div className="flex-1 flex flex-col md:flex-row items-center gap-2">
               {/* Nickname Input */}
-              <div className="relative flex-grow w-full">
+              <div className="relative grow w-full">
                 <input
                   className="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="Nickname"
@@ -62,7 +62,7 @@ export default function Home() {
                 />
               </div>
               {/* Region Select */}
-              <div className="relative w-full md:w-64 md:w-80">
+              <div className="relative w-full md:w-80">
                 <select 
                   className="custom-select-appearance w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer"
                   value={region}
@@ -92,7 +92,7 @@ export default function Home() {
             {/* Search Button */}
             <button 
               onClick={handleAnalyze}
-              className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95"
+              className="bg-primary text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95"
             >
               <span className="material-symbols-outlined">insert_chart</span>{" "}
               ANALYZE
@@ -106,7 +106,7 @@ export default function Home() {
             <h2 className="font-headline text-sm font-bold text-on-surface tracking-widest">
               Popular Players 
             </h2>
-            <button className="text-primary text-xs font-bold tracking-widest hover:underline transition-all">
+            <button className="text-primary text-xs font-bold tracking-widest hover:underline transition-all cursor-pointer">
               VIEW ALL
             </button>
           </div>
@@ -130,7 +130,7 @@ export default function Home() {
       </main>
 
       {/* Side Navigation Shell (Hidden on Landing per UX Goal, but structurally available if needed) */}
-      <aside className="hidden h-screen w-64 fixed left-0 top-0 bg-[#0b0f0f] border-r border-[#151b1a]/15 flex flex-col py-6 px-4 gap-8 z-40">
+      <aside className="hidden h-screen w-64 fixed left-0 top-0 bg-[#0b0f0f] border-r border-[#151b1a]/15 flex-col py-6 px-4 gap-8 z-40">
         <div className="flex items-center gap-3 px-2">
           <div className="w-10 h-10 rounded-sm bg-surface-container flex items-center justify-center">
             <span className="material-symbols-outlined text-primary">shield</span>

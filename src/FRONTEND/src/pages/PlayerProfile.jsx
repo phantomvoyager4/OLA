@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getPlayerData } from '../services/api';
-import { Link, NavLink } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getPlayerData } from "../services/api";
+import { Link, NavLink } from "react-router-dom";
 
 import noIcon from "../../../../data/static/icons/noicon.jpg";
 
@@ -26,15 +26,15 @@ import masterIcon from "../../../../data/static/tiers/master.png";
 import grandmasterIcon from "../../../../data/static/tiers/grandmaster.png";
 import challengerIcon from "../../../../data/static/tiers/challenger.png";
 
-
-
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
+  const navigate = useNavigate();
 
   // Extract nickname and tag from riotId (e.g., softmax-EUNE1)
-  const lastDashIndex = riotId.lastIndexOf('-');
-  const nickname = lastDashIndex !== -1 ? riotId.substring(0, lastDashIndex) : riotId;
-  const tag = lastDashIndex !== -1 ? riotId.substring(lastDashIndex + 1) : '';
+  const lastDashIndex = riotId.lastIndexOf("-");
+  const nickname =
+    lastDashIndex !== -1 ? riotId.substring(0, lastDashIndex) : riotId;
+  const tag = lastDashIndex !== -1 ? riotId.substring(lastDashIndex + 1) : "";
 
   const [playerData, setPlayerData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -44,7 +44,10 @@ export default function PlayerProfile() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getPlayerData(region, nickname, tag, { save: false, count: 20 });
+        const data = await getPlayerData(region, nickname, tag, {
+          save: false,
+          count: 20,
+        });
         console.log("Fetched Player Data:", data);
         setPlayerData(data);
       } catch (err) {
@@ -59,19 +62,18 @@ export default function PlayerProfile() {
     }
   }, [region, nickname, tag]);
 
-
   const ranks = [
-    { name: 'Unranked', icon: unrankedIcon },
-    { name: 'Iron', icon: ironIcon },
-    { name: 'Bronze', icon: bronzeIcon },
-    { name: 'Silver', icon: silverIcon },
-    { name: 'Gold', icon: goldIcon },
-    { name: 'Platinum', icon: platinumIcon },
-    { name: 'Emerald', icon: emeraldIcon },
-    { name: 'Diamond', icon: diamondIcon },
-    { name: 'Master', icon: masterIcon },
-    { name: 'Grandmaster', icon: grandmasterIcon },
-    { name: 'Challenger', icon: challengerIcon }
+    { name: "Unranked", icon: unrankedIcon },
+    { name: "Iron", icon: ironIcon },
+    { name: "Bronze", icon: bronzeIcon },
+    { name: "Silver", icon: silverIcon },
+    { name: "Gold", icon: goldIcon },
+    { name: "Platinum", icon: platinumIcon },
+    { name: "Emerald", icon: emeraldIcon },
+    { name: "Diamond", icon: diamondIcon },
+    { name: "Master", icon: masterIcon },
+    { name: "Grandmaster", icon: grandmasterIcon },
+    { name: "Challenger", icon: challengerIcon },
   ];
 
   let KDA_mean = 0;
@@ -108,23 +110,30 @@ export default function PlayerProfile() {
   }
 
   const mockPings = [
-    { name: 'Assist Me', value: assistMePings_mean, icon: assistMeIcon },
-    { name: 'Danger', value: dangerPings_mean, icon: retreatIcon },
-    { name: 'Enemy Missing', value: enemyMissingPings_mean, icon: enemyMissingIcon },
-    { name: 'On My Way', value: onMyWayPings_mean, icon: onMyWayIcon },
-    { name: 'Push', value: pushPings_mean, icon: pushIcon },
-    { name: 'All In', value: allInPings_mean, icon: allInIcon },
-    { name: 'Enemy Vision', value: enemyMissingPings_mean, icon: enemyVisionIcon },
-    { name: 'Need Vision', value: needVisionPings_mean, icon: needVisionIcon }
+    { name: "Assist Me", value: assistMePings_mean, icon: assistMeIcon },
+    { name: "Danger", value: dangerPings_mean, icon: retreatIcon },
+    {
+      name: "Enemy Missing",
+      value: enemyMissingPings_mean,
+      icon: enemyMissingIcon,
+    },
+    { name: "On My Way", value: onMyWayPings_mean, icon: onMyWayIcon },
+    { name: "Push", value: pushPings_mean, icon: pushIcon },
+    { name: "All In", value: allInPings_mean, icon: allInIcon },
+    {
+      name: "Enemy Vision",
+      value: enemyMissingPings_mean,
+      icon: enemyVisionIcon,
+    },
+    { name: "Need Vision", value: needVisionPings_mean, icon: needVisionIcon },
   ];
-
 
   // Extract Caller's Rank details
   let displayTierImg = unrankedIcon;
   let displayRankText = "Unranked";
   let displayLp = "";
   let wins = 0;
-  let losses = 0
+  let losses = 0;
   let winrate = "0.0%";
   let iconLink = noIcon;
   let level = 0;
@@ -136,37 +145,68 @@ export default function PlayerProfile() {
   if (playerData && Array.isArray(playerData) && playerData.length > 0) {
     const firstMatch = playerData[0];
     if (firstMatch && firstMatch.players) {
-      const callerPlayer = firstMatch.players.find(p => p.caller === true || p.caller === "true");
+      const callerPlayer = firstMatch.players.find(
+        (p) => p.caller === true || p.caller === "true",
+      );
       if (callerPlayer && callerPlayer.metadata && callerPlayer.metadata.tier) {
         const tierStr = callerPlayer.metadata.tier; // e.g., "GOLD"
         const rankDiv = callerPlayer.metadata.rank; // e.g., "III"
         const lp = callerPlayer.metadata.leaguePoints; // e.g., 69
-        wins = callerPlayer.metadata.wins
-        losses = callerPlayer.metadata.losses
-        winrate = callerPlayer.metadata.winrate
-        iconLink = callerPlayer.icon.image_path
-        level = callerPlayer.summonerLevel
+        wins = callerPlayer.metadata.wins;
+        losses = callerPlayer.metadata.losses;
+        winrate = callerPlayer.metadata.winrate;
+        iconLink = callerPlayer.icon.image_path;
+        level = callerPlayer.summonerLevel;
         masteries = [
-          { name: callerPlayer.masteries[0].championName, img: callerPlayer.masteries[0].championIcon, points: callerPlayer.masteries[0].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[0].championLevel },
-          { name: callerPlayer.masteries[1].championName, img: callerPlayer.masteries[1].championIcon, points: callerPlayer.masteries[1].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[1].championLevel },
-          { name: callerPlayer.masteries[2].championName, img: callerPlayer.masteries[2].championIcon, points: callerPlayer.masteries[2].championPoints.toLocaleString("en-US"), level: callerPlayer.masteries[2].championLevel },
+          {
+            name: callerPlayer.masteries[0].championName,
+            img: callerPlayer.masteries[0].championIcon,
+            points:
+              callerPlayer.masteries[0].championPoints.toLocaleString("en-US"),
+            level: callerPlayer.masteries[0].championLevel,
+          },
+          {
+            name: callerPlayer.masteries[1].championName,
+            img: callerPlayer.masteries[1].championIcon,
+            points:
+              callerPlayer.masteries[1].championPoints.toLocaleString("en-US"),
+            level: callerPlayer.masteries[1].championLevel,
+          },
+          {
+            name: callerPlayer.masteries[2].championName,
+            img: callerPlayer.masteries[2].championIcon,
+            points:
+              callerPlayer.masteries[2].championPoints.toLocaleString("en-US"),
+            level: callerPlayer.masteries[2].championLevel,
+          },
         ];
 
         // Extract caller details from match
 
         let teammatesMap = {};
 
-        Object.values(playerData).forEach(match => {
+        Object.values(playerData).forEach((match) => {
           if (match?.metadata?.gameDateDay) {
             dates.push(match.metadata.gameDateDay);
           }
-          const callerPlayer = match.players?.find(p => p.caller === true || p.caller === "true");
+          const callerPlayer = match.players?.find(
+            (p) => p.caller === true || p.caller === "true",
+          );
 
           if (callerPlayer) {
-            match.players.forEach(p => {
-              if (p.username !== callerPlayer.username && p.win === callerPlayer.win) {
+            match.players.forEach((p) => {
+              if (
+                p.username !== callerPlayer.username &&
+                p.win === callerPlayer.win
+              ) {
                 if (!teammatesMap[p.username]) {
-                  teammatesMap[p.username] = { name: p.username, icon: null, wins: 0, losses: 0, total: 0 };
+                  teammatesMap[p.username] = {
+                    name: p.username,
+                    icon: null,
+                    wins: 0,
+                    losses: 0,
+                    total: 0,
+                  };
                 }
                 teammatesMap[p.username].total += 1;
                 teammatesMap[p.username].icon = p.icon?.image_path || noIcon; // Ensure icon path from latest match
@@ -179,24 +219,31 @@ export default function PlayerProfile() {
             });
 
             const itemsData = callerPlayer.items || [];
-            const getItemImage = (index) => itemsData[index]?.image_path || null;
+            const getItemImage = (index) =>
+              itemsData[index]?.image_path || null;
             const getItemName = (index) => itemsData[index]?.name || null;
 
             const summonersData = callerPlayer.summoners || [];
-            const getSummonerImage = (index) => summonersData[index]?.image_path || null;
-            const getSummonerName = (index) => summonersData[index]?.name || null;
+            const getSummonerImage = (index) =>
+              summonersData[index]?.image_path || null;
+            const getSummonerName = (index) =>
+              summonersData[index]?.name || null;
 
             const MatchCallerData = {
+              matchId: match.match_id || match.metadata?.matchId,
               date: match.metadata.gameDateDay,
-              win: typeof callerPlayer.win === 'boolean' ? callerPlayer.win : true,
+              win:
+                typeof callerPlayer.win === "boolean" ? callerPlayer.win : true,
               champ: callerPlayer.championName,
               champimageLink: callerPlayer.championImageLink,
               mainRune: callerPlayer.runes?.[5]?.runeIconLink,
               mainRuneName: callerPlayer.runes?.[5]?.name,
               secondaryRune: callerPlayer.runes?.[4]?.styleIconLink,
               secondaryRuneName: callerPlayer.runes?.[4]?.name,
-              duration: match.metadata?.gameDuration_min ? match.metadata.gameDuration_min.toFixed(2).replace('.', ':') : '30:00',
-              type: 'Ranked Solo',
+              duration: match.metadata?.gameDuration_min
+                ? match.metadata.gameDuration_min.toFixed(2).replace(".", ":")
+                : "30:00",
+              type: "Ranked Solo",
               k: callerPlayer.kills,
               d: callerPlayer.deaths,
               a: callerPlayer.assists,
@@ -208,7 +255,7 @@ export default function PlayerProfile() {
                 getItemImage(2),
                 getItemImage(3),
                 getItemImage(4),
-                getItemImage(5)
+                getItemImage(5),
               ],
               itemsNames: [
                 getItemName(0),
@@ -216,17 +263,10 @@ export default function PlayerProfile() {
                 getItemName(2),
                 getItemName(3),
                 getItemName(4),
-                getItemName(5)
+                getItemName(5),
               ],
-              summoners: [
-                getSummonerImage(0),
-                getSummonerImage(1)
-              ],
-              summonersNames: [
-                getSummonerName(0),
-                getSummonerName(1)
-              ]
-
+              summoners: [getSummonerImage(0), getSummonerImage(1)],
+              summonersNames: [getSummonerName(0), getSummonerName(1)],
             };
 
             MatchesCD.push(MatchCallerData);
@@ -234,7 +274,7 @@ export default function PlayerProfile() {
         });
 
         topDuoPlayers = Object.values(teammatesMap)
-          .filter(p => p.total > 1)
+          .filter((p) => p.total > 1)
           .sort((a, b) => b.total - a.total || b.wins - a.wins);
 
         // Format label "Gold 3" or "Gold III"
@@ -244,7 +284,9 @@ export default function PlayerProfile() {
         }
 
         // Find matching icon
-        const matchedRank = ranks.find(r => r.name.toLowerCase() === tierStr.toLowerCase());
+        const matchedRank = ranks.find(
+          (r) => r.name.toLowerCase() === tierStr.toLowerCase(),
+        );
         if (matchedRank) {
           displayTierImg = matchedRank.icon;
         }
@@ -254,7 +296,7 @@ export default function PlayerProfile() {
 
   // Generate activity heatmap data from actual matches dates
   const dateCounts = {};
-  dates.forEach(d => {
+  dates.forEach((d) => {
     if (!d) return;
     try {
       const dateObj = new Date(d);
@@ -266,12 +308,20 @@ export default function PlayerProfile() {
   const today = new Date();
   // Calculate Activity Summary Details
   const activeDaysCount = Object.keys(dateCounts).length;
-  const totalGamesInActiveDays = Object.values(dateCounts).reduce((sum, count) => sum + count, 0);
-  const avgGamesPerActiveDay = activeDaysCount > 0 ? (totalGamesInActiveDays / activeDaysCount).toFixed(1) : 0;
+  const totalGamesInActiveDays = Object.values(dateCounts).reduce(
+    (sum, count) => sum + count,
+    0,
+  );
+  const avgGamesPerActiveDay =
+    activeDaysCount > 0
+      ? (totalGamesInActiveDays / activeDaysCount).toFixed(1)
+      : 0;
 
   let daysSinceLastActivity = "N/A";
   if (dates.length > 0) {
-    const validDates = dates.map(d => new Date(d).getTime()).filter(t => !isNaN(t));
+    const validDates = dates
+      .map((d) => new Date(d).getTime())
+      .filter((t) => !isNaN(t));
     if (validDates.length > 0) {
       const maxDate = new Date(Math.max(...validDates));
       const diffTime = Math.abs(today - maxDate);
@@ -285,22 +335,24 @@ export default function PlayerProfile() {
       const targetDate = new Date();
       targetDate.setDate(today.getDate() - daysAgo);
       const count = dateCounts[targetDate.toDateString()] || 0;
-      
+
       // Format to YYYY-MM-DD
       const year = targetDate.getFullYear();
-      const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-      const day = String(targetDate.getDate()).padStart(2, '0');
+      const month = String(targetDate.getMonth() + 1).padStart(2, "0");
+      const day = String(targetDate.getDate()).padStart(2, "0");
       const dateStr = `${year}-${month}-${day}`;
 
       return { count, dateStr };
-    })
+    }),
   );
 
   if (loading) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        <h2 className="mt-4 text-xl font-headline text-on-surface">Analyzing matches...</h2>
+        <h2 className="mt-4 text-xl font-headline text-on-surface">
+          Analyzing matches...
+        </h2>
       </main>
     );
   }
@@ -308,9 +360,18 @@ export default function PlayerProfile() {
   if (error) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col gap-3 items-center justify-center">
-        <h2 className="text-2xl font-headline text-error">Summoner not found!</h2>
-        <p className="mt-2 text-on-surface-variant font-bold uppercase">{error}</p>
-        <Link to="/" className='mt-1 px-2 py-0.5 text-lg bg-secondary text-black uppercase font-bold rounded-sm tracking-wider'>Try again</Link>
+        <h2 className="text-2xl font-headline text-error">
+          Summoner not found!
+        </h2>
+        <p className="mt-2 text-on-surface-variant font-bold uppercase">
+          {error}
+        </p>
+        <Link
+          to="/"
+          className="mt-1 px-2 py-0.5 text-lg bg-secondary text-black uppercase font-bold rounded-sm tracking-wider"
+        >
+          Try again
+        </Link>
       </main>
     );
   }
@@ -319,16 +380,18 @@ export default function PlayerProfile() {
     <main className="min-h-screen pt-24 pb-12 flex flex-col items-center">
       {/* Expanded to 1600px for full PC width, 2 columns on extra large screens */}
       <div className="w-full max-w-400 px-6 grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
-
         {/* ========================================== */}
         {/* LEFT SIDE: Caller Data & Statistics          */}
         {/* ========================================== */}
         <div className="flex flex-col gap-6">
-
           {/* 1. TOP SECTION: General Info --- */}
           <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
             <div className="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-[0_0_4px_rgba(,0,0,1)] shrink-0">
-              <img src={iconLink} alt="Profile Icon" className="w-full h-full object-cover" />
+              <img
+                src={iconLink}
+                alt="Profile Icon"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col text-center md:text-left">
               <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
@@ -336,62 +399,88 @@ export default function PlayerProfile() {
               </h1>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
                 <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                  Level: <span className="text-on-surface font-bold">{level}</span>
+                  Level:{" "}
+                  <span className="text-on-surface font-bold">{level}</span>
                 </span>
                 <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                  Region: <span className="text-on-surface font-bold">{region}</span>
+                  Region:{" "}
+                  <span className="text-on-surface font-bold">{region}</span>
                 </span>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full shrink-0">
-
             {/* 2. RANK, WINRATE AND W/L --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
-                <div className="w- h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
-                  <img src={displayTierImg} alt={displayRankText} className="w-full h-full object-cover p-2" />
+                <div className="w-18 h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
+                  <img
+                    src={displayTierImg}
+                    alt={displayRankText}
+                    className="w-full h-full object-cover p-2 scale-1.4"
+                  />
                 </div>
                 <div className="text-center md:text-left">
                   <h2 className="font-headline font-bold text-2xl text-on-surface flex items-center gap-2">
-                    {displayRankText} <span className="text-on-surface-variant font-normal text-lg">{displayLp}</span>
+                    {displayRankText}{" "}
+                    <span className="text-on-surface-variant font-normal text-lg">
+                      {displayLp}
+                    </span>
                   </h2>
                   <p className="text-sm text-outline">Ranked Solo/Duo</p>
                 </div>
               </div>
               <div className="text-center md:text-right items-center">
-                <h2 className="font-headline font-bold text-3xl text-primary">{winrate}</h2>
+                <h2 className="font-headline font-bold text-3xl text-primary">
+                  {winrate}
+                </h2>
                 {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
-                <p className="text-sm text-on-surface-variant font-bold mt-1">{wins + losses}M • {wins}W <span className="text-outline font-normal">/</span> {losses}L</p>
+                <p className="text-sm text-on-surface-variant font-bold mt-1">
+                  {wins + losses}M • {wins}W{" "}
+                  <span className="text-outline font-normal">/</span> {losses}L
+                </p>
               </div>
             </div>
             {/* 3. RECENT MATCHES STATISTICS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-2">Recent Statistics</h2>
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-2">
+                Recent Statistics
+              </h2>
               <p className="text-sm text-outline mb-4">Last 20 matches</p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">Average CS/min</span>
-                  <span className="text-2xl font-bold text-on-surface">{CS_mean}</span>
+                  <span className="text-sm text-on-surface-variant">
+                    Average CS/min
+                  </span>
+                  <span className="text-2xl font-bold text-on-surface">
+                    {CS_mean}
+                  </span>
                 </div>
                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
                   <span className="text-sm text-on-surface-variant">KDA</span>
-                  <span className="text-2xl font-bold text-on-surface">{KDA_mean}</span>
+                  <span className="text-2xl font-bold text-on-surface">
+                    {KDA_mean}
+                  </span>
                 </div>
                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">Kill Participation</span>
-                  <span className="text-2xl font-bold text-on-surface">{KP_mean}%</span>
+                  <span className="text-sm text-on-surface-variant">
+                    Kill Participation
+                  </span>
+                  <span className="text-2xl font-bold text-on-surface">
+                    {KP_mean}%
+                  </span>
                 </div>
               </div>
             </div>
             {/* ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
             <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
-
               {/* Left Side: Activity Heatmap */}
               <div className="flex flex-col w-max mx-auto lg:mx-0">
                 <div className="flex justify-between items-end mb-1">
-                  <h2 className="font-headline font-bold text-xl text-on-surface">Activity</h2>
+                  <h2 className="font-headline font-bold text-xl text-on-surface">
+                    Activity
+                  </h2>
                   <span className="text-[11px] text-outline font-bold uppercase tracking-wide pb-1">
                     Past 91 Days
                   </span>
@@ -414,11 +503,20 @@ export default function PlayerProfile() {
                         <div key={colIndex} className="flex flex-col gap-0.5">
                           {week.map((item, rowIndex) => {
                             const { count, dateStr } = item;
-                            let bgClass = "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
-                            if (count > 0 && count <= 2) bgClass = "bg-primary/20 border-primary/20 border";
-                            else if (count > 2 && count <= 5) bgClass = "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
-                            else if (count > 5 && count <= 8) bgClass = "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
-                            else if (count > 8) bgClass = "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
+                            let bgClass =
+                              "bg-surface-container-highest/40 border-outline-variant/10 border"; // 0 games
+                            if (count > 0 && count <= 2)
+                              bgClass =
+                                "bg-primary/20 border-primary/20 border";
+                            else if (count > 2 && count <= 5)
+                              bgClass =
+                                "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
+                            else if (count > 5 && count <= 8)
+                              bgClass =
+                                "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
+                            else if (count > 8)
+                              bgClass =
+                                "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
 
                             return (
                               <div
@@ -427,8 +525,13 @@ export default function PlayerProfile() {
                               >
                                 {/* Custom Hover Tooltip */}
                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col items-center w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                                  <span className="text-outline text-[10px] font-bold mb-0.5">{dateStr}</span>
-                                  <span className="text-on-surface text-[10px] uppercase font-bold">{count} {count === 1 ? 'game' : 'games'} played</span>
+                                  <span className="text-outline text-[10px] font-bold mb-0.5">
+                                    {dateStr}
+                                  </span>
+                                  <span className="text-on-surface text-[10px] uppercase font-bold">
+                                    {count} {count === 1 ? "game" : "games"}{" "}
+                                    played
+                                  </span>
                                 </div>
                               </div>
                             );
@@ -454,39 +557,65 @@ export default function PlayerProfile() {
               {/* Right Side: Total Summary */}
               <div className="flex flex-col h-full">
                 <div className="flex justify-between items-end mb-1">
-                  <h2 className="font-headline font-bold text-xl text-on-surface">90-Day Summary</h2>
+                  <h2 className="font-headline font-bold text-xl text-on-surface">
+                    90-Day Summary
+                  </h2>
                 </div>
                 <div className="flex flex-col gap-3 pt-5 h-full">
                   <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Avg Games / Active Day</span>
-                    <span className="font-headline font-bold text-3xl mt-1">{avgGamesPerActiveDay}</span>
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">
+                      Avg Games / Active Day
+                    </span>
+                    <span className="font-headline font-bold text-3xl mt-1">
+                      {avgGamesPerActiveDay}
+                    </span>
                   </div>
                   <div className="bg-surface-container-low rounded-lg flex-1 border border-outline-variant/30 flex flex-col justify-center items-center py-2">
-                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">Days Since Last Activity</span>
+                    <span className="text-xs text-on-surface-variant font-bold uppercase tracking-wide text-center">
+                      Days Since Last Activity
+                    </span>
                     {daysSinceLastActivity === 0 ? (
-                      <span className="font-headline font-bold text-xl mt-1 uppercase tracking-wide">Active Today</span>
+                      <span className="font-headline font-bold text-xl mt-1 uppercase tracking-wide">
+                        Active Today
+                      </span>
                     ) : (
-                      <span className="font-headline font-bold text-3xl text-on-surface mt-1">{daysSinceLastActivity}</span>
+                      <span className="font-headline font-bold text-3xl text-on-surface mt-1">
+                        {daysSinceLastActivity}
+                      </span>
                     )}
                   </div>
                 </div>
               </div>
-
             </div>
 
             {/* 4. MASTERIES --- */}
             <div className="glass-panel ghost-border rounded-xl p-6">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Masteries</h2>
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">
+                Masteries
+              </h2>
               <div className="flex flex-col gap-3">
                 {masteries.map((champ, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer">
-                    <img src={champ.img} className="w-12 h-12 rounded-md" alt={champ.name} />
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer"
+                  >
+                    <img
+                      src={champ.img}
+                      className="w-12 h-12 rounded-md"
+                      alt={champ.name}
+                    />
                     <div className="flex-1 flex flex-col justify-between">
                       <div className="flex justify-between items-center">
-                        <p className="font-bold text-on-surface text-base">{champ.name}</p>
-                        <span className="text-xs font-bold text-primary bg-primary/8 py-0.5 rounded w-12 flex justify-center shrink-0">Lvl {champ.level}</span>
+                        <p className="font-bold text-on-surface text-base">
+                          {champ.name}
+                        </p>
+                        <span className="text-xs font-bold text-primary bg-primary/8 py-0.5 rounded w-12 flex justify-center shrink-0">
+                          Lvl {champ.level}
+                        </span>
                       </div>
-                      <p className="text-xs text-on-surface-variant">{champ.points} PTS</p>
+                      <p className="text-xs text-on-surface-variant">
+                        {champ.points} PTS
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -495,40 +624,73 @@ export default function PlayerProfile() {
 
             {/* 5. TOP DUO PLAYERS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Duo Players <span className="text-sm font-normal text-outline">(recent 20 matches)</span></h2>
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">
+                Duo Players{" "}
+                <span className="text-sm font-normal text-outline">
+                  (recent 20 matches)
+                </span>
+              </h2>
               <div className="flex flex-col gap-3">
                 {topDuoPlayers.length > 0 ? (
                   topDuoPlayers.map((player, i) => (
-                    <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer">
-                      <img src={player.icon} className="w-12 h-12 rounded-md object-cover" alt={player.name} />
+                    <div
+                      key={i}
+                      className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer"
+                    >
+                      <img
+                        src={player.icon}
+                        className="w-12 h-12 rounded-md object-cover"
+                        alt={player.name}
+                      />
                       <div className="flex-1">
-                        <p className="font-bold text-on-surface text-base">{player.name}</p>
+                        <p className="font-bold text-on-surface text-base">
+                          {player.name}
+                        </p>
                         <p className="text-xs text-on-surface-variant">
-                          {((player.wins / player.total) * 100).toFixed(0)}% WR • {player.wins}W / {player.losses}L • {player.wins + player.losses} Matches
+                          {((player.wins / player.total) * 100).toFixed(0)}% WR
+                          • {player.wins}W / {player.losses}L •{" "}
+                          {player.wins + player.losses} Matches
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-outline p-3">No duo teammates found in recent matches.</p>
+                  <p className="text-sm text-outline p-3">
+                    No duo teammates found in recent matches.
+                  </p>
                 )}
               </div>
             </div>
 
             {/* 6. PINGS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">Communication <span className="text-sm font-normal text-outline">(Avg / Match)</span></h2>
+              <h2 className="font-headline font-bold text-xl text-on-surface mb-4">
+                Communication{" "}
+                <span className="text-sm font-normal text-outline">
+                  (Avg / Match)
+                </span>
+              </h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {mockPings.map((ping, i) => (
-                  <div key={i} className="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 text-center">
-                    <img src={ping.icon} alt={`${ping.name} ping icon`} className="w-10 h-10 mb-2 opacity-90 drop-shadow-md" />
-                    <span className="font-bold text-on-surface text-xl">{ping.value}</span>
-                    <span className="text-xs text-on-surface-variant mt-1">{ping.name}</span>
+                  <div
+                    key={i}
+                    className="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-lg border border-outline-variant/30 text-center"
+                  >
+                    <img
+                      src={ping.icon}
+                      alt={`${ping.name} ping icon`}
+                      className="w-10 h-10 mb-2 opacity-90 drop-shadow-md"
+                    />
+                    <span className="font-bold text-on-surface text-xl">
+                      {ping.value}
+                    </span>
+                    <span className="text-xs text-on-surface-variant mt-1">
+                      {ping.name}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
-
           </div>
         </div>
 
@@ -537,125 +699,179 @@ export default function PlayerProfile() {
         {/* ========================================== */}
         <div className="flex flex-col gap-4 w-full">
           <div className="flex justify-between items-end mb-2 bg-surface/90 backdrop-blur-md pb-2 z-10">
-            <h2 className="font-headline font-bold text-xl text-on-surface">Recent Matches</h2>
-            <span className="text-xs text-outline font-bold tracking-widest bg-surface-container px-2 py-1 rounded">20 GAMES</span>
+            <h2 className="font-headline font-bold text-xl text-on-surface">
+              Recent Matches
+            </h2>
+            <span className="text-xs text-outline font-bold tracking-widest bg-surface-container px-2 py-1 rounded">
+              20 GAMES
+            </span>
           </div>
 
           <div className="flex flex-col gap-3">
-            {(MatchesCD.length > 0 ? MatchesCD : mockMatches).map((match, idx) => (
-              <div
-                key={idx}
-                className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer 
-                   ${match.win ? 'border-l-4 border-l-primary/80 bg-primary/5' : 'border-l-4 border-l-error/80 bg-error/5'}`}
-              >
-                {/* Match Info */}
-                <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
-                  <p className={`text-sm font-bold ${match.win ? 'text-primary' : 'text-error'}`}>
-                    {match.win ? 'VICTORY' : 'DEFEAT'}
-                  </p>
-                  <p className="text-xs text-outline mt-0.5">{match.type}</p>
-                  <div className="w-12 md:w-full h-px bg-outline-variant/30 my-2"></div>
-                  <p className="text-xs text-outline">{match.duration} min</p>
-                  <p className="text-xs text-outline">{match.date}</p>
-                </div>
+            {(MatchesCD.length > 0 ? MatchesCD : mockMatches).map(
+              (match, idx) => (
+                <div
+                  key={idx}
+                  onClick={() => navigate(`/match/${match.matchId}`)}
+                  className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer 
+                   ${match.win ? "border-l-4 border-l-primary/80 bg-primary/5" : "border-l-4 border-l-error/80 bg-error/5"}`}
+                >
+                  {/* Match Info */}
+                  <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
+                    <p
+                      className={`text-sm font-bold ${match.win ? "text-primary" : "text-error"}`}
+                    >
+                      {match.win ? "VICTORY" : "DEFEAT"}
+                    </p>
+                    <p className="text-xs text-outline mt-0.5">{match.type}</p>
+                    <div className="w-12 md:w-full h-px bg-outline-variant/30 my-2"></div>
+                    <p className="text-xs text-outline">{match.duration} min</p>
+                    <p className="text-xs text-outline">{match.date}</p>
+                  </div>
 
-                {/* Summoners & Champ Icon */}
-                <div className="flex items-center gap-2 shrink-0">
-                  {/* Summoner Spells Placeholders */}
-                  <div className="flex flex-col gap-1">
-                    <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
-                      <img src={match.summoners[0]} />
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                        {match.summonersNames[0]}
+                  {/* Summoners & Champ Icon */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    {/* Summoner Spells Placeholders */}
+                    <div className="flex flex-col gap-1">
+                      <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                        <img src={match.summoners[0]} />
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          {match.summonersNames[0]}
+                        </div>
+                      </div>
+                      <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                        <img src={match.summoners[1]} />
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          {match.summonersNames[1]}
+                        </div>
                       </div>
                     </div>
-                    <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
-                      <img src={match.summoners[1]} />
-                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                        {match.summonersNames[1]}
+                    {/* Champ Icon */}
+                    <div className="relative">
+                      <img
+                        src={match.champimageLink}
+                        className="w-16 h-16 rounded-full border-2 border-surface-container shadow-sm"
+                        alt={match.champ}
+                      />
+                      <div className="absolute -bottom-1 -right-1 bg-surface-container-highest rounded-full w-6 h-6 flex items-center justify-center text-[10px] border border-outline/30 font-bold">
+                        {match.champLevel || 18}
                       </div>
-
+                    </div>
+                    {/* Rune Display  */}
+                    <div className="flex flex-col gap-1">
+                      <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                        <img
+                          src={match.mainRune}
+                          className="w-full h-full object-cover transform rounded-full"
+                        />
+                        {match.mainRuneName && (
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            {match.mainRuneName}
+                          </div>
+                        )}
+                      </div>
+                      <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                        <img
+                          src={match.secondaryRune}
+                          className="w-full h-full object-cover p-1 rounded-full"
+                        />
+                        {match.secondaryRuneName && (
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            {match.secondaryRuneName}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  {/* Champ Icon */}
-                  <div className="relative">
-                    <img src={match.champimageLink} className="w-16 h-16 rounded-full border-2 border-surface-container shadow-sm" alt={match.champ} />
-                    <div className="absolute -bottom-1 -right-1 bg-surface-container-highest rounded-full w-6 h-6 flex items-center justify-center text-[10px] border border-outline/30 font-bold">{match.champLevel || 18}</div>
-                  </div>
-                  {/* Rune Display  */}
-                  <div className="flex flex-col gap-1">
-                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
-                      <img src={match.mainRune} className="w-full h-full object-cover transform rounded-full" />
-                      {match.mainRuneName && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                          {match.mainRuneName}
-                        </div>
-                      )}
-                    </div>
-                    <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
-                      <img src={match.secondaryRune} className="w-full h-full object-cover p-1 rounded-full" />
-                      {match.secondaryRuneName && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                          {match.secondaryRuneName}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
 
-                {/* KDA */}
-                <div className="flex flex-col items-center md:items-center py-2 md:py-0 w-full md:w-32 shrink-0">
-                  <p className="font-headline font-bold text-xl tracking-wide text-on-surface">
-                    {match.k} <span className="text-on-surface-variant font-normal">/</span> <span className="text-error">{match.d}</span> <span className="text-on-surface-variant font-normal">/</span> {match.a}
-                  </p>
-                  <p className="text-xs text-outline font-bold mt-1">
-                    {match.kda !== undefined && match.kda !== null
-                      ? parseFloat(match.kda) === 0
-                        ? "0.00 KDA"
-                        : `${parseFloat(match.kda).toFixed(2)} KDA`
-                      : "KDA"}
-                  </p>
-                  {match.duration && parseInt(match.duration.split(':')[0], 10) < 5 && (
-                    <span className="mt-1 px-2 py-0.5 bg-secondary text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
-                      Remake
-                    </span>
-                  )}
-                </div>
-
-                {/* Items Grid */}
-                <div className="grid grid-cols-3 gap-1 w-max mx-auto md:ml-auto md:mx-0">
-                  {match.items ? match.items.map((itemImg, i) => (
-                    <div key={i} className="group relative w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner align-middle flex items-center justify-center">
-                      {itemImg && (
-                        <>
-                          <img src={itemImg} alt="item" className="w-full h-full object-cover rounded-md" />
-                          {/* Hover Tooltip */}
-                          {match.itemsNames && match.itemsNames[i] && (
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                              {match.itemsNames[i]}
-                            </div>
-                          )}
-                        </>
+                  {/* KDA */}
+                  <div className="flex flex-col items-center md:items-center py-2 md:py-0 w-full md:w-32 shrink-0">
+                    <p className="font-headline font-bold text-xl tracking-wide text-on-surface">
+                      {match.k}{" "}
+                      <span className="text-on-surface-variant font-normal">
+                        /
+                      </span>{" "}
+                      <span className="text-error">{match.d}</span>{" "}
+                      <span className="text-on-surface-variant font-normal">
+                        /
+                      </span>{" "}
+                      {match.a}
+                    </p>
+                    <p className="text-xs text-outline font-bold mt-1">
+                      {match.kda !== undefined && match.kda !== null
+                        ? parseFloat(match.kda) === 0
+                          ? "0.00 KDA"
+                          : `${parseFloat(match.kda).toFixed(2)} KDA`
+                        : "KDA"}
+                    </p>
+                    {match.duration &&
+                      parseInt(match.duration.split(":")[0], 10) < 5 && (
+                        <span className="mt-1 px-2 py-0.5 bg-secondary text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
+                          Remake
+                        </span>
                       )}
-                    </div>
-                  )) : [...Array(6)].map((_, i) => (
-                    <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"></div>
-                  ))}
+                  </div>
+
+                  {/* Items Grid */}
+                  <div className="grid grid-cols-3 gap-1 w-max mx-auto md:ml-auto md:mx-0">
+                    {match.items
+                      ? match.items.map((itemImg, i) => (
+                          <div
+                            key={i}
+                            className="group relative w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner align-middle flex items-center justify-center"
+                          >
+                            {itemImg && (
+                              <>
+                                <img
+                                  src={itemImg}
+                                  alt="item"
+                                  className="w-full h-full object-cover rounded-md"
+                                />
+                                {/* Hover Tooltip */}
+                                {match.itemsNames && match.itemsNames[i] && (
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                    {match.itemsNames[i]}
+                                  </div>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        ))
+                      : [...Array(6)].map((_, i) => (
+                          <div
+                            key={i}
+                            className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"
+                          ></div>
+                        ))}
+                  </div>
+                  <span className="material-symbols-outlined color-primary">
+                    keyboard_arrow_right
+                  </span>
                 </div>
-              </div>
-            ))}
+              ),
+            )}
           </div>
         </div>
-
       </div>
-      
+
       {/* Back to Top Button */}
-      <button 
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="mt-12 px-6 py-2 bg-surface-container-highest hover:bg-primary/20 text-on-surface hover:text-primary rounded-full transition-all border border-outline-variant/30 flex items-center gap-2 font-bold text-sm"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="w-4 h-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M4.5 15.75l7.5-7.5 7.5 7.5"
+          />
         </svg>
         BACK TO TOP
       </button>

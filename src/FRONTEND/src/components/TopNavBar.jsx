@@ -15,7 +15,7 @@ export default function TopNavBar() {
               `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
                 isActive
                   ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-[#a8acab] hover:text-[#53eede]'
+                  : 'text-on-surface-variant hover:text-[#53eede]'
               }`
             }
           >
@@ -28,7 +28,7 @@ export default function TopNavBar() {
               `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
                   ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-[#a8acab] hover:text-[#53eede]'
+                  : 'text-on-surface-variant hover:text-[#53eede]'
               }`
             }
           >
@@ -41,7 +41,7 @@ export default function TopNavBar() {
               `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
                   ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-[#a8acab] hover:text-[#53eede]'
+                  : 'text-on-surface-variant hover:text-[#53eede]'
               }`
             }
           >
@@ -50,10 +50,10 @@ export default function TopNavBar() {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <span className="material-symbols-outlined text-[#a8acab] cursor-pointer hover:text-[#53eede] transition-colors">
+        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-[#53eede] transition-colors">
           notifications
         </span>
-        <span className="material-symbols-outlined text-[#a8acab] cursor-pointer hover:text-[#53eede] transition-colors">
+        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-[#53eede] transition-colors">
           settings
         </span>
         <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline px-5 py-2 text-sm rounded-md flex items-center justify-center gap-2 active:scale-95">

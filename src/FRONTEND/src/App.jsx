@@ -1,6 +1,7 @@
 import TopNavBar from './components/TopNavBar';
 import Home from './pages/Home';
 import TierList from './pages/TierList';
+import Match from './pages/Match';
 import PlayerProfile from './pages/PlayerProfile';
 import { Routes, Route } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/tier-list" element={<TierList />} />
         <Route path="/player/:region/:riotId" element={<PlayerProfile />} />
+        <Route path='/match/:matchId' element={<Match />} />
       </Routes>
     </>
   );
