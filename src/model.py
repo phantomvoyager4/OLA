@@ -510,8 +510,3 @@ def summarizer(input: list):
             "retreatPings": round(retreat_sum / count, 2)
         }
     }
-    
-    
-class Fetcher_Delayed:
-    def __init__(self, puuid):
-        self.puuid = puuid
