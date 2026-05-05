@@ -512,3 +512,6 @@ def summarizer(input: list):
     }
     
     
+class Fetcher_Delayed:
+    def __init__(self, puuid):
+        self.puuid = puuid
