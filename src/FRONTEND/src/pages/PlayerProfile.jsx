@@ -610,7 +610,7 @@ export default function PlayerProfile() {
                           {champ.name}
                         </p>
                         <span className="text-xs font-bold text-primary bg-primary/8 py-0.5 rounded w-12 flex justify-center shrink-0">
-                          Lvl {champ.level}
+                           {champ.level} lvl
                         </span>
                       </div>
                       <p className="text-xs text-on-surface-variant">
@@ -719,7 +719,7 @@ export default function PlayerProfile() {
                   {/* Match Info */}
                   <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
                     <p
-                      className={`text-sm font-bold ${match.win ? "text-primary" : "text-error"}`}
+                      className={`text-sm font-bold ${match.win ? "text-secondary" : "text-error"}`}
                     >
                       {match.win ? "VICTORY" : "DEFEAT"}
                     </p>

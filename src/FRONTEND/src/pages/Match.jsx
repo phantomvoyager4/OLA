@@ -67,7 +67,7 @@ export default function Match() {
         {/* Top Summary Banner */}
         <div className={`glass-panel ghost-border rounded-xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 ${matchInfo.result === 'Victory' ? 'bg-gradient-to-r from-blue-900/40 via-surface to-surface' : 'bg-gradient-to-r from-red-900/40 via-surface to-surface'}`}>
           <div className="flex flex-col items-center md:items-start gap-1 z-10">
-            <h1 className={`text-4xl lg:text-5xl font-headline font-bold uppercase drop-shadow-lg ${matchInfo.result === 'Victory' ? 'text-blue-400' : 'text-red-400'}`}>
+            <h1 className={`text-4xl lg:text-5xl font-headline font-bold uppercase drop-shadow-lg ${matchInfo.result === 'Victory' ? 'text-secondary' : 'text-red-400'}`}>
               {matchInfo.result}
             </h1>
             <p className="text-xl text-on-surface-variant font-body">

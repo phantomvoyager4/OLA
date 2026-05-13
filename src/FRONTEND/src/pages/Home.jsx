@@ -25,16 +25,16 @@ export default function Home() {
       <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-200 h-200 rounded-full bg-primary/8 blur-[120px]"></div>
+          <div className="w-200 h-200 rounded-full bg-secondary blur-[120px]"></div>
         </div>
 
         {/* Search Section (The Core) */}
         <div className="w-full max-w-4xl px-6 relative z-10 text-center flex flex-col gap-12">
           <div className="space-y-4">
-            <h1 className="font-headline text-5xl md:text-7xl font-bold headline-tracking text-on-surface">
-              OPEN LEAGUE <span className="text-primary">ANALYZER</span>
+            <h1 className="font-headline text-5xl md:text-7xl font-bold headline-tracking text-text-home">
+              OPEN LEAGUE <span className="text-title-text">ANALYZER</span>
             </h1>
-            <p className="font-body text-on-surface-variant text-lg md:text-xl max-w-2xl mx-auto">
+            <p className="font-body text-text-home text-lg md:text-xl max-w-2xl mx-auto">
               Precise data analytics for the modern summoner. Track performance,
               analyze metrics, and forge your legacy.
             </p>

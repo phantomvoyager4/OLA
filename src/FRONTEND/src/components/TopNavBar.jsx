@@ -4,7 +4,7 @@ export default function TopNavBar() {
   return (
     <nav className="w-full h-16 bg-[#0b0f0f] flex justify-between items-center px-8 fixed top-0 z-50">
       <div className="flex items-center gap-8">
-        <Link to="/" className="text-2xl font-bold tracking-tight text-[#53eede] font-['Space_Grotesk']">
+        <Link to="/" className="text-2xl font-bold tracking-tight text-secondary font-['Space_Grotesk']">
           OLA
         </Link>
         <div className="hidden md:flex gap-6 items-center h-full">
@@ -14,8 +14,8 @@ export default function TopNavBar() {
             className={({ isActive }) =>
               `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
                 isActive
-                  ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-on-surface-variant hover:text-[#53eede]'
+                  ? 'text-secondary border-b-2 border-secondary pb-1'
+                  : 'text-on-surface-variant hover:text-secondary'
               }`
             }
           >
@@ -27,8 +27,8 @@ export default function TopNavBar() {
             className={({ isActive }) =>
               `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
-                  ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-on-surface-variant hover:text-[#53eede]'
+                  ? 'text-[#53eede] border-b-2 border-secondary pb-1'
+                  : 'text-on-surface-variant hover:text-secondary'
               }`
             }
           >
@@ -40,8 +40,8 @@ export default function TopNavBar() {
             className={({ isActive }) =>
               `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
                 isActive
-                  ? 'text-[#53eede] border-b-2 border-[#53eede] pb-1'
-                  : 'text-on-surface-variant hover:text-[#53eede]'
+                  ? 'text-[#53eede] border-b-2 border-secondary pb-1'
+                  : 'text-on-surface-variant hover:text-secondary'
               }`
             }
           >
@@ -50,10 +50,10 @@ export default function TopNavBar() {
         </div>
       </div>
       <div className="flex items-center gap-4">
-        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-[#53eede] transition-colors">
+        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">
           notifications
         </span>
-        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-[#53eede] transition-colors">
+        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">
           settings
         </span>
         <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline px-5 py-2 text-sm rounded-md flex items-center justify-center gap-2 active:scale-95">
