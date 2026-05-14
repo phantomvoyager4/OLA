@@ -1,0 +1,3 @@
+- zmienić kolor view all
+- 20 matches przystosować
+- gradient w dół
