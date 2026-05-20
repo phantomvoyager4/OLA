@@ -731,21 +731,6 @@ export default function PlayerProfile() {
 
                   {/* Summoners & Champ Icon */}
                   <div className="flex items-center gap-2 shrink-0">
-                    {/* Summoner Spells Placeholders */}
-                    <div className="flex flex-col gap-1">
-                      <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
-                        <img src={match.summoners[0]} />
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                          {match.summonersNames[0]}
-                        </div>
-                      </div>
-                      <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
-                        <img src={match.summoners[1]} />
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                          {match.summonersNames[1]}
-                        </div>
-                      </div>
-                    </div>
                     {/* Champ Icon */}
                     <div className="relative">
                       <img
@@ -757,29 +742,45 @@ export default function PlayerProfile() {
                         {match.champLevel || 18}
                       </div>
                     </div>
-                    {/* Rune Display  */}
-                    <div className="flex flex-col gap-1">
-                      <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
-                        <img
-                          src={match.mainRune}
-                          className="w-full h-full object-cover transform rounded-full"
-                        />
-                        {match.mainRuneName && (
+                    {/* Summs & Runes block */}
+                    <div className="flex gap-1 shrink-0">
+                      <div className="flex flex-col gap-1">
+                        <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                          <img src={match.summoners[0]} className="w-full h-full rounded-md" />
                           <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                            {match.mainRuneName}
+                            {match.summonersNames[0]}
                           </div>
-                        )}
+                        </div>
+                        <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
+                          <img src={match.summoners[1]} className="w-full h-full rounded-md" />
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            {match.summonersNames[1]}
+                          </div>
+                        </div>
                       </div>
-                      <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
-                        <img
-                          src={match.secondaryRune}
-                          className="w-full h-full object-cover p-1 rounded-full"
-                        />
-                        {match.secondaryRuneName && (
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
-                            {match.secondaryRuneName}
-                          </div>
-                        )}
+                      <div className="flex flex-col gap-1">
+                        <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                          <img
+                            src={match.mainRune}
+                            className="w-full h-full object-cover transform rounded-full"
+                          />
+                          {match.mainRuneName && (
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                              {match.mainRuneName}
+                            </div>
+                          )}
+                        </div>
+                        <div className="group relative w-7 h-7 bg-black rounded-full border border-outline-variant/20 shadow-inner">
+                          <img
+                            src={match.secondaryRune}
+                            className="w-full h-full object-cover p-1 rounded-full"
+                          />
+                          {match.secondaryRuneName && (
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                              {match.secondaryRuneName}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

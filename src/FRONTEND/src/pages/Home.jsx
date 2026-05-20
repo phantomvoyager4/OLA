@@ -25,7 +25,7 @@ export default function Home() {
       <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-200 h-200 rounded-full bg-secondary blur-[120px]"></div>
+          <div className="w-200 h-200 rounded-full bg-secondary blur-[100px] translate-y-[10%]"></div>
         </div>
 
         {/* Search Section (The Core) */}
@@ -106,7 +106,7 @@ export default function Home() {
             <h2 className="font-headline text-sm font-bold text-on-surface tracking-widest">
               Popular Players 
             </h2>
-            <button className="text-primary text-xs font-bold tracking-widest hover:underline transition-all cursor-pointer">
+            <button className="text-on-surface text-xs font-bold tracking-widest hover:underline transition-all cursor-pointer">
               VIEW ALL
             </button>
           </div>

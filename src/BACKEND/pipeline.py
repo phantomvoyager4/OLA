@@ -21,7 +21,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         if not api_key:
             raise ValueError("Missing RIOT_API_KEY")
 
-        project_root = Path(__file__).resolve().parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent
         data_dir = project_root / "data"
         os.makedirs(data_dir, exist_ok=True)
 
@@ -41,7 +41,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
             print(f"Matches raw data fetched {round(time.time() - start_timer,2)}")
 
         # Ensure we are looking in the project root correctly
-        project_root = Path(__file__).resolve().parent.parent
+        project_root = Path(__file__).resolve().parent.parent.parent
         data_dir = project_root / "data"
 
         mapping_data = ['runes', 'summoners', 'items', 'icons', 'champions']
@@ -129,7 +129,7 @@ def load_api_key():
     """
     Load api key from environment folder
     """
-    project_root = Path(__file__).resolve().parent.parent
+    project_root = Path(__file__).resolve().parent.parent.parent
     env_candidates = [
         project_root / ".env",
         project_root / "venv" / ".env",

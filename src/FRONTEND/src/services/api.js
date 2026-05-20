@@ -38,3 +38,20 @@ export const getPlayerData = async (region, nickname, tag, options = { save: fal
   
   return data;
 };
+
+/**
+ * Retrieves a specific match from the cached player data.
+ * Useful for displaying match details without refetching the API.
+ * 
+ * @param {string} matchId - The match ID to look for
+ * @returns {Object|null} The match data if found, null otherwise
+ */
+export const getCachedMatch = (matchId) => {
+  for (const data of apiCache.values()) {
+    if (Array.isArray(data)) {
+      const match = data.find(m => m.match_id === matchId || m.metadata?.matchId === matchId);
+      if (match) return match;
+    }
+  }
+  return null;
+};
