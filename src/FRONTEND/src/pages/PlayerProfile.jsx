@@ -432,7 +432,7 @@ export default function PlayerProfile() {
                 </div>
               </div>
               <div className="text-center md:text-right items-center">
-                <h2 className="font-headline font-bold text-3xl text-primary">
+                <h2 className={`font-headline font-bold text-3xl ${parseFloat(winrate) < 50 ? 'text-red-400' : 'text-green-400'}`}>
                   {winrate}
                 </h2>
                 {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
