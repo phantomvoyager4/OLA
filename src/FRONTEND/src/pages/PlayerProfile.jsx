@@ -807,7 +807,7 @@ export default function PlayerProfile() {
                     </p>
                     {match.duration &&
                       parseInt(match.duration.split(":")[0], 10) < 5 && (
-                        <span className="mt-1 px-2 py-0.5 bg-secondary text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
+                        <span className="mt-1 px-2 py-0.5 bg-red-400 text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
                           Remake
                         </span>
                       )}
