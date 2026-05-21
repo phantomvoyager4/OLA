@@ -3,28 +3,28 @@ import { useEffect, useState } from "react";
 import { getPlayerData } from "../services/api";
 import { Link, NavLink } from "react-router-dom";
 
-import noIcon from "../../../../data/static/icons/noicon.jpg";
+const noIcon = "/icons/noicon.jpg";
 
-import assistMeIcon from "../../../../data/static/pings/assistMePings.png";
-import allInIcon from "../../../../data/static/pings/allInPings.png";
-import enemyMissingIcon from "../../../../data/static/pings/enemyMissingPings.png";
-import enemyVisionIcon from "../../../../data/static/pings/enemyVisionPings.png";
-import needVisionIcon from "../../../../data/static/pings/needVisionPings.png";
-import onMyWayIcon from "../../../../data/static/pings/onMyWayPings.png";
-import pushIcon from "../../../../data/static/pings/pushPings.png";
-import retreatIcon from "../../../../data/static/pings/retreatPings.png";
+const assistMeIcon = "/pings/assistMePings.png";
+const allInIcon = "/pings/allInPings.png";
+const enemyMissingIcon = "/pings/enemyMissingPings.png";
+const enemyVisionIcon = "/pings/enemyVisionPings.png";
+const needVisionIcon = "/pings/needVisionPings.png";
+const onMyWayIcon = "/pings/onMyWayPings.png";
+const pushIcon = "/pings/pushPings.png";
+const retreatIcon = "/pings/retreatPings.png";
 
-import unrankedIcon from "../../../../data/static/tiers/unranked.png";
-import ironIcon from "../../../../data/static/tiers/iron.png";
-import bronzeIcon from "../../../../data/static/tiers/bronze.png";
-import silverIcon from "../../../../data/static/tiers/silver.png";
-import goldIcon from "../../../../data/static/tiers/gold.png";
-import platinumIcon from "../../../../data/static/tiers/platinum.png";
-import emeraldIcon from "../../../../data/static/tiers/emerald.png";
-import diamondIcon from "../../../../data/static/tiers/diamond.png";
-import masterIcon from "../../../../data/static/tiers/master.png";
-import grandmasterIcon from "../../../../data/static/tiers/grandmaster.png";
-import challengerIcon from "../../../../data/static/tiers/challenger.png";
+const unrankedIcon = "/tiers/unranked.png";
+const ironIcon = "/tiers/iron.png";
+const bronzeIcon = "/tiers/bronze.png";
+const silverIcon = "/tiers/silver.png";
+const goldIcon = "/tiers/gold.png";
+const platinumIcon = "/tiers/platinum.png";
+const emeraldIcon = "/tiers/emerald.png";
+const diamondIcon = "/tiers/diamond.png";
+const masterIcon = "/tiers/master.png";
+const grandmasterIcon = "/tiers/grandmaster.png";
+const challengerIcon = "/tiers/challenger.png";
 
 export default function PlayerProfile() {
   const { region, riotId } = useParams();

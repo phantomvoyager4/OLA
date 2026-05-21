@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: ./src/BACKEND/Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env 
+    volumes:
+      - ./data:/app/data
+
+  frontend:
+    build: ./src/FRONTEND
+    ports:
+    - "5173:5173"
+    stdin_open: true   # Zapobiega natychmiastowemu zamykaniu się kontenera Node w trybie dev
+    tty: true
+    depends_on:
+      - backend
+    volumes:
+      - ./data:/data

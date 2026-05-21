@@ -2,7 +2,7 @@ import time
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 
-from pipeline import pipeline, load_api_key
+from .pipeline import pipeline, load_api_key
 
 app = FastAPI()
 

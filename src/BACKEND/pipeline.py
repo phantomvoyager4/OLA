@@ -2,7 +2,7 @@ import os
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-from model import Caller, Player, Match, summarizer
+from .model import Caller, Player, Match, summarizer
 import time
 
 

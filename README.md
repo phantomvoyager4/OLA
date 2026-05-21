@@ -4,35 +4,35 @@
 <img src="https://github.com/phantomvoyager4/OLA/blob/main/data/static/logo/ola%20logo.png" width='300'>
 </p>
 
-### This repository contains source code for OLA, open-source league of legends player performance analyzer.
+### This repository contains source code for OLA, open-source league of legends player performance analyzer. It contains frontend app (Vite + React) and backend app (Python FastAPI), contenerized via Docker.
 
 ## Tech stack
 - Backend: <b>Python</b> (<b>Fast Api</b>)
-- frontend: <b> Node.js + React </b>
+- Frontend: <b> Node.js + Vite + React </b>
+- Docker for correct accros-platform deployment
+
+## Prerequisites
+Make sure you have docker install on your computer: [Docker](https://www.docker.com/)
 
 
 ## Instruction
-<b>Before you start using this program, make sure you have python and all libraries from </b> `requirements.txt` <b> installed. </b>
-1. Go to [Riot Developer Portal](https://developer.riotgames.com/), log in and generate api key.
-2. From project root level, open terminal and write:
-```bash
-cd src
-python script.py 
+1. Go to Riot Developer Portal, log in and generate api key.
+2. Create `.env` file in root directory and insert your API key:
+```env
+RIOT_API_KEY=[YOUR_KEY]
 ```
-3. Insert your API key
-```bash
-# Sript will ask you for it:
-Insert your riot API key: [Your key here]
+3. Open terminal in project root directory and run:
+```env
+docker compose up --build
+# Add --build while running for the first time, later don't
 ```
-Once server will start up, it will automatically open a website for you to use
-4. Test it :)
-Here you can use UI to easily test the endpoint by providing your parameters:
-- `platform`: e.g., `EUNE`
-- `player_name`: e.g., `softmax`
-- `player_tag`: e.g., `EUNE1`
+This creates docker images for backend and frontend, which are then composed via `docker-compose.yml` file.
+
+4. Open frontend link: http://localhost:5173 and enjoy application. If you want to terminate application,  use `Ctrl + C` in docker cmd window.
 
 
-## What's next
+
+## What's next?
 1. ML model for player performance analysis.
 2. Champions tier list 
 
