@@ -37,6 +37,7 @@ def get_matches(
     platform: str, 
     save: bool = Query(False),
     count: int = Query(20, ge=1, le=100), # Query parameter for count with validation
+    start: int = Query(0, ge=0), # Query parameter for offset
 ):
     if not API_KEY:
         raise HTTPException(status_code=500, detail="API Key not configured on the server")
@@ -46,8 +47,9 @@ def get_matches(
         player_name=player_name, 
         player_tag=player_tag, 
         platform=platform, 
-        save = save,
-        count=count
+        save=save,
+        count=count,
+        start=start
     )
     
     if result is None:

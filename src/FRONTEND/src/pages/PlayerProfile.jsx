@@ -39,6 +39,9 @@ export default function PlayerProfile() {
   const [playerData, setPlayerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [extraDates, setExtraDates] = useState([]);
+  const [loadingExtra, setLoadingExtra] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,6 +64,58 @@ export default function PlayerProfile() {
       fetchData();
     }
   }, [region, nickname, tag]);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const fetchExtraGamesChucks = async () => {
+      setLoadingExtra(true);
+      
+      const CHUNK_SIZE = 10;
+      const CHUNKS_TO_FETCH = 4;
+      
+      for (let i = 0; i < CHUNKS_TO_FETCH; i++) {
+        if (isCancelled) break;
+        
+        try {
+          const currentStart = 20 + (i * CHUNK_SIZE);
+          
+          const extraData = await getPlayerData(region, nickname, tag, {
+            save: false,
+            count: CHUNK_SIZE,
+            start: currentStart
+          });
+          
+          if (!isCancelled && extraData && Array.isArray(extraData)) {
+            const newDates = [];
+            extraData.forEach((match) => {
+              if (match?.metadata?.gameDateDay) {
+                newDates.push(match.metadata.gameDateDay);
+              }
+            });
+            
+            // Append incrementally so the heatmap updates over time
+            setExtraDates(prev => [...prev, ...newDates]);
+          }
+        } catch (err) {
+          console.error(`Failed to fetch extra games chunk ${i}:`, err);
+          break; // Stop fetching further chunks if we hit a rate limit or error
+        }
+      }
+      
+      if (!isCancelled) {
+        setLoadingExtra(false);
+      }
+    };
+
+    if (playerData && Array.isArray(playerData) && playerData.length > 0 && extraDates.length === 0 && !loadingExtra) {
+      fetchExtraGamesChucks();
+    }
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [playerData, region, nickname, tag]);
 
   const ranks = [
     { name: "Unranked", icon: unrankedIcon },
@@ -293,6 +348,9 @@ export default function PlayerProfile() {
       }
     }
   }
+
+  // Combine with lazily loaded dates
+  dates = dates.concat(extraDates);
 
   // Generate activity heatmap data from actual matches dates
   const dateCounts = {};

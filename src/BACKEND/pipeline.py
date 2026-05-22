@@ -6,7 +6,7 @@ from .model import Caller, Player, Match, summarizer
 import time
 
 
-def pipeline(api_key, player_name, player_tag, platform, count, save):
+def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
     """
     Create Caller class instance with appropriate arguments -> 
     Fetch PUUID by username and tagline -> 
@@ -29,7 +29,7 @@ def pipeline(api_key, player_name, player_tag, platform, count, save):
         puuidme = usercall.get_puuid()
         print(f"Caller puuid fetched {round(time.time() - start_timer,2)}")
 
-        matches_id = usercall.last_matches_id_call(puuidme)
+        matches_id = usercall.last_matches_id_call(puuidme, start=start)
         if not isinstance(matches_id, list) or not matches_id:
             raise RuntimeError(f"No valid match IDs returned from Riot API: {matches_id}")
         else: print(f"Matches ID fetched {round(time.time() - start_timer,2)}")

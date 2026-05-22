@@ -13,13 +13,14 @@ const apiCache = window.__API_CACHE__ || (window.__API_CACHE__ = new Map());
  * @param {Object} options - Additional query parameters
  * @param {boolean} options.save - Whether to save the data on the backend
  * @param {number} options.count - Number of matches to fetch
+ * @param {number} options.start - Offset for matches to fetch
  * @returns {Promise<Object>} The player and matches data
  */
-export const getPlayerData = async (region, nickname, tag, options = { save: false, count: 20 }) => {
-  const { save, count } = options;
-  const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}`;
+export const getPlayerData = async (region, nickname, tag, options = { save: false, count: 20, start: 0 }) => {
+  const { save, count, start = 0 } = options;
+  const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}&start=${start}`;
   
-  // Return cached data if available (very helpful when saving files in Vite)
+  // Return cached data if available
   if (apiCache.has(url)) {
     console.log("Returning cached data for", url);
     return apiCache.get(url);

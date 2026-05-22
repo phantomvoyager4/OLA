@@ -91,16 +91,17 @@ class Caller:
             self.puuid = call.json()['puuid']
             return call.json()['puuid']
 
-    def last_matches_id_call(self, puuid): 
+    def last_matches_id_call(self, puuid, start=0): 
         """
         Fetch user last {count} matches ID
 
         Args:
         puuid - unique riot account ID obtained in get_puuid function
+        start - offset for match history
         """
         url = f'{self.url_base}/lol/match/v5/matches/by-puuid/{puuid}/ids'
         params = {
-            'start': 0,
+            'start': start,
             'count': self.count,
             'api_key': self.api_key,
             'queue': 420
@@ -118,12 +119,15 @@ class Caller:
         """
         
         matches_storage = {}
+        session = requests.Session()
+        adapter = requests.adapters.HTTPAdapter(pool_connections=12, pool_maxsize=12)
+        session.mount('https://', adapter)
         
         def fetch_match(match):
             url = f'{self.url_base}/lol/match/v5/matches/{match}'
             params = {'api_key': self.api_key}
             
-            response = requests.get(url, params)
+            response = session.get(url, params=params)
             
             # Handle rate limiting (HTTP 429 Too Many Requests)
             if response.status_code == 429:
