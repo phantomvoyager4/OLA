@@ -284,6 +284,13 @@ export default function PlayerProfile() {
             const getSummonerName = (index) =>
               summonersData[index]?.name || null;
 
+            const runesData = callerPlayer.runes || [];
+            const styles = runesData.filter(r => r.group === 'Style');
+            const primaryStyle = styles[0];
+            const secondaryStyle = styles[1];
+            // The main rune is the keystone from the primary style group
+            const mainRuneItem = runesData.find(r => r.runeIconLink && r.group === primaryStyle?.name) || runesData.find(r => r.runeIconLink && r.group !== 'Stat Perk') || runesData[5];
+
             const MatchCallerData = {
               matchId: match.match_id || match.metadata?.matchId,
               date: match.metadata.gameDateDay,
@@ -291,10 +298,10 @@ export default function PlayerProfile() {
                 typeof callerPlayer.win === "boolean" ? callerPlayer.win : true,
               champ: callerPlayer.championName,
               champimageLink: callerPlayer.championImageLink,
-              mainRune: callerPlayer.runes?.[5]?.runeIconLink,
-              mainRuneName: callerPlayer.runes?.[5]?.name,
-              secondaryRune: callerPlayer.runes?.[4]?.styleIconLink,
-              secondaryRuneName: callerPlayer.runes?.[4]?.name,
+              mainRune: mainRuneItem?.runeIconLink,
+              mainRuneName: mainRuneItem?.name,
+              secondaryRune: secondaryStyle?.styleIconLink || runesData[4]?.styleIconLink,
+              secondaryRuneName: secondaryStyle?.name || runesData[4]?.name,
               duration: match.metadata?.gameDuration_min
                 ? match.metadata.gameDuration_min.toFixed(2).replace(".", ":")
                 : "30:00",
@@ -823,7 +830,7 @@ export default function PlayerProfile() {
                             className="w-full h-full object-cover transform rounded-full"
                           />
                           {match.mainRuneName && (
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
                               {match.mainRuneName}
                             </div>
                           )}
@@ -834,7 +841,7 @@ export default function PlayerProfile() {
                             className="w-full h-full object-cover p-1 rounded-full"
                           />
                           {match.secondaryRuneName && (
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                               {match.secondaryRuneName}
                             </div>
                           )}
@@ -888,7 +895,7 @@ export default function PlayerProfile() {
                                 />
                                 {/* Hover Tooltip */}
                                 {match.itemsNames && match.itemsNames[i] && (
-                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                                     {match.itemsNames[i]}
                                   </div>
                                 )}
