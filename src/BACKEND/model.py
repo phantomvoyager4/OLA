@@ -12,7 +12,7 @@ class Caller:
     2. Fetch last {number} user matches ID
     3. Fetch last {number} user matches data and store it into a separate file / variable (TBD)
     """
-    def __init__(self, platform, api_key, player_name, player_tag, count):
+    def __init__(self, platform, api_key, player_name, player_tag, count:int):
         """
         Args:
         region - Regional Routing Value for player. Can be: europe, americas, asia, sea

@@ -20,3 +20,5 @@ services:
       - backend
     volumes:
       - ./data:/data
+      - ./src/FRONTEND:/app
+      - /app/node_modules
