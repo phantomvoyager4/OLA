@@ -43,6 +43,18 @@ export default function PlayerProfile() {
   const [extraDates, setExtraDates] = useState([]);
   const [loadingExtra, setLoadingExtra] = useState(false);
 
+  const handleDuoClick = (playerName) => {
+    if (!playerName || !playerName.includes('#')) return; 
+
+    const [nickname, tag] = playerName.split('#');
+    const cleanTag = tag.replace('#', '');
+    const cleanRegion = (region || 'EUW').replace(/\s+/g, '').toUpperCase();
+
+    navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
+  };
+
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -589,7 +601,7 @@ export default function PlayerProfile() {
                                 className={`group relative w-3 h-3 md:w-4 md:h-4 rounded-sm transition-all duration-200 hover:ring-1 hover:ring-primary hover:scale-110 hover:z-20 ${bgClass}`}
                               >
                                 {/* Custom Hover Tooltip */}
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col items-center w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:flex flex-col items-center w-max whitespace-nowrap bg-surface-container border border-outline-variant/30 py-1 px-2 rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                                   <span className="text-outline text-[10px] font-bold mb-0.5">
                                     {dateStr}
                                   </span>
@@ -700,7 +712,7 @@ export default function PlayerProfile() {
                   topDuoPlayers.map((player, i) => (
                     <div
                       key={i}
-                      className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer"
+                      className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer hover:bg-surface-container-high hover:border-primary/50"
                     >
                       <img
                         src={player.icon}
@@ -767,7 +779,7 @@ export default function PlayerProfile() {
             <h2 className="font-headline font-bold text-xl text-on-surface">
               Recent Matches
             </h2>
-            <span className="text-xs text-outline font-bold tracking-widest bg-surface-container px-2 py-1 rounded">
+            <span className="text-sm text-outline font-bold tracking-widest bg-surface-container px-2 py-1 rounded">
               20 GAMES
             </span>
           </div>
@@ -812,13 +824,13 @@ export default function PlayerProfile() {
                       <div className="flex flex-col gap-1">
                         <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
                           <img src={match.summoners[0]} className="w-full h-full rounded-md" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                             {match.summonersNames[0]}
                           </div>
                         </div>
                         <div className="group relative w-7 h-7 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner">
                           <img src={match.summoners[1]} className="w-full h-full rounded-md" />
-                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                             {match.summonersNames[1]}
                           </div>
                         </div>
@@ -830,7 +842,7 @@ export default function PlayerProfile() {
                             className="w-full h-full object-cover transform rounded-full"
                           />
                           {match.mainRuneName && (
-                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-[999] pointer-events-none">
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                               {match.mainRuneName}
                             </div>
                           )}
@@ -895,7 +907,7 @@ export default function PlayerProfile() {
                                 />
                                 {/* Hover Tooltip */}
                                 {match.itemsNames && match.itemsNames[i] && (
-                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-[120px] bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
+                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
                                     {match.itemsNames[i]}
                                   </div>
                                 )}

@@ -8,6 +8,22 @@ export default function Match() {
   const [viewMode, setViewMode] = useState('extended'); // 'extended' | 'compact'
   const [matchData, setMatchData] = useState(null);
 
+  const handleTeammatesClick = (playerName) => {
+    if (!playerName || !playerName.includes('#')) return; 
+    const [nickname, tag] = playerName.split('#');
+    const cleanTag = tag.replace('#', '');
+    
+    let extractedRegion = 'EUW';
+    if (matchData && matchData.region) {
+      extractedRegion = matchData.region;
+    } else if (matchId && matchId.includes('_')) {
+      extractedRegion = matchId.split('_')[0].replace(/[0-9]/g, ''); 
+    }
+
+    const cleanRegion = extractedRegion.replace(/\s+/g, '').toUpperCase();
+    navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
+  };
+
   useEffect(() => {
     // Attempt to load from cache
     const cachedData = getCachedMatch(matchId);
@@ -56,6 +72,7 @@ export default function Match() {
       csMin: p.cs_min?.toFixed(1) || 0,
       gold: p.goldEarned ? (p.goldEarned / 1000).toFixed(1) + 'k' : '0k',
       dmg: p.damagePerMinute ? ((p.damagePerMinute * durationMin) / 1000).toFixed(1) + 'k' : '-',
+      rawDmg: p.damagePerMinute ? p.damagePerMinute * durationMin : 0,
       kp: p.killParticipation ? p.killParticipation + '%' : '-',
       items: items,
       summs: (p.summoners || []).slice(0, 2).map(s => s?.image_path || null),
@@ -73,10 +90,12 @@ export default function Match() {
   const blueTeam = blueTeamRaw.map(formatPlayer);
   const redTeam = redTeamRaw.map(formatPlayer);
 
+  const maxDamage = Math.max(...blueTeam.map(p => p.rawDmg), ...redTeam.map(p => p.rawDmg), 1);
+
   return (
     <main className="min-h-screen pt-24 pb-12 flex flex-col items-center">
       {/* Container expanded to 1600px max-width to allow plenty of space */}
-      <div className="w-full max-w-[1600px] px-6 lg:px-8 flex flex-col gap-6">
+      <div className="w-full max-w-400 px-6 lg:px-8 flex flex-col gap-6">
         {/* Navigation / Header */}
         <div className="flex items-center justify-between w-full">
           <button 
@@ -106,7 +125,7 @@ export default function Match() {
         </div>
 
         {/* Top Summary Banner */}
-        <div className={`glass-panel ghost-border rounded-xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 ${matchInfo.result === 'Victory' ? 'bg-gradient-to-r from-blue-900/40 via-surface to-surface' : 'bg-gradient-to-r from-red-900/40 via-surface to-surface'}`}>
+        <div className={`glass-panel ghost-border rounded-xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6 ${matchInfo.result === 'Victory' ? 'bg-linear-to-r from-blue-900/40 via-surface to-surface' : 'bg-linear-to-r from-red-900/40 via-surface to-surface'}`}>
           <div className="flex flex-col items-center md:items-start gap-1 z-10">
             <h1 className={`text-4xl lg:text-5xl font-headline font-bold uppercase drop-shadow-lg ${matchInfo.result === 'Victory' ? 'text-secondary' : 'text-red-400'}`}>
               {matchInfo.result}
@@ -116,8 +135,8 @@ export default function Match() {
             </p>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-sm font-bold text-primary uppercase tracking-widest">{matchInfo.date}</p>
-            <p className="text-sm text-secondary mt-1 font-body break-all max-w-[200px] opacity-60">Match ID: {matchId}</p>
+            <p className="text-sm font-bold text-on-surface uppercase tracking-widest">{matchInfo.date}</p>
+            <p className="text-sm text-on-surface mt-1 font-body break-all max-w-50 opacity-60">Match ID: {matchId}</p>
           </div>
         </div>
 
@@ -126,7 +145,7 @@ export default function Match() {
           <div className="flex flex-col gap-8 w-full mt-2">
             
             {/* Blue Team Full Width */}
-            <div className="glass-panel ghost-border rounded-xl p-4 lg:p-6 flex flex-col">
+            <div className="glass-panel border border-blue-500/30 rounded-xl p-4 lg:p-6 flex flex-col">
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-blue-500/30">
                 <h2 className="text-2xl font-headline font-bold text-blue-400 uppercase tracking-widest">Blue Team</h2>
                 <span className={`text-sm font-bold px-4 py-1.5 rounded-sm uppercase tracking-wider ${blueTeam[0]?.win ? 'text-green-300 bg-green-900/50' : 'text-red-300 bg-red-900/50'}`}>
@@ -135,7 +154,7 @@ export default function Match() {
               </div>
               
               <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,_auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
                   <div className="text-center">Damage</div>
@@ -145,11 +164,10 @@ export default function Match() {
                 </div>
                 
                 {blueTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,_auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
+                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
                     {/* Player Info (Champ, Spells, Runes, Name) */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/30 overflow-hidden">
-                         <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
+                    <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/30 overflow-hidden">
+                         <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover"/>
                       </div>
                       {/* Summs & Runes block */}
                       <div className="flex gap-1 shrink-0">
@@ -167,22 +185,22 @@ export default function Match() {
                     
                     {/* KDA & KP */}
                     <div className="flex flex-col items-center justify-center text-center">
-                      <div className="font-mono text-sm tracking-tight font-bold text-on-surface">{player.kda}</div>
+                      <div className="font-mono text-[16px] tracking-tight font-bold text-on-surface">{player.kda}</div>
                       <div className="text-xs text-on-surface-variant/70 mt-0.5">KP: {player.kp}</div>
                     </div>
 
                     {/* Damage */}
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="text-sm font-bold text-on-surface">{player.dmg}</div>
+                    <div className="flex flex-col items-center gap-0.5 justify-center translate-y-[-12%]">
+                      <div className="text-[16px] font-bold text-on-surface">{player.dmg}</div>
                       <div className="w-16 h-1 mt-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
-                        <div className="h-full bg-red-400" style={{ width: '60%' }}></div>
+                        <div className="h-full bg-blue-400" style={{ width: `${(player.rawDmg / maxDamage) * 100}%` }}></div>
                       </div>
                     </div>
 
                     {/* CS */}
                     <div className="flex flex-col items-center justify-center text-center">
-                      <div className="text-sm text-on-surface-variant">{player.cs}</div>
-                      <div className="text-[10px] text-outline/60 mt-0.5">{player.csMin} / min</div>
+                      <div className="text-[16px] text-on-surface">{player.cs}</div>
+                      <div className="text-[12px] text-outline mt-0.5">{player.csMin} / min</div>
                     </div>
 
                     {/* Items Grid (6 slots + 1 trinket) */}
@@ -199,7 +217,7 @@ export default function Match() {
                     </div>
 
                     {/* Gold */}
-                    <div className="text-end text-sm text-secondary font-bold flex items-center justify-end gap-1">
+                    <div className="text-end text-sm text-on-surface font-bold flex items-center justify-end gap-1">
                       {player.gold}
                       <span className="material-symbols-outlined text-[14px] text-yellow-500">toll</span>
                     </div>
@@ -209,7 +227,7 @@ export default function Match() {
             </div>
 
             {/* Red Team Full Width */}
-            <div className="glass-panel ghost-border rounded-xl p-4 lg:p-6 flex flex-col">
+            <div className="glass-panel border border-red-500/30 rounded-xl p-4 lg:p-6 flex flex-col">
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-red-500/30">
                 <h2 className="text-2xl font-headline font-bold text-red-400 uppercase tracking-widest">Red Team</h2>
                 <span className={`text-sm font-bold px-4 py-1.5 rounded-sm uppercase tracking-wider ${redTeam[0]?.win ? 'text-green-300 bg-green-900/50' : 'text-red-300 bg-red-900/50'}`}>
@@ -218,7 +236,7 @@ export default function Match() {
               </div>
               
               <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,_auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
                   <div className="text-center">Damage</div>
@@ -228,10 +246,9 @@ export default function Match() {
                 </div>
                 
                 {redTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,_auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
+                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
                     {/* Player Info (Champ, Spells, Runes, Name) */}
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/30 overflow-hidden">
+                    <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/30 overflow-hidden">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
                       </div>
                       {/* Summs & Runes block */}
@@ -250,22 +267,22 @@ export default function Match() {
                     
                     {/* KDA & KP */}
                     <div className="flex flex-col items-center justify-center text-center">
-                      <div className="font-mono text-sm tracking-tight font-bold text-on-surface">{player.kda}</div>
+                      <div className="font-mono text-[16px] tracking-tight font-bold text-on-surface">{player.kda}</div>
                       <div className="text-xs text-on-surface-variant/70 mt-0.5">KP: {player.kp}</div>
                     </div>
 
                     {/* Damage */}
-                    <div className="flex flex-col items-center justify-center">
-                      <div className="text-sm font-bold text-on-surface">{player.dmg}</div>
+                    <div className="flex flex-col items-center gap-0.5 justify-center translate-y-[-12%]">
+                      <div className="text-[16px] font-bold text-on-surface">{player.dmg}</div>
                       <div className="w-16 h-1 mt-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
-                        <div className="h-full bg-red-400" style={{ width: '40%' }}></div>
+                        <div className="h-full bg-red-400" style={{ width: `${(player.rawDmg / maxDamage) * 100}%` }}></div>
                       </div>
                     </div>
 
                     {/* CS */}
                     <div className="flex flex-col items-center justify-center text-center">
-                      <div className="text-sm text-on-surface-variant">{player.cs}</div>
-                      <div className="text-[10px] text-outline/60 mt-0.5">{player.csMin} / min</div>
+                      <div className="text-[16px] text-on-surface">{player.cs}</div>
+                      <div className="text-[12px] text-outline mt-0.5">{player.csMin} / min</div>
                     </div>
 
                     {/* Items Grid (6 slots + 1 trinket) */}
@@ -282,7 +299,7 @@ export default function Match() {
                     </div>
 
                     {/* Gold */}
-                    <div className="text-end text-sm text-secondary font-bold flex items-center justify-end gap-1">
+                    <div className="text-end text-sm text-on-surface font-bold flex items-center justify-end gap-1">
                       {player.gold}
                       <span className="material-symbols-outlined text-[14px] text-yellow-500">toll</span>
                     </div>
@@ -296,7 +313,7 @@ export default function Match() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full mt-2">
             
             {/* Blue Team - Compact */}
-            <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col">
+            <div className="glass-panel border border-blue-500/30 rounded-xl p-6 flex flex-col">
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-blue-500/30">
                 <h2 className="text-2xl font-headline font-bold text-blue-400 uppercase tracking-wide">Blue Team</h2>
                 <span className={`text-sm font-bold px-3 py-1 rounded-full ${blueTeam[0]?.win ? 'text-green-300 bg-green-900/50' : 'text-red-300 bg-red-900/40'}`}>
@@ -315,7 +332,7 @@ export default function Match() {
                 
                 {blueTeam.map((player, idx) => (
                   <div key={idx} className="grid grid-cols-12 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
-                    <div className="col-span-4 flex items-center gap-3">
+                  <div className="col-span-4 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/20 overflow-hidden text-[10px] text-center font-bold">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
                       </div>
@@ -324,14 +341,14 @@ export default function Match() {
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
                     <div className="col-span-2 text-center text-sm font-bold text-blue-400">{player.dmg}</div>
                     <div className="col-span-1 text-center text-sm text-on-surface-variant">{player.cs}</div>
-                    <div className="col-span-2 text-end text-sm text-secondary font-bold">{player.gold}</div>
+                    <div className="col-span-2 text-end text-sm text-on-surface font-bold">{player.gold}</div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Red Team - Compact */}
-            <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col">
+            <div className="glass-panel border border-red-500/30 rounded-xl p-6 flex flex-col">
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-red-500/30">
                 <h2 className="text-2xl font-headline font-bold text-red-400 uppercase tracking-wide">Red Team</h2>
                 <span className={`text-sm font-bold px-3 py-1 rounded-full ${redTeam[0]?.win ? 'text-green-300 bg-green-900/50' : 'text-red-300 bg-red-900/40'}`}>
@@ -350,7 +367,7 @@ export default function Match() {
                 
                 {redTeam.map((player, idx) => (
                   <div key={idx} className="grid grid-cols-12 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
-                    <div className="col-span-4 flex items-center gap-3">
+                    <div className="col-span-4 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/20 overflow-hidden text-[10px] text-center font-bold">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
                       </div>
@@ -359,7 +376,7 @@ export default function Match() {
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
                     <div className="col-span-2 text-center text-sm font-bold text-red-400">{player.dmg}</div>
                     <div className="col-span-1 text-center text-sm text-on-surface-variant">{player.cs}</div>
-                    <div className="col-span-2 text-end text-sm text-secondary font-bold">{player.gold}</div>
+                    <div className="col-span-2 text-end text-sm text-on-surface font-bold">{player.gold}</div>
                   </div>
                 ))}
               </div>

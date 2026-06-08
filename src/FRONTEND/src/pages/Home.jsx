@@ -25,7 +25,7 @@ export default function Home() {
       <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
         <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-200 h-200 rounded-full bg-secondary blur-[100px] translate-y-[10%]"></div>
+          <div className="w-250 h-250 rounded-full bg-secondary blur-[100px] translate-y-[5%]"></div>
         </div>
 
         {/* Search Section (The Core) */}
@@ -44,7 +44,7 @@ export default function Home() {
               {/* Nickname Input */}
               <div className="relative grow w-full">
                 <input
-                  className="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
+                  className="w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="Nickname"
                   type="text"
                   value={nickname}
@@ -54,7 +54,7 @@ export default function Home() {
               {/* Tag Input */}
               <div className="relative w-full md:w-40">
                 <input
-                  className="w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline text-sm"
+                  className="w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="#TAG"
                   type="text"
                   value={tag}
@@ -64,8 +64,7 @@ export default function Home() {
               {/* Region Select */}
               <div className="relative w-full md:w-80">
                 <select 
-                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer"
-                  value={region}
+                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer"                  value={region}
                   onChange={(e) => setRegion(e.target.value)}
                 >
                   <option value="EUW">EUW</option>

@@ -25,6 +25,7 @@ class Caller:
         # Map common server names to their routing values
         server_to_platform = {
             "BR": "BR1",
+            "EUN": "EUN1",
             "EUNE": "EUN1",
             "EUW": "EUW1",
             "JP": "JP1",
@@ -47,6 +48,7 @@ class Caller:
         self.platform = server_to_platform.get(upper_platform, upper_platform)
         
         platform_to_region = {
+            "EUN": "europe",
             "BR1": "americas",
             "LA1": "americas",
             "LA2": "americas",
