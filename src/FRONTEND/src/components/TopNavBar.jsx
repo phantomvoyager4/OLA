@@ -31,9 +31,9 @@ export default function TopNavBar() {
           <NavLink
             to="/tier-list"
             className={({ isActive }) =>
-              `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
+              `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
                 isActive
-                  ? "text-[#53eede] border-b-2 border-secondary pb-1"
+                  ? "text-secondary border-b-2 border-secondary pb-1"
                   : "text-on-surface-variant hover:text-secondary"
               }`
             }
@@ -44,9 +44,9 @@ export default function TopNavBar() {
           <NavLink
             to="/prediction"
             className={({ isActive }) =>
-              `font-['Space_Grotesk'] tracking-tighter sr-only transition-colors duration-300 ${
+              `font-['Space_Grotesk'] tracking-tighter transition-colors duration-300 ${
                 isActive
-                  ? "text-[#53eede] border-b-2 border-secondary pb-1"
+                  ? "text-secondary border-b-2 border-secondary pb-1"
                   : "text-on-surface-variant hover:text-secondary"
               }`
             }
