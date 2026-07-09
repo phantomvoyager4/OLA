@@ -161,16 +161,40 @@ class Caller:
         if response.status_code == 200:
             player_metadata = response.json()
             ranked_data = next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {})
+            if not ranked_data:
+                print(
+                    f"Warning: no RANKED_SOLO_5x5 entry found for puuid {self.puuid}. "
+                    "Using default zeroed metadata."
+                )
+                return {
+                    "queueType": "RANKED_SOLO_5x5",
+                    "wins": 0,
+                    "losses": 0,
+                    "winrate": "0.0%",
+                    "warning": "No ranked solo queue entry found",
+                }
+
             to_pop = ["veteran", "freshBlood", "hotStreak", "inactive", "puuid"]
             for n in to_pop:
-                ranked_data.pop(n)
+                ranked_data.pop(n, None)
+
             wins = ranked_data.get("wins", 0)
             losses = ranked_data.get("losses", 0)
             total_matches = wins + losses
-            ranked_data["winrate"] = f'{round((wins / total_matches) * 100, 2)}%'
+            ranked_data["winrate"] = f'{round((wins / total_matches) * 100, 2)}%' if total_matches else '0.0%'
 
         else:
-            return f'Error getting user metadata: {response.status_code}'
+            print(
+                f"Warning: metadata request failed for puuid {self.puuid} with status {response.status_code}. "
+                "Using default zeroed metadata."
+            )
+            return {
+                "error": f'Error getting user metadata: {response.status_code}',
+                "queueType": "RANKED_SOLO_5x5",
+                "wins": 0,
+                "losses": 0,
+                "winrate": "0.0%",
+            }
         return ranked_data
     
     def player_mastery(self, lookup_table):

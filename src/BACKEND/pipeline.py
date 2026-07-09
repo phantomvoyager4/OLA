@@ -56,8 +56,23 @@ def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
                 lookup_tables[name] = json.load(f)
                 
         # Fetch the metadata ONCE before the loop to save massive API time
-        caller_metadata = usercall.player_metadata_call()
-        caller_masteries = usercall.player_mastery(lookup_table=lookup_tables['champions'])
+        try:
+            caller_metadata = usercall.player_metadata_call()
+        except Exception as error:
+            print(
+                f"Pipeline warning: metadata fetch failed for {player_name}#{player_tag} "
+                f"({type(error).__name__}: {error}). Using empty metadata."
+            )
+            caller_metadata = {}
+
+        try:
+            caller_masteries = usercall.player_mastery(lookup_table=lookup_tables['champions'])
+        except Exception as error:
+            print(
+                f"Pipeline warning: mastery fetch failed for {player_name}#{player_tag} "
+                f"({type(error).__name__}: {error}). Using empty mastery list."
+            )
+            caller_masteries = []
         
         combined_records = []
 
