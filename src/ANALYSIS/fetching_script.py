@@ -9,17 +9,18 @@ if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
 from BACKEND.pipeline import load_api_key, pipeline
+from BACKEND.model import Caller
 
 api_key = load_api_key()
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DATA_DIR = SCRIPT_DIR / 'data'
-amount_of_matches = 2
+amount_of_matches = 100
 FETCH_COUNT = 1
 REQUEST_DELAY_SEC = 2
 
 
-def names_fetcher(fetcher):
+def names_fetcher(fetcher, target_tier=None):
     player_names = []
     for match in fetcher:
         if 'players' not in match:
@@ -28,9 +29,20 @@ def names_fetcher(fetcher):
             username = player.get('username', '')
             if '#' not in username:
                 continue
+
+            metadata = player.get('metadata') or {}
+            player_tier = metadata.get('tier')
+
+            if target_tier is not None and player_tier != target_tier:
+                continue
+
             summoner, tag = [part.strip() for part in username.split('#', 1)]
             if summoner and tag:
-                player_names.append({'summoner': summoner, 'tag': tag})
+                player_names.append({
+                    'summoner': summoner,
+                    'tag': tag,
+                    'tier': player_tier,
+                })
     return player_names
 
 
@@ -43,16 +55,30 @@ def safe_filename_part(value):
     return ''.join(character for character in text if character.isalnum() or character in ('_', '-')) or 'unknown'
 
 
-def get_caller_tier(fetcher):
-    for match in fetcher:
-        for player in match.get('players', []):
-            if not player.get('caller'):
-                continue
-            metadata = player.get('metadata') or {}
-            tier = metadata.get('tier')
-            if tier:
-                return tier
-    return None
+def lookup_player_tier(player_name: str, player_tag: str, platform: str):
+    try:
+        caller = Caller(
+            platform=platform,
+            api_key=api_key,
+            player_name=player_name,
+            player_tag=player_tag,
+            count=1,
+        )
+        puuid = caller.get_puuid()
+        if not puuid:
+            return None
+
+        metadata = caller.player_metadata_call()
+        if not metadata:
+            return None
+
+        return metadata.get('tier')
+    except Exception as error:
+        print(
+            f"Rank lookup failed for {player_name}#{player_tag} on {platform}: "
+            f"{type(error).__name__}: {error}"
+        )
+        return None
 
 
 def next_free_output_path(server: str, tier: str, matches_count: int) -> Path:
@@ -95,33 +121,19 @@ def crawl_matches(seed_player: dict):
     )
 
     while player_queue and len(data_full) < amount_of_matches:
-
         current_player = player_queue.popleft()
         print(
             f"Fetching matches for {current_player['summoner']}#{current_player['tag']} "
             f"({len(data_full)} matches collected)..."
         )
 
-        fetcher = pipeline(
-            api_key=api_key,
-            platform=current_player.get('platform', crawl_platform),
-            player_name=current_player['summoner'],
-            player_tag=current_player['tag'],
-            count=FETCH_COUNT,
-            save=0,
+        current_platform = current_player.get('platform', crawl_platform)
+        current_rank = lookup_player_tier(
+            current_player['summoner'],
+            current_player['tag'],
+            current_platform,
         )
 
-        if fetcher:
-            print(f"Fetch completed for {current_player['summoner']}#{current_player['tag']}.")
-
-        print(f"Waiting {REQUEST_DELAY_SEC} seconds before the next request...")
-        time.sleep(REQUEST_DELAY_SEC)
-
-        if not fetcher:
-            print(f"No match data returned for {current_player['summoner']}#{current_player['tag']}.")
-            continue
-
-        current_rank = get_caller_tier(fetcher)
         if current_rank is None:
             print(
                 f"Rank check for {current_player['summoner']}#{current_player['tag']}: NOT OK "
@@ -145,9 +157,28 @@ def crawl_matches(seed_player: dict):
             f"({current_rank})."
         )
 
+        fetcher = pipeline(
+            api_key=api_key,
+            platform=current_platform,
+            player_name=current_player['summoner'],
+            player_tag=current_player['tag'],
+            count=FETCH_COUNT,
+            save=0,
+        )
+
+        print(f"Waiting {REQUEST_DELAY_SEC} seconds before the next request...")
+        time.sleep(REQUEST_DELAY_SEC)
+
+        if not fetcher:
+            print(f"No match data returned for {current_player['summoner']}#{current_player['tag']}.")
+            continue
+
+        # Cache once so we can inspect rank and reuse the same data.
+        matches = list(fetcher)
+
         before_match_count = len(data_full)
 
-        for match in fetcher:
+        for match in matches:
             match_id = match.get('match_id')
             if not match_id or match_id in seen_matches:
                 continue
@@ -159,7 +190,8 @@ def crawl_matches(seed_player: dict):
         if added_matches:
             print(f"Added {added_matches} new matches. Total is now {len(data_full)}.")
 
-        new_players = names_fetcher(fetcher)
+        # Only queue players already matching the caller rank.
+        new_players = names_fetcher(matches, target_tier=fetching_rank)
         queued_players = 0
         for player in new_players:
             key = normalize_player(player)
@@ -195,7 +227,7 @@ def crawl_matches(seed_player: dict):
 
 
 if __name__ == '__main__':
-    seed_player = {'summoner': 'NattyNatt', 'tag': '2005', 'platform': 'EUW1'}
+    seed_player = {'summoner': '472372', 'tag': '5830', 'platform': 'EUW1'}
     data_full, crawl_platform, fetching_rank = crawl_matches(seed_player)
 
     if data_full:
@@ -208,9 +240,3 @@ if __name__ == '__main__':
         )
     else:
         print('No match data was collected.')
-
-
-
-
-
-
