@@ -15,9 +15,9 @@ api_key = load_api_key()
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 DATA_DIR = SCRIPT_DIR / 'data'
-amount_of_matches = 100
+amount_of_matches = 10
 FETCH_COUNT = 1
-REQUEST_DELAY_SEC = 2
+REQUEST_DELAY_SEC = 1.5
 
 
 def names_fetcher(fetcher, target_tier=None):
@@ -227,7 +227,7 @@ def crawl_matches(seed_player: dict):
 
 
 if __name__ == '__main__':
-    seed_player = {'summoner': '472372', 'tag': '5830', 'platform': 'EUW1'}
+    seed_player = {'summoner': 'EMPEROR AGURIN', 'tag': 'ROYAL', 'platform': 'EUW1'}
     data_full, crawl_platform, fetching_rank = crawl_matches(seed_player)
 
     if data_full:
