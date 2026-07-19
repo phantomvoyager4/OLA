@@ -3,9 +3,9 @@ import json
 from pathlib import Path
 from dotenv import load_dotenv
 try:
-    from .model import Caller, Player, Match, summarizer
+    from .model import Caller, Player, Match, summarizer, annotate_player_performance
 except ImportError:
-    from model import Caller, Player, Match, summarizer
+    from model import Caller, Player, Match, summarizer, annotate_player_performance
 import time
 
 
@@ -123,6 +123,9 @@ def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
             raise RuntimeError("No matched elements built.")
         else: 
             print(f"objects created sucessfuly :) \n Timer: {round(time.time() - start_timer,2)}")
+
+        combined_records = annotate_player_performance(combined_records)
+        print(combined_records)
         
         # Ensure data folder exists relative to project root
         example_data_dir = data_dir / "example_data"

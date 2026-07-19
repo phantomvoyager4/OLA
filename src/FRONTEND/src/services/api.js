@@ -1,4 +1,5 @@
 export const API_BASE_URL = '/api';
+const API_CACHE_VERSION = 'performance-metric-v1';
 
 // Cache to survive Vite HMR (Hot Module Replacement) during development
 // This prevents refetching data every time you save a file
@@ -18,7 +19,7 @@ const apiCache = window.__API_CACHE__ || (window.__API_CACHE__ = new Map());
  */
 export const getPlayerData = async (region, nickname, tag, options = { save: false, count: 20, start: 0 }) => {
   const { save, count, start = 0 } = options;
-  const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}&start=${start}`;
+  const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}&start=${start}&cacheVersion=${API_CACHE_VERSION}`;
   
   // Return cached data if available
   if (apiCache.has(url)) {

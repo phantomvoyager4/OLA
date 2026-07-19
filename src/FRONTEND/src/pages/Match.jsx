@@ -2,6 +2,19 @@
 import { useState, useEffect } from 'react';
 import { getCachedMatch } from '../services/api';
 
+const getPerformanceBadgeClass = (band) => {
+  switch (String(band || '').toLowerCase()) {
+    case 'elite':
+      return 'bg-amber-500/20 text-amber-300 border-amber-400/40';
+    case 'strong':
+      return 'bg-green-500/20 text-green-300 border-green-400/40';
+    case 'solid':
+      return 'bg-blue-500/20 text-blue-300 border-blue-400/40';
+    default:
+      return 'bg-red-500/20 text-red-300 border-red-400/40';
+  }
+};
+
 export default function Match() {
   const { matchId } = useParams();
   const navigate = useNavigate();
@@ -81,6 +94,8 @@ export default function Match() {
         p.runes?.[4]?.styleIconLink || null // Secondary Style Tree
       ],
       win: p.win,
+      performanceScore: p.performanceScore ?? p.performance_score ?? null,
+      performanceBand: p.performanceBand ?? p.performance_band ?? 'low',
     };
   };
 
@@ -154,9 +169,10 @@ export default function Match() {
               </div>
               
               <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
+                  <div className="text-center">Perf</div>
                   <div className="text-center">Damage</div>
                   <div className="text-center">CS</div>
                   <div className="text-center">Items</div>
@@ -164,7 +180,7 @@ export default function Match() {
                 </div>
                 
                 {blueTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
+                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
                     {/* Player Info (Champ, Spells, Runes, Name) */}
                     <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/30 overflow-hidden">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover"/>
@@ -187,6 +203,16 @@ export default function Match() {
                     <div className="flex flex-col items-center justify-center text-center">
                       <div className="font-mono text-[16px] tracking-tight font-bold text-on-surface">{player.kda}</div>
                       <div className="text-xs text-on-surface-variant/70 mt-0.5">KP: {player.kp}</div>
+                    </div>
+
+                    {/* Performance */}
+                    <div className="flex flex-col items-center justify-center text-center gap-1">
+                      <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
+                        {player.performanceScore !== null && player.performanceScore !== undefined
+                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          : '--'}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-widest text-outline">score</span>
                     </div>
 
                     {/* Damage */}
@@ -235,10 +261,11 @@ export default function Match() {
                 </span>
               </div>
               
-              <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                            <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
+                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
+                  <div className="text-center">Perf</div>
                   <div className="text-center">Damage</div>
                   <div className="text-center">CS</div>
                   <div className="text-center">Items</div>
@@ -246,7 +273,7 @@ export default function Match() {
                 </div>
                 
                 {redTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(5,auto)] xl:grid-cols-[20%_15%_10%_10%_25%_10%] gap-4 lg:gap-6 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
+                  <div key={idx} className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/10 hover:bg-surface-container transition-all">
                     {/* Player Info (Champ, Spells, Runes, Name) */}
                     <div className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      <div className="w-12 h-12 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/30 overflow-hidden">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
@@ -269,6 +296,16 @@ export default function Match() {
                     <div className="flex flex-col items-center justify-center text-center">
                       <div className="font-mono text-[16px] tracking-tight font-bold text-on-surface">{player.kda}</div>
                       <div className="text-xs text-on-surface-variant/70 mt-0.5">KP: {player.kp}</div>
+                    </div>
+
+                    {/* Performance */}
+                    <div className="flex flex-col items-center justify-center text-center gap-1">
+                      <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
+                        {player.performanceScore !== null && player.performanceScore !== undefined
+                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          : '--'}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-widest text-outline">score</span>
                     </div>
 
                     {/* Damage */}
@@ -322,16 +359,17 @@ export default function Match() {
               </div>
               
               <div className="flex flex-col gap-2">
-                <div className="grid grid-cols-12 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2">
+                <div className="grid grid-cols-14 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2">
                   <div className="col-span-4">Player</div>
                   <div className="col-span-3 text-center">KDA</div>
+                  <div className="col-span-2 text-center">Perf</div>
                   <div className="col-span-2 text-center">DMG</div>
                   <div className="col-span-1 text-center">CS</div>
                   <div className="col-span-2 text-end">Gold</div>
                 </div>
                 
                 {blueTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-12 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
+                  <div key={idx} className="grid grid-cols-14 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
                   <div className="col-span-4 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>                      
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/20 overflow-hidden text-[10px] text-center font-bold">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
@@ -339,6 +377,13 @@ export default function Match() {
                       <span className="font-bold text-on-surface truncate">{player.name}</span>
                     </div>
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
+                    <div className="col-span-2 text-center">
+                      <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
+                        {player.performanceScore !== null && player.performanceScore !== undefined
+                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          : '--'}
+                      </span>
+                    </div>
                     <div className="col-span-2 text-center text-sm font-bold text-blue-400">{player.dmg}</div>
                     <div className="col-span-1 text-center text-sm text-on-surface-variant">{player.cs}</div>
                     <div className="col-span-2 text-end text-sm text-on-surface font-bold">{player.gold}</div>
@@ -357,16 +402,17 @@ export default function Match() {
               </div>
               
               <div className="flex flex-col gap-2">
-                <div className="grid grid-cols-12 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2">
+                <div className="grid grid-cols-14 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2">
                   <div className="col-span-4">Player</div>
                   <div className="col-span-3 text-center">KDA</div>
+                  <div className="col-span-2 text-center">Perf</div>
                   <div className="col-span-2 text-center">DMG</div>
                   <div className="col-span-1 text-center">CS</div>
                   <div className="col-span-2 text-end">Gold</div>
                 </div>
                 
                 {redTeam.map((player, idx) => (
-                  <div key={idx} className="grid grid-cols-12 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
+                  <div key={idx} className="grid grid-cols-14 items-center bg-surface-container-low rounded-lg p-3 border border-outline-variant/20 hover:bg-surface-container transition-colors">
                     <div className="col-span-4 flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleTeammatesClick(player.name)}>
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/20 overflow-hidden text-[10px] text-center font-bold">
                          <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
@@ -374,6 +420,13 @@ export default function Match() {
                       <span className="font-bold text-on-surface truncate">{player.name}</span>
                     </div>
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
+                    <div className="col-span-2 text-center">
+                      <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
+                        {player.performanceScore !== null && player.performanceScore !== undefined
+                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          : '--'}
+                      </span>
+                    </div>
                     <div className="col-span-2 text-center text-sm font-bold text-red-400">{player.dmg}</div>
                     <div className="col-span-1 text-center text-sm text-on-surface-variant">{player.cs}</div>
                     <div className="col-span-2 text-end text-sm text-on-surface font-bold">{player.gold}</div>

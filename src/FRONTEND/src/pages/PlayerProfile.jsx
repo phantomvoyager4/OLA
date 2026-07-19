@@ -26,6 +26,19 @@ const masterIcon = "/tiers/master.png";
 const grandmasterIcon = "/tiers/grandmaster.png";
 const challengerIcon = "/tiers/challenger.png";
 
+const getPerformanceBadgeClass = (band) => {
+  switch (String(band || '').toLowerCase()) {
+    case 'elite':
+      return 'bg-amber-500/20 text-amber-300 border-amber-400/40';
+    case 'strong':
+      return 'bg-green-500/20 text-green-300 border-green-400/40';
+    case 'solid':
+      return 'bg-blue-500/20 text-blue-300 border-blue-400/40';
+    default:
+      return 'bg-red-500/20 text-red-300 border-red-400/40';
+  }
+};
+
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
   const navigate = useNavigate();
@@ -39,12 +52,12 @@ export default function PlayerProfile() {
   const [playerData, setPlayerData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
   const [extraDates, setExtraDates] = useState([]);
   const [loadingExtra, setLoadingExtra] = useState(false);
 
   const handleDuoClick = (playerName) => {
-    if (!playerName || !playerName.includes('#')) return; 
+    if (!playerName || !playerName.includes('#')) return;
 
     const [nickname, tag] = playerName.split('#');
     const cleanTag = tag.replace('#', '');
@@ -82,22 +95,22 @@ export default function PlayerProfile() {
 
     const fetchExtraGamesChucks = async () => {
       setLoadingExtra(true);
-      
+
       const CHUNK_SIZE = 10;
       const CHUNKS_TO_FETCH = 4;
-      
+
       for (let i = 0; i < CHUNKS_TO_FETCH; i++) {
         if (isCancelled) break;
-        
+
         try {
           const currentStart = 20 + (i * CHUNK_SIZE);
-          
+
           const extraData = await getPlayerData(region, nickname, tag, {
             save: false,
             count: CHUNK_SIZE,
             start: currentStart
           });
-          
+
           if (!isCancelled && extraData && Array.isArray(extraData)) {
             const newDates = [];
             extraData.forEach((match) => {
@@ -105,7 +118,7 @@ export default function PlayerProfile() {
                 newDates.push(match.metadata.gameDateDay);
               }
             });
-            
+
             // Append incrementally so the heatmap updates over time
             setExtraDates(prev => [...prev, ...newDates]);
           }
@@ -114,7 +127,7 @@ export default function PlayerProfile() {
           break; // Stop fetching further chunks if we hit a rate limit or error
         }
       }
-      
+
       if (!isCancelled) {
         setLoadingExtra(false);
       }
@@ -341,6 +354,8 @@ export default function PlayerProfile() {
               ],
               summoners: [getSummonerImage(0), getSummonerImage(1)],
               summonersNames: [getSummonerName(0), getSummonerName(1)],
+              performanceScore: callerPlayer.performanceScore ?? callerPlayer.performance_score ?? null,
+              performanceBand: callerPlayer.performanceBand ?? callerPlayer.performance_band ?? 'low',
             };
 
             MatchesCD.push(MatchCallerData);
@@ -379,7 +394,7 @@ export default function PlayerProfile() {
       const dateObj = new Date(d);
       const dateKey = dateObj.toDateString();
       dateCounts[dateKey] = (dateCounts[dateKey] || 0) + 1;
-    } catch (e) {}
+    } catch (e) { }
   });
 
   const today = new Date();
@@ -687,7 +702,7 @@ export default function PlayerProfile() {
                           {champ.name}
                         </p>
                         <span className="text-xs font-bold text-primary bg-primary/8 py-0.5 rounded w-12 flex justify-center shrink-0">
-                           {champ.level} lvl
+                          {champ.level} lvl
                         </span>
                       </div>
                       <p className="text-xs text-on-surface-variant">
@@ -890,37 +905,47 @@ export default function PlayerProfile() {
                       )}
                   </div>
 
+                  {/* Performance Grid */}
+                  <div className="flex flex-col gap-2 items-center pl-3">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-outline">Score</span>
+                    <span className={`inline-flex w-14 items-center justify-center rounded-full border px-2 py-0.5 text-[16px] font-bold ${getPerformanceBadgeClass(match.performanceBand)}`}>
+                      {match.performanceScore !== null && match.performanceScore !== undefined
+                        ? `${Number(match.performanceScore).toFixed(0)}`
+                        : '--'}
+                    </span>
+                  </div>
+
                   {/* Items Grid */}
                   <div className="grid grid-cols-3 gap-1 w-max mx-auto md:ml-auto md:mx-0">
                     {match.items
                       ? match.items.map((itemImg, i) => (
-                          <div
-                            key={i}
-                            className="group relative w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner align-middle flex items-center justify-center"
-                          >
-                            {itemImg && (
-                              <>
-                                <img
-                                  src={itemImg}
-                                  alt="item"
-                                  className="w-full h-full object-cover rounded-md"
-                                />
-                                {/* Hover Tooltip */}
-                                {match.itemsNames && match.itemsNames[i] && (
-                                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
-                                    {match.itemsNames[i]}
-                                  </div>
-                                )}
-                              </>
-                            )}
-                          </div>
-                        ))
+                        <div
+                          key={i}
+                          className="group relative w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner align-middle flex items-center justify-center"
+                        >
+                          {itemImg && (
+                            <>
+                              <img
+                                src={itemImg}
+                                alt="item"
+                                className="w-full h-full object-cover rounded-md"
+                              />
+                              {/* Hover Tooltip */}
+                              {match.itemsNames && match.itemsNames[i] && (
+                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1.5 hidden group-hover:block w-max max-w-30 bg-surface-container border border-outline-variant/30 text-on-surface text-[10px] uppercase font-bold py-1 px-2 text-center rounded shadow-[0_4px_15px_rgba(0,0,0,0.5)] z-999 pointer-events-none">
+                                  {match.itemsNames[i]}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </div>
+                      ))
                       : [...Array(6)].map((_, i) => (
-                          <div
-                            key={i}
-                            className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"
-                          ></div>
-                        ))}
+                        <div
+                          key={i}
+                          className="w-8 h-8 sm:w-10 sm:h-10 bg-surface-container-highest rounded-md border border-outline-variant/20 shadow-inner"
+                        ></div>
+                      ))}
                   </div>
                   <span className="material-symbols-outlined color-primary">
                     keyboard_arrow_right

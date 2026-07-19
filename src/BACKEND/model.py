@@ -1,5 +1,6 @@
 import requests
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 import concurrent.futures
@@ -476,6 +477,172 @@ class Match:
                 json.dump(data_to_serialize, f, indent=4)
 
         return json.dumps(data_to_serialize, indent=4)
+
+
+PERFORMANCE_FEATURE_WEIGHTS = {
+    "combat_efficiency": 0.22,
+    "damagePerMinute": 0.18,
+    "goldPerMinute": 0.10,
+    "vision_activity": 0.14,
+    "farm_pressure": 0.12,
+    "map_pressure": 0.12,
+    "timeCCingOthers": 0.06,
+    "soloKills": 0.04,
+    "damage_share": 0.06,
+    "survival_rate": 0.05,
+    "death_penalty": -0.12,
+}
+
+
+def _coerce_float(value, default=0.0):
+    try:
+        if value is None or value == "No data":
+            return float(default)
+        if isinstance(value, str):
+            text = value.strip().replace("%", "")
+            return float(text) if text else float(default)
+        return float(value)
+    except (TypeError, ValueError):
+        return float(default)
+
+
+def _extract_performance_features(player: dict, game_duration_min: float) -> dict:
+    kills = _coerce_float(player.get("kills"))
+    deaths = _coerce_float(player.get("deaths"))
+    assists = _coerce_float(player.get("assists"))
+    total_time_spent_dead = _coerce_float(player.get("totalTimeSpentDead"))
+
+    team_damage_percentage = _coerce_float(player.get("teamDamagePercentage"))
+
+    return {
+        "combat_efficiency": _coerce_float(player.get("KDA"), (kills + assists) / max(1.0, deaths))
+        + _coerce_float(player.get("killParticipation")) / 100.0,
+        "damagePerMinute": _coerce_float(player.get("damagePerMinute")),
+        "goldPerMinute": _coerce_float(player.get("goldPerMinute")),
+        "vision_activity": _coerce_float(player.get("visionScorePerMinute"))
+        + 0.25 * _coerce_float(player.get("wardsPlaced")),
+        "farm_pressure": _coerce_float(player.get("cs_min")) + _coerce_float(player.get("goldPerMinute")) / 100.0,
+        "map_pressure": (
+            _coerce_float(player.get("damageDealtToObjectives")) / (game_duration_min + 1.0)
+            + _coerce_float(player.get("damageDealtToTurrets")) / (game_duration_min + 1.0)
+        ),
+        "timeCCingOthers": _coerce_float(player.get("timeCCingOthers")),
+        "soloKills": _coerce_float(player.get("soloKills")),
+        "damage_share": team_damage_percentage,
+        "survival_rate": 1.0 / (1.0 + total_time_spent_dead / 60.0),
+        "death_penalty": math.log1p(deaths + total_time_spent_dead / 60.0),
+    }
+
+
+def annotate_player_performance(matches: list) -> list:
+    """Annotate each player in the fetched matches with a role-adjusted score.
+
+    The score is computed from the current request's data, so it stays fast and
+    does not require any pre-trained model to be loaded inside the API process.
+    """
+
+    player_rows = []
+
+    for match_index, match in enumerate(matches):
+        if not isinstance(match, dict):
+            continue
+
+        match_metadata = match.get("metadata", {}) or {}
+        game_duration_min = _coerce_float(match_metadata.get("gameDuration_min"))
+
+        for player_index, player in enumerate(match.get("players", [])):
+            features = _extract_performance_features(player, game_duration_min)
+            player_rows.append(
+                {
+                    "match_index": match_index,
+                    "player_index": player_index,
+                    "teamPosition": player.get("teamPosition", "UNKNOWN") or "UNKNOWN",
+                    "features": features,
+                }
+            )
+
+    if not player_rows:
+        return matches
+
+    group_stats = {}
+    for row in player_rows:
+        role = row["teamPosition"]
+        role_bucket = group_stats.setdefault(role, {feature: [] for feature in PERFORMANCE_FEATURE_WEIGHTS})
+        for feature_name, feature_value in row["features"].items():
+            role_bucket[feature_name].append(feature_value)
+
+    role_means = {}
+    role_stdevs = {}
+    for role, feature_map in group_stats.items():
+        role_means[role] = {}
+        role_stdevs[role] = {}
+        for feature_name, values in feature_map.items():
+            if not values:
+                role_means[role][feature_name] = 0.0
+                role_stdevs[role][feature_name] = 1.0
+                continue
+
+            mean_value = sum(values) / len(values)
+            variance = sum((value - mean_value) ** 2 for value in values) / len(values)
+            role_means[role][feature_name] = mean_value
+            role_stdevs[role][feature_name] = math.sqrt(variance) if variance > 0 else 1.0
+
+    grouped_scores = {}
+    for row in player_rows:
+        role = row["teamPosition"]
+        score = 0.0
+        for feature_name, weight in PERFORMANCE_FEATURE_WEIGHTS.items():
+            mean_value = role_means[role][feature_name]
+            stdev_value = role_stdevs[role][feature_name] or 1.0
+            normalized_value = (row["features"][feature_name] - mean_value) / stdev_value
+            score += normalized_value * weight
+        grouped_scores.setdefault(role, []).append(
+            {
+                "match_index": row["match_index"],
+                "player_index": row["player_index"],
+                "score": score,
+            }
+        )
+
+    score_lookup = {}
+    for role, scored_rows in grouped_scores.items():
+        sorted_rows = sorted(scored_rows, key=lambda item: item["score"])
+        total = len(sorted_rows)
+        if total == 1:
+            score_lookup[(sorted_rows[0]["match_index"], sorted_rows[0]["player_index"])] = {
+                "performanceScore": 100.0,
+                "performanceBand": "elite",
+                "performanceRank": 1,
+                "performanceRoleCount": 1,
+            }
+            continue
+
+        for rank_index, scored_row in enumerate(sorted_rows):
+            percentile = (rank_index / (total - 1)) * 100.0
+            if percentile >= 80:
+                band = "elite"
+            elif percentile >= 60:
+                band = "strong"
+            elif percentile >= 40:
+                band = "solid"
+            else:
+                band = "low"
+
+            score_lookup[(scored_row["match_index"], scored_row["player_index"])] = {
+                "performanceScore": round(percentile, 1),
+                "performanceBand": band,
+                "performanceRank": rank_index + 1,
+                "performanceRoleCount": total,
+            }
+
+    for match_index, match in enumerate(matches):
+        if not isinstance(match, dict):
+            continue
+        for player_index, player in enumerate(match.get("players", [])):
+            performance = score_lookup.get((match_index, player_index), {})
+            player.update(performance)
+
+    return matches
 
 def summarizer(input: list):
     count = 0
