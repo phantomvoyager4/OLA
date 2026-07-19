@@ -1,4 +1,4 @@
- import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
@@ -9,12 +9,12 @@ export default function Home() {
 
   const handleAnalyze = () => {
     if (!nickname || !tag) return;
-    
+
     // Clean up inputs (remove # from tag if included)
     const cleanTag = tag.replace('#', '');
     // Standardize URL by removing spaces and making uppercase
     const cleanRegion = region.replace(/\s+/g, '').toUpperCase();
-    
+
     // Navigate to the player profile React route using React Router.
     // The PlayerProfile component itself will handle the backend data fetch.
     navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
@@ -48,7 +48,18 @@ export default function Home() {
                   placeholder="Nickname"
                   type="text"
                   value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    const match = value.match(/^(.+?)\s*#\s*(.+)$/);
+
+                    if (match) {
+                      setNickname(match[1].trim());
+                      setTag(match[2].trim());
+                    } else {
+                      setNickname(value);
+                    }
+                  }}
                 />
               </div>
               {/* Tag Input */}
@@ -63,12 +74,12 @@ export default function Home() {
               </div>
               {/* Region Select */}
               <div className="relative w-full md:w-80">
-                <select 
-                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer"                  value={region}
+                <select
+                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer" value={region}
                   onChange={(e) => setRegion(e.target.value)}
                 >
                   <option value="EUW">EUW</option>
-                  <option value="EUNE">EUNE</option> 
+                  <option value="EUNE">EUNE</option>
                   <option value="NA">NA</option>
                   <option value="Middle East">Middle East</option>
                   <option value="Oceania">Oceania</option>
@@ -89,7 +100,7 @@ export default function Home() {
               </div>
             </div>
             {/* Search Button */}
-            <button 
+            <button
               onClick={handleAnalyze}
               className="bg-primary text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95"
             >
@@ -103,13 +114,13 @@ export default function Home() {
         <div className="w-full max-w-4xl px-6 mt-24 relative z-10 flex flex-col gap-4">
           <div className="flex items-center justify-between border-b border-outline-variant/30 pb-2">
             <h2 className="font-headline text-sm font-bold text-on-surface tracking-widest">
-              Popular Players 
+              Popular Players
             </h2>
             <button className="text-on-surface text-xs font-bold tracking-widest hover:underline transition-all cursor-pointer">
               VIEW ALL
             </button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { name: "Hide on bush", rank: "Challenger • 1205 LP" },

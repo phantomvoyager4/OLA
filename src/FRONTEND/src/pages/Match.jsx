@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getCachedMatch } from '../services/api';
+import GoldIcon from '../../../../data/static/GoldIcon.svg'
 
 const getPerformanceBadgeClass = (band) => {
   switch (String(band || '').toLowerCase()) {
@@ -169,7 +170,7 @@ export default function Match() {
               </div>
 
               <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_9.3%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
                   <div className="text-center">Score</div>
@@ -209,7 +210,7 @@ export default function Match() {
                     <div className="flex flex-col items-center justify-center text-center gap-1">
                       <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
                         {player.performanceScore !== null && player.performanceScore !== undefined
-                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          ? `${Number(player.performanceScore).toFixed(0)}`
                           : '--'}
                       </span>
                       <span className="text-[10px] uppercase tracking-widest text-outline">score</span>
@@ -245,7 +246,7 @@ export default function Match() {
                     {/* Gold */}
                     <div className="text-end text-sm text-on-surface font-bold flex items-center justify-end gap-1">
                       {player.gold}
-                      <span className="material-symbols-outlined text-[14px] text-yellow-500">toll</span>
+                      <img src={GoldIcon} className='w-4.5' />
                     </div>
                   </div>
                 ))}
@@ -262,7 +263,7 @@ export default function Match() {
               </div>
 
               <div className="flex flex-col gap-2 min-w-max md:min-w-0 overflow-x-auto pb-4 md:pb-0">
-                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_10%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
+                <div className="grid grid-cols-[3fr_1.5fr_1.2fr_1.5fr_1.5fr_3fr_1.5fr] md:grid-cols-[1fr_repeat(6,auto)] xl:grid-cols-[20%_13%_10%_10%_10%_25%_9.3%] gap-1 text-xs font-bold text-on-surface-variant uppercase px-4 pb-2 whitespace-nowrap">
                   <div>Player</div>
                   <div className="text-center">KDA</div>
                   <div className="text-center">Score</div>
@@ -302,7 +303,7 @@ export default function Match() {
                     <div className="flex flex-col items-center justify-center text-center gap-1">
                       <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
                         {player.performanceScore !== null && player.performanceScore !== undefined
-                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          ? `${Number(player.performanceScore).toFixed(0)}`
                           : '--'}
                       </span>
                       <span className="text-[10px] uppercase tracking-widest text-outline">score</span>
@@ -338,7 +339,7 @@ export default function Match() {
                     {/* Gold */}
                     <div className="text-end text-sm text-on-surface font-bold flex items-center justify-end gap-1">
                       {player.gold}
-                      <span className="material-symbols-outlined text-[14px] text-yellow-500">toll</span>
+                      <img src={GoldIcon} className='w-4.5' />
                     </div>
                   </div>
                 ))}
@@ -380,7 +381,7 @@ export default function Match() {
                     <div className="col-span-2 text-center">
                       <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
                         {player.performanceScore !== null && player.performanceScore !== undefined
-                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          ? `${Number(player.performanceScore).toFixed(0)}`
                           : '--'}
                       </span>
                     </div>
@@ -423,7 +424,7 @@ export default function Match() {
                     <div className="col-span-2 text-center">
                       <span className={`inline-flex items-center justify-center min-w-14 rounded-full border px-2.5 py-1 text-xs font-bold ${getPerformanceBadgeClass(player.performanceBand)}`}>
                         {player.performanceScore !== null && player.performanceScore !== undefined
-                          ? `${Number(player.performanceScore).toFixed(1)}`
+                          ? `${Number(player.performanceScore).toFixed(0)}`
                           : '--'}
                       </span>
                     </div>
