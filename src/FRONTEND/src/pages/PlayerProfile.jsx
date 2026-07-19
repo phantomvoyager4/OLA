@@ -219,6 +219,9 @@ export default function PlayerProfile() {
   let level = 0;
   let masteries = [];
   let MatchesCD = [];
+  let performanceAverage = 0;
+  let performanceMedian = 0;
+  let performanceStdDev = 0;
   let dates = [];
   let topDuoPlayers = [];
 
@@ -362,6 +365,36 @@ export default function PlayerProfile() {
           }
         });
 
+        const performanceScores = MatchesCD
+          .map(match => Number(match.performanceScore))
+          .filter(score => !Number.isNaN(score));
+
+        if (performanceScores.length > 0) {
+          // Average
+          performanceAverage =
+            performanceScores.reduce((sum, score) => sum + score, 0) /
+            performanceScores.length;
+
+          // Median
+          const sorted = [...performanceScores].sort((a, b) => a - b);
+          const mid = Math.floor(sorted.length / 2);
+
+          performanceMedian =
+            sorted.length % 2 === 0
+              ? (sorted[mid - 1] + sorted[mid]) / 2
+              : sorted[mid];
+
+          // Population standard deviation
+          const variance =
+            performanceScores.reduce(
+              (sum, score) => sum + Math.pow(score - performanceAverage, 2),
+              0
+            ) / performanceScores.length;
+
+          performanceStdDev = Math.sqrt(variance);
+        }
+
+
         topDuoPlayers = Object.values(teammatesMap)
           .filter((p) => p.total > 1)
           .sort((a, b) => b.total - a.total || b.wins - a.wins);
@@ -475,34 +508,33 @@ export default function PlayerProfile() {
         {/* ========================================== */}
         {/* LEFT SIDE: Caller Data & Statistics          */}
         {/* ========================================== */}
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-4">
           {/* 1. TOP SECTION: General Info --- */}
-          <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
-            <div className="w-24 h-24 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-[0_0_4px_rgba(,0,0,1)] shrink-0">
-              <img
-                src={iconLink}
-                alt="Profile Icon"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="flex flex-col text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
-                {nickname} <span className="text-primary text-3xl">#{tag}</span>
-              </h1>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
-                <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                  Level:{" "}
-                  <span className="text-on-surface font-bold">{level}</span>
-                </span>
-                <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                  Region:{" "}
-                  <span className="text-on-surface font-bold">{region}</span>
-                </span>
+            <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
+              <div className="w-22 h-22 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-primary/20 shrink-0">
+                <img
+                  src={iconLink}
+                  alt="Profile Icon"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col text-center md:text-left">
+                <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
+                  {nickname} <span className="text-primary text-3xl">#{tag}</span>
+                </h1>
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
+                  <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
+                    Level:{" "}
+                    <span className="text-on-surface font-bold">{level}</span>
+                  </span>
+                  <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
+                    Region:{" "}
+                    <span className="text-on-surface font-bold">{region}</span>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full shrink-0">
             {/* 2. RANK, WINRATE AND W/L --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex items-center gap-4">
@@ -534,13 +566,14 @@ export default function PlayerProfile() {
                 </p>
               </div>
             </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full shrink-0">
             {/* 3. RECENT MATCHES STATISTICS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
               <h2 className="font-headline font-bold text-xl text-on-surface mb-2">
                 Recent Statistics
               </h2>
               <p className="text-sm text-outline mb-4">Last 20 matches</p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
                   <span className="text-sm text-on-surface-variant">
                     Average CS/min
@@ -563,10 +596,34 @@ export default function PlayerProfile() {
                     {KP_mean}%
                   </span>
                 </div>
+                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
+                  <span className="text-sm text-on-surface-variant">
+                    Score Average
+                  </span>
+                  <span className={`text-2xl font-bold text-on-surface`} >
+                    {performanceAverage.toFixed(1)}
+                  </span>
+                </div>
+                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
+                  <span className="text-sm text-on-surface-variant">
+                    Score Median
+                  </span>
+                  <span className={`text-2xl font-bold text-on-surface`}>
+                    {performanceMedian.toFixed(1)}
+                  </span>
+                </div>
+                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
+                  <span className="text-sm text-on-surface-variant">
+                    Score σ
+                  </span>
+                  <span className="text-2xl font-bold text-on-surface">
+                    {performanceStdDev.toFixed(1)}
+                  </span>
+                </div>
               </div>
             </div>
             {/* ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
-            <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left Side: Activity Heatmap */}
               <div className="flex flex-col w-max mx-auto lg:mx-0">
                 <div className="flex justify-between items-end mb-1">
