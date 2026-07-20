@@ -26,8 +26,26 @@ const masterIcon = "/tiers/master.png";
 const grandmasterIcon = "/tiers/grandmaster.png";
 const challengerIcon = "/tiers/challenger.png";
 
+const handleDuoClick = (playerName) => {
+  if (!playerName || !playerName.includes('#')) return;
+  const [nickname, tag] = playerName.split('#');
+  const cleanTag = tag.replace('#', '');
+
+  let extractedRegion = 'EUW';
+  if (matchData && matchData.region) {
+    extractedRegion = matchData.region;
+  } else if (matchId && matchId.includes('_')) {
+    extractedRegion = matchId.split('_')[0].replace(/[0-9]/g, '');
+  }
+
+  const cleanRegion = extractedRegion.replace(/\s+/g, '').toUpperCase();
+  navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
+};
+
 const getPerformanceBadgeClass = (band) => {
   switch (String(band || '').toLowerCase()) {
+    case 'remake':
+      return 'bg-gray-500/10 text-gray-400 border-gray-400/20';
     case 'elite':
       return 'bg-amber-500/20 text-amber-300 border-amber-400/40';
     case 'strong':
@@ -319,11 +337,22 @@ export default function PlayerProfile() {
             // The main rune is the keystone from the primary style group
             const mainRuneItem = runesData.find(r => r.runeIconLink && r.group === primaryStyle?.name) || runesData.find(r => r.runeIconLink && r.group !== 'Stat Perk') || runesData[5];
 
+            const isRemake =
+              callerPlayer.gameEndedInEarlySurrender === true ||
+              callerPlayer.gameEndedInEarlySurrender === "true";
+
             const MatchCallerData = {
               matchId: match.match_id || match.metadata?.matchId,
               date: match.metadata.gameDateDay,
+
+              isRemake,
+
+
               win:
-                typeof callerPlayer.win === "boolean" ? callerPlayer.win : true,
+                typeof callerPlayer.win === "boolean"
+                  ? callerPlayer.win
+                  : callerPlayer.win === "true",
+
               champ: callerPlayer.championName,
               champimageLink: callerPlayer.championImageLink,
               mainRune: mainRuneItem?.runeIconLink,
@@ -366,6 +395,17 @@ export default function PlayerProfile() {
         });
 
         const performanceScores = MatchesCD
+          .filter(match => {
+            const isRemake =
+              match.duration &&
+              parseInt(match.duration.split(":")[0], 10) < 5;
+
+            return (
+              !isRemake &&
+              match.performanceScore !== null &&
+              match.performanceScore !== undefined
+            );
+          })
           .map(match => Number(match.performanceScore))
           .filter(score => !Number.isNaN(score));
 
@@ -510,62 +550,62 @@ export default function PlayerProfile() {
         {/* ========================================== */}
         <div className="flex flex-col gap-4">
           {/* 1. TOP SECTION: General Info --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
-              <div className="w-22 h-22 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-primary/20 shrink-0">
+          <div className="glass-panel ghost-border rounded-xl p-6 flex flex-col md:flex-row items-center gap-6 shrink-0">
+            <div className="w-22 h-22 rounded-full bg-surface-container-highest flex items-center justify-center overflow-hidden shadow-primary/20 shrink-0">
+              <img
+                src={iconLink}
+                alt="Profile Icon"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="flex flex-col text-center md:text-left">
+              <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
+                {nickname} <span className="text-primary text-3xl">#{tag}</span>
+              </h1>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
+                <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
+                  Level:{" "}
+                  <span className="text-on-surface font-bold">{level}</span>
+                </span>
+                <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
+                  Region:{" "}
+                  <span className="text-on-surface font-bold">{region}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 2. RANK, WINRATE AND W/L --- */}
+          <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-18 h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
                 <img
-                  src={iconLink}
-                  alt="Profile Icon"
-                  className="w-full h-full object-cover"
+                  src={displayTierImg}
+                  alt={displayRankText}
+                  className="w-full h-full object-cover p-2 scale-1.4"
                 />
               </div>
-              <div className="flex flex-col text-center md:text-left">
-                <h1 className="text-4xl md:text-5xl font-headline font-bold text-on-surface">
-                  {nickname} <span className="text-primary text-3xl">#{tag}</span>
-                </h1>
-                <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 mt-3 text-sm font-body text-on-surface-variant">
-                  <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                    Level:{" "}
-                    <span className="text-on-surface font-bold">{level}</span>
+              <div className="text-center md:text-left">
+                <h2 className="font-headline font-bold text-2xl text-on-surface flex items-center gap-2">
+                  {displayRankText}{" "}
+                  <span className="text-on-surface-variant font-normal text-lg">
+                    {displayLp}
                   </span>
-                  <span className="bg-surface-container-low px-3 py-1 rounded-md border border-outline-variant/30">
-                    Region:{" "}
-                    <span className="text-on-surface font-bold">{region}</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* 2. RANK, WINRATE AND W/L --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="flex items-center gap-4">
-                <div className="w-18 h-18 bg-surface-container-highest rounded-full flex items-center justify-center overflow-hidden">
-                  <img
-                    src={displayTierImg}
-                    alt={displayRankText}
-                    className="w-full h-full object-cover p-2 scale-1.4"
-                  />
-                </div>
-                <div className="text-center md:text-left">
-                  <h2 className="font-headline font-bold text-2xl text-on-surface flex items-center gap-2">
-                    {displayRankText}{" "}
-                    <span className="text-on-surface-variant font-normal text-lg">
-                      {displayLp}
-                    </span>
-                  </h2>
-                  <p className="text-sm text-outline">Ranked Solo/Duo</p>
-                </div>
-              </div>
-              <div className="text-center md:text-right items-center">
-                <h2 className={`font-headline font-bold text-3xl ${parseFloat(winrate) < 50 ? 'text-red-400' : 'text-green-400'}`}>
-                  {winrate}
                 </h2>
-                {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
-                <p className="text-sm text-on-surface-variant font-bold mt-1">
-                  {wins + losses}M • {wins}W{" "}
-                  <span className="text-outline font-normal">/</span> {losses}L
-                </p>
+                <p className="text-sm text-outline">Ranked Solo/Duo</p>
               </div>
             </div>
+            <div className="text-center md:text-right items-center">
+              <h2 className={`font-headline font-bold text-3xl ${parseFloat(winrate) < 50 ? 'text-red-400' : 'text-green-400'}`}>
+                {winrate}
+              </h2>
+              {/* <p className="text-sm text-on-surface-variant font-bold mt-1">{wins}W <span className="text-outline font-normal">-</span> {losses}L</p> */}
+              <p className="text-sm text-on-surface-variant font-bold mt-1">
+                {wins + losses}M • {wins}W{" "}
+                <span className="text-outline font-normal">/</span> {losses}L
+              </p>
+            </div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full shrink-0">
             {/* 3. RECENT MATCHES STATISTICS --- */}
             <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
@@ -659,13 +699,13 @@ export default function PlayerProfile() {
                                 "bg-primary/20 border-primary/20 border";
                             else if (count > 2 && count <= 5)
                               bgClass =
-                                "bg-primary/50 border-primary/30 border shadow-[0_0_5px_rgba(83,238,222,0.2)]";
+                                "bg-primary/50 border-primary/30 border";
                             else if (count > 5 && count <= 8)
                               bgClass =
-                                "bg-primary/80 border-primary/50 border shadow-[0_0_8px_rgba(83,238,222,0.3)]";
+                                "bg-primary/80 border-primary/50 border";
                             else if (count > 8)
                               bgClass =
-                                "bg-primary border-primary border shadow-[0_0_10px_rgba(83,238,222,0.5)]";
+                                "bg-primary border-primary border";
 
                             return (
                               <div
@@ -697,7 +737,7 @@ export default function PlayerProfile() {
                     <div className="w-3 h-3 rounded-sm bg-primary/20 border border-primary/20"></div>
                     <div className="w-3 h-3 rounded-sm bg-primary/50 border border-primary/30"></div>
                     <div className="w-3 h-3 rounded-sm bg-primary/80 border border-primary/50"></div>
-                    <div className="w-3 h-3 rounded-sm bg-primary shadow-[0_0_5px_rgba(83,238,222,0.4)]"></div>
+                    <div className="w-3 h-3 rounded-sm bg-primary"></div>
                     <span>More</span>
                   </div>
                 </div>
@@ -785,6 +825,7 @@ export default function PlayerProfile() {
                     <div
                       key={i}
                       className="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 transition-colors cursor-pointer hover:bg-surface-container-high hover:border-primary/50"
+                      onClick={() => handleDuoClick(player.name)}
                     >
                       <img
                         src={player.icon}
@@ -867,11 +908,28 @@ export default function PlayerProfile() {
                 >
                   {/* Match Info */}
                   <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
-                    <p
-                      className={`text-sm font-bold ${match.win ? "text-secondary" : "text-error"}`}
-                    >
-                      {match.win ? "VICTORY" : "DEFEAT"}
-                    </p>
+                    {(() => {
+                      const isRemake =
+                        match.duration &&
+                        parseInt(match.duration.split(":")[0], 10) < 5;
+
+                      return (
+                        <p
+                          className={`text-sm font-bold ${isRemake
+                            ? "text-gray-400"
+                            : match.win
+                              ? "text-secondary"
+                              : "text-error"
+                            }`}
+                        >
+                          {isRemake
+                            ? "REMAKE"
+                            : match.win
+                              ? "VICTORY"
+                              : "DEFEAT"}
+                        </p>
+                      );
+                    })()}
                     <p className="text-xs text-outline mt-0.5">{match.type}</p>
                     <div className="w-12 md:w-full h-px bg-outline-variant/30 my-2"></div>
                     <p className="text-xs text-outline">{match.duration} min</p>
@@ -954,22 +1012,28 @@ export default function PlayerProfile() {
                           : `${parseFloat(match.kda).toFixed(2)} KDA`
                         : "KDA"}
                     </p>
-                    {match.duration &&
-                      parseInt(match.duration.split(":")[0], 10) < 5 && (
-                        <span className="mt-1 px-2 py-0.5 bg-red-400 text-black text-[10px] uppercase font-bold rounded-sm tracking-wider">
-                          Remake
-                        </span>
-                      )}
                   </div>
 
                   {/* Performance Grid */}
                   <div className="flex flex-col gap-2 items-center pl-3">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-outline">Score</span>
-                    <span className={`inline-flex w-14 items-center justify-center rounded-full border px-2 py-0.5 text-[16px] font-bold ${getPerformanceBadgeClass(match.performanceBand)}`}>
-                      {match.performanceScore !== null && match.performanceScore !== undefined
-                        ? `${Number(match.performanceScore).toFixed(0)}`
-                        : '--'}
-                    </span>
+                    {(() => {
+                      const isRemake = match.duration && parseInt(match.duration.split(":")[0], 10) < 5;
+
+                      const badgeBand = isRemake ? 'remake' : match.performanceBand;
+
+                      const scoreDisplay = isRemake
+                        ? '--'
+                        : (match.performanceScore !== null && match.performanceScore !== undefined
+                          ? Number(match.performanceScore).toFixed(0)
+                          : '--');
+
+                      return (
+                        <span className={`inline-flex w-14 items-center justify-center rounded-full border px-2 py-0.5 text-[16px] font-bold ${getPerformanceBadgeClass(badgeBand)}`}>
+                          {scoreDisplay}
+                        </span>
+                      );
+                    })()}
                   </div>
 
                   {/* Items Grid */}

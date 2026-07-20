@@ -106,6 +106,37 @@ export default function Match() {
   const blueTeam = blueTeamRaw.map(formatPlayer);
   const redTeam = redTeamRaw.map(formatPlayer);
 
+  // Finds the highest valid performance score in a team.
+  // A tied score is awarded to the first player in the team array.
+  const getTopPerformanceIndex = (team) => {
+    let topIndex = -1;
+    let topScore = -Infinity;
+
+    team.forEach((player, index) => {
+      if (player.performanceScore === null || player.performanceScore === undefined) return;
+
+      const score = Number(player.performanceScore);
+      if (!Number.isFinite(score)) return;
+
+      if (score > topScore) {
+        topScore = score;
+        topIndex = index;
+      }
+    });
+
+    return topIndex;
+  };
+
+  const blueTopPerformanceIndex = getTopPerformanceIndex(blueTeam);
+  const redTopPerformanceIndex = getTopPerformanceIndex(redTeam);
+  const blueAward = blueTeam[0]?.win ? 'MVP' : 'ACE';
+  const redAward = redTeam[0]?.win ? 'MVP' : 'ACE';
+
+  const getAwardClass = (award) =>
+    award === 'MVP'
+      ? 'bg-amber-400/20 text-amber-300 border-amber-400/50'
+      : 'bg-green-500/20 text-green-300 border-green-400/50';
+
   const maxDamage = Math.max(...blueTeam.map(p => p.rawDmg), ...redTeam.map(p => p.rawDmg), 1);
 
   return (
@@ -197,7 +228,16 @@ export default function Match() {
                           {player.runes[1] ? <img src={player.runes[1]} className="w-4 h-4 rounded-full bg-black" /> : <div className="w-4 h-4 bg-surface-container-highest rounded-full"></div>}
                         </div>
                       </div>
-                      <span className="font-bold text-on-surface truncate ml-1">{player.name}</span>
+                      <div className="flex min-w-0 items-center gap-2 ml-1">
+                        <span className="font-bold text-on-surface truncate">{player.name}</span>
+                        {idx === blueTopPerformanceIndex && (
+                          <span
+                            className={`shrink-0 rounded-xl border px-2 py-0.5 text-[10px] font-black tracking-wider ${getAwardClass(blueAward)}`}
+                          >
+                            {blueAward}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* KDA & KP */}
@@ -290,7 +330,16 @@ export default function Match() {
                           {player.runes[1] ? <img src={player.runes[1]} className="w-4 h-4 rounded-full bg-black" /> : <div className="w-4 h-4 bg-surface-container-highest rounded-full"></div>}
                         </div>
                       </div>
-                      <span className="font-bold text-on-surface truncate ml-1">{player.name}</span>
+                      <div className="flex min-w-0 items-center gap-2 ml-1">
+                        <span className="font-bold text-on-surface truncate">{player.name}</span>
+                        {idx === redTopPerformanceIndex && (
+                          <span
+                            className={`shrink-0 rounded-xl border px-2 py-0.5 text-[10px] font-black tracking-wider ${getAwardClass(redAward)}`}
+                          >
+                            {redAward}
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* KDA & KP */}
@@ -375,7 +424,16 @@ export default function Match() {
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-blue-500/20 overflow-hidden text-[10px] text-center font-bold">
                         <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
                       </div>
-                      <span className="font-bold text-on-surface truncate">{player.name}</span>
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="font-bold text-on-surface truncate">{player.name}</span>
+                        {idx === blueTopPerformanceIndex && (
+                          <span
+                            className={`shrink-0 rounded-xl border px-2 py-0.5 text-[10px] font-black tracking-wider ${getAwardClass(blueAward)}`}
+                          >
+                            {blueAward}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
                     <div className="col-span-2 text-center">
@@ -418,7 +476,16 @@ export default function Match() {
                       <div className="w-10 h-10 bg-surface-container-highest rounded-full flex items-center justify-center shrink-0 border border-red-500/20 overflow-hidden text-[10px] text-center font-bold">
                         <img src={player.champIcon} alt={player.name} className="w-full h-full object-cover" />
                       </div>
-                      <span className="font-bold text-on-surface truncate">{player.name}</span>
+                      <div className="flex min-w-0 items-center gap-2">
+                        <span className="font-bold text-on-surface truncate">{player.name}</span>
+                        {idx === redTopPerformanceIndex && (
+                          <span
+                            className={`shrink-0 rounded-xl border px-2 py-0.5 text-[10px] font-black tracking-wider ${getAwardClass(redAward)}`}
+                          >
+                            {redAward}
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div className="col-span-3 text-center font-mono text-sm tracking-tight">{player.kda}</div>
                     <div className="col-span-2 text-center">

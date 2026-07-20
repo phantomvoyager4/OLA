@@ -351,6 +351,8 @@ class Player:
         self.timeCCingOthers = player_data.get("timeCCingOthers", 0)
         
         # Game State and Miscellaneous
+
+        self.gameEndedInEarlySurrender = player_data.get("gameEndedInEarlySurrender", False)
         self.gameEndedInSurrender = player_data.get("gameEndedInSurrender", False)
         self.totalTimeSpentDead = player_data.get("totalTimeSpentDead", 0)
 
