@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getPlayerData } from "../services/api";
+import { getPlayerActivity, getPlayerData, getRateLimitStatus } from "../services/api";
 import { Link, NavLink } from "react-router-dom";
 
 const noIcon = "/icons/noicon.jpg";
@@ -57,6 +57,69 @@ const getPerformanceBadgeClass = (band) => {
   }
 };
 
+const RateLimitIndicator = ({ status }) => {
+  const [longUsed = 0, longLimit = 90] = String(status.longWindow || "0/90")
+    .split("/")
+    .map(Number);
+  const usagePercent = Math.min(
+    100,
+    Math.round((longUsed / Math.max(1, longLimit)) * 100),
+  );
+  const isWarning = status.warning;
+
+  return (
+    <aside
+      aria-live="polite"
+      className={`fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-80 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
+        isWarning ? "border-amber-400/50" : "border-primary/30"
+      }`}
+    >
+      <div className="flex items-center gap-3 px-4 py-3">
+        <div
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+            isWarning
+              ? "bg-amber-400/15 text-amber-300"
+              : "bg-primary/15 text-primary"
+          }`}
+        >
+          <span className="material-symbols-outlined text-xl">
+            {isWarning ? "warning" : "speed"}
+          </span>
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <p className="truncate text-xs font-bold uppercase tracking-widest text-on-surface">
+              Riot API Capacity
+            </p>
+            <span
+              className={`text-xs font-bold ${
+                isWarning ? "text-amber-300" : "text-primary"
+              }`}
+            >
+              {status.initialized ? `${longUsed}/${longLimit}` : "Checking..."}
+            </span>
+          </div>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-container-highest">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                isWarning ? "bg-amber-400" : "bg-primary"
+              }`}
+              style={{ width: `${status.initialized ? usagePercent : 0}%` }}
+            />
+          </div>
+          <p className="mt-1.5 text-[11px] text-on-surface-variant">
+            {!status.initialized
+              ? "Waiting for the first API response"
+              : isWarning
+                ? `Approaching limit · budget resets in ~${status.resetSeconds}s`
+                : `${usagePercent}% of the two-minute request budget used`}
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+};
+
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
   const navigate = useNavigate();
@@ -72,7 +135,13 @@ export default function PlayerProfile() {
   const [error, setError] = useState(null);
 
   const [extraDates, setExtraDates] = useState([]);
-  const [loadingExtra, setLoadingExtra] = useState(false);
+  const [loadedProfileKey, setLoadedProfileKey] = useState(null);
+  const [nextMatchesStart, setNextMatchesStart] = useState(20);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMoreMatches, setHasMoreMatches] = useState(true);
+  const [loadMoreError, setLoadMoreError] = useState(null);
+  const [rateLimitStatus, setRateLimitStatus] = useState(() => getRateLimitStatus());
+  const profileKey = `${region}/${nickname}/${tag}`;
 
   const handleDuoClick = (playerName) => {
     if (!playerName || !playerName.includes('#')) return;
@@ -87,78 +156,126 @@ export default function PlayerProfile() {
 
 
   useEffect(() => {
+    const handleRateLimitStatus = (event) => {
+      const status = event.detail;
+      setRateLimitStatus(status || getRateLimitStatus());
+    };
+
+    window.addEventListener("riot-rate-limit-status", handleRateLimitStatus);
+    return () => window.removeEventListener("riot-rate-limit-status", handleRateLimitStatus);
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
+        setPlayerData(null);
+        setExtraDates([]);
+        setLoadedProfileKey(null);
+        setNextMatchesStart(20);
+        setHasMoreMatches(true);
+        setLoadMoreError(null);
         const data = await getPlayerData(region, nickname, tag, {
           save: false,
           count: 20,
+          signal: controller.signal,
         });
         console.log("Fetched Player Data:", data);
         setPlayerData(data);
+        setLoadedProfileKey(profileKey);
       } catch (err) {
-        setError(err.message);
+        if (err.name !== "AbortError") {
+          setError(err.message);
+        }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     if (region && nickname && tag) {
       fetchData();
     }
-  }, [region, nickname, tag]);
+
+    return () => controller.abort();
+  }, [region, nickname, tag, profileKey]);
 
   useEffect(() => {
-    let isCancelled = false;
+    const controller = new AbortController();
 
-    const fetchExtraGamesChucks = async () => {
-      setLoadingExtra(true);
-
-      const CHUNK_SIZE = 10;
-      const CHUNKS_TO_FETCH = 4;
-
-      for (let i = 0; i < CHUNKS_TO_FETCH; i++) {
-        if (isCancelled) break;
-
-        try {
-          const currentStart = 20 + (i * CHUNK_SIZE);
-
-          const extraData = await getPlayerData(region, nickname, tag, {
-            save: false,
-            count: CHUNK_SIZE,
-            start: currentStart
-          });
-
-          if (!isCancelled && extraData && Array.isArray(extraData)) {
-            const newDates = [];
-            extraData.forEach((match) => {
-              if (match?.metadata?.gameDateDay) {
-                newDates.push(match.metadata.gameDateDay);
-              }
-            });
-
-            // Append incrementally so the heatmap updates over time
-            setExtraDates(prev => [...prev, ...newDates]);
-          }
-        } catch (err) {
-          console.error(`Failed to fetch extra games chunk ${i}:`, err);
-          break; // Stop fetching further chunks if we hit a rate limit or error
+    const fetchActivity = async () => {
+      try {
+        const activity = await getPlayerActivity(region, nickname, tag, {
+          count: 40,
+          start: 20,
+          signal: controller.signal,
+        });
+        if (!controller.signal.aborted && Array.isArray(activity?.dates)) {
+          setExtraDates(activity.dates);
+        }
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error("Failed to fetch player activity:", err);
         }
       }
-
-      if (!isCancelled) {
-        setLoadingExtra(false);
-      }
     };
 
-    if (playerData && Array.isArray(playerData) && playerData.length > 0 && extraDates.length === 0 && !loadingExtra) {
-      fetchExtraGamesChucks();
+    if (
+      loadedProfileKey === profileKey &&
+      playerData &&
+      Array.isArray(playerData) &&
+      playerData.length > 0
+    ) {
+      fetchActivity();
     }
 
-    return () => {
-      isCancelled = true;
-    };
-  }, [playerData, region, nickname, tag]);
+    return () => controller.abort();
+  }, [playerData, loadedProfileKey, profileKey, region, nickname, tag]);
+
+  const handleShowMore = async () => {
+    if (loadingMore || !hasMoreMatches) return;
+
+    setLoadingMore(true);
+    setLoadMoreError(null);
+    try {
+      const extraData = await getPlayerData(region, nickname, tag, {
+        save: false,
+        count: 20,
+        start: nextMatchesStart,
+      });
+      const newMatches = Array.isArray(extraData)
+        ? extraData.filter((match) => match?.match_id && Array.isArray(match.players))
+        : [];
+
+      setPlayerData((previousData) => {
+        const previousMatches = Array.isArray(previousData)
+          ? previousData.filter((match) => match?.match_id && Array.isArray(match.players))
+          : [];
+        const summary = Array.isArray(previousData)
+          ? previousData.find((entry) => entry?.stats)
+          : null;
+        const knownMatchIds = new Set(previousMatches.map((match) => match.match_id));
+        const uniqueNewMatches = newMatches.filter(
+          (match) => !knownMatchIds.has(match.match_id),
+        );
+
+        return summary
+          ? [...previousMatches, ...uniqueNewMatches, summary]
+          : [...previousMatches, ...uniqueNewMatches];
+      });
+
+      setNextMatchesStart((currentStart) => currentStart + 20);
+      setHasMoreMatches(newMatches.length === 20);
+    } catch (err) {
+      setLoadMoreError(err.message || "Could not load more matches.");
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   const ranks = [
     { name: "Unranked", icon: unrankedIcon },
@@ -286,8 +403,10 @@ export default function PlayerProfile() {
 
         let teammatesMap = {};
 
-        Object.values(playerData).forEach((match) => {
-          if (match?.metadata?.gameDateDay) {
+        Object.values(playerData).forEach((match, matchIndex) => {
+          // extraDates already contains matches 20-59 fetched for the heatmap.
+          // Only the initial page contributes dates here to avoid double-counting.
+          if (matchIndex < 20 && match?.metadata?.gameDateDay) {
             dates.push(match.metadata.gameDateDay);
           }
           const callerPlayer = match.players?.find(
@@ -436,7 +555,7 @@ export default function PlayerProfile() {
 
 
         topDuoPlayers = Object.values(teammatesMap)
-          .filter((p) => p.total > 1)
+          .filter((p) => p.total > 2)
           .sort((a, b) => b.total - a.total || b.wins - a.wins);
 
         // Format label "Gold 3" or "Gold III"
@@ -514,6 +633,7 @@ export default function PlayerProfile() {
   if (loading) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
+        <RateLimitIndicator status={rateLimitStatus} />
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         <h2 className="mt-4 text-xl font-headline text-on-surface">
           Analyzing matches...
@@ -525,6 +645,7 @@ export default function PlayerProfile() {
   if (error) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col gap-3 items-center justify-center">
+        <RateLimitIndicator status={rateLimitStatus} />
         <h2 className="text-2xl font-headline text-error">
           Summoner not found!
         </h2>
@@ -543,6 +664,7 @@ export default function PlayerProfile() {
 
   return (
     <main className="min-h-screen pt-24 pb-12 flex flex-col items-center">
+      <RateLimitIndicator status={rateLimitStatus} />
       {/* Expanded to 1600px for full PC width, 2 columns on extra large screens */}
       <div className="w-full max-w-400 px-6 grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
         {/* ========================================== */}
@@ -816,7 +938,7 @@ export default function PlayerProfile() {
               <h2 className="font-headline font-bold text-xl text-on-surface mb-4">
                 Duo Players{" "}
                 <span className="text-sm font-normal text-outline">
-                  (recent 20 matches)
+                  ({MatchesCD.length} loaded matches)
                 </span>
               </h2>
               <div className="flex flex-col gap-3">
@@ -893,7 +1015,7 @@ export default function PlayerProfile() {
               Recent Matches
             </h2>
             <span className="text-sm text-outline font-bold tracking-widest bg-surface-container px-2 py-1 rounded">
-              20 GAMES
+              {MatchesCD.length} GAMES
             </span>
           </div>
 
@@ -901,7 +1023,7 @@ export default function PlayerProfile() {
             {(MatchesCD.length > 0 ? MatchesCD : mockMatches).map(
               (match, idx) => (
                 <div
-                  key={idx}
+                  key={match.matchId || idx}
                   onClick={() => navigate(`/match/${match.matchId}`)}
                   className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer 
                    ${match.win ? "border-l-4 border-l-primary/80 bg-primary/5" : "border-l-4 border-l-error/80 bg-error/5"}`}
@@ -1073,6 +1195,27 @@ export default function PlayerProfile() {
                   </span>
                 </div>
               ),
+            )}
+
+            {loadMoreError && (
+              <p className="text-sm text-error text-center py-2">
+                {loadMoreError}
+              </p>
+            )}
+
+            {hasMoreMatches ? (
+              <button
+                type="button"
+                onClick={handleShowMore}
+                disabled={loadingMore}
+                className="mt-2 w-full rounded-xl border border-primary/30 bg-primary/10 px-5 py-3 font-headline text-sm font-bold uppercase tracking-widest text-primary transition-colors hover:bg-primary/20 disabled:cursor-wait disabled:opacity-60"
+              >
+                {loadingMore ? "Loading..." : "Show More"}
+              </button>
+            ) : (
+              <p className="py-3 text-center text-sm font-bold text-outline">
+                No more matches to show
+              </p>
             )}
           </div>
         </div>

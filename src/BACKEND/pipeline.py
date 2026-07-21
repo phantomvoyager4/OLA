@@ -7,6 +7,7 @@ try:
 except ImportError:
     from model import Caller, Player, Match, summarizer, annotate_player_performance
 import time
+from datetime import datetime
 
 
 def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
@@ -143,6 +144,49 @@ def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
         return combined_records
     except (ValueError, RuntimeError, OSError) as error:
         print(f"Pipeline error: {error}")
+        return None
+
+
+def activity_pipeline(api_key, player_name, player_tag, platform, count=40, start=20):
+    """Fetch only match dates required by the activity heatmap.
+
+    PUUID and immutable match payloads share the backend cache with the full
+    profile pipeline. Rank, mastery, participant mapping, and summarization are
+    deliberately skipped.
+    """
+    try:
+        if not api_key:
+            raise ValueError("Missing RIOT_API_KEY")
+
+        usercall = Caller(
+            platform=platform,
+            api_key=api_key,
+            player_name=player_name,
+            player_tag=player_tag,
+            count=count,
+        )
+        puuid = usercall.get_puuid()
+        if not puuid:
+            raise RuntimeError("Could not resolve player PUUID")
+
+        match_ids = usercall.last_matches_id_call(puuid, start=start)
+        if not isinstance(match_ids, list):
+            raise RuntimeError(f"No valid match IDs returned from Riot API: {match_ids}")
+        if not match_ids:
+            return {"dates": [], "matches": 0}
+
+        matches_data = usercall.last_matches_data_call(match_ids)
+        dates = []
+        for match_id in match_ids:
+            payload = matches_data.get(match_id)
+            game_start = (payload or {}).get("info", {}).get("gameStartTimestamp")
+            if game_start is None:
+                continue
+            dates.append(datetime.fromtimestamp(game_start / 1000).strftime("%Y-%m-%d"))
+
+        return {"dates": dates, "matches": len(dates)}
+    except (ValueError, RuntimeError, OSError) as error:
+        print(f"Activity pipeline error: {error}")
         return None
 
 

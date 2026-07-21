@@ -106,8 +106,6 @@ export default function Match() {
   const blueTeam = blueTeamRaw.map(formatPlayer);
   const redTeam = redTeamRaw.map(formatPlayer);
 
-  // Finds the highest valid performance score in a team.
-  // A tied score is awarded to the first player in the team array.
   const getTopPerformanceIndex = (team) => {
     let topIndex = -1;
     let topScore = -Infinity;

@@ -4,7 +4,11 @@ import math
 from datetime import datetime
 from pathlib import Path
 import concurrent.futures
-import time
+
+try:
+    from .riot_api import riot_get_json
+except ImportError:
+    from riot_api import riot_get_json
 
 
 class Caller:
@@ -89,10 +93,11 @@ class Caller:
         params = {
             'api_key': self.api_key
         }
-        call = requests.get(url=url, params=params)
-        if call.status_code == 200:
-            self.puuid = call.json()['puuid']
-            return call.json()['puuid']
+        status, payload = riot_get_json(url, params, ttl_seconds=24 * 60 * 60)
+        if status == 200 and isinstance(payload, dict):
+            self.puuid = payload.get('puuid')
+            return self.puuid
+        return None
 
     def last_matches_id_call(self, puuid, start=0): 
         """
@@ -109,16 +114,17 @@ class Caller:
             'api_key': self.api_key,
             'queue': 420
         }
-        response = requests.get(url=url, params=params)
-        if response.status_code == 200:
-            return response.json() 
+        status, payload = riot_get_json(url, params, ttl_seconds=120)
+        if status == 200:
+            return payload
         else:
-            return f'Error getting user matches ID: {response.status_code}'
+            return f'Error getting user matches ID: {status}'
     
     def last_matches_data_call(self, matches_id: list):
         """
         Obtain user last matches statistics via matches id call using concurrent requests.
-        Limiting to 10 workers to respect the Riot Dev API limit of 20 requests per second.
+        Worker concurrency improves latency; the shared transport enforces both
+        Riot API rate-limit windows independently of the worker count.
         """
         
         matches_storage = {}
@@ -130,38 +136,35 @@ class Caller:
             url = f'{self.url_base}/lol/match/v5/matches/{match}'
             params = {'api_key': self.api_key}
             
-            response = session.get(url, params=params)
-            
-            # Handle rate limiting (HTTP 429 Too Many Requests)
-            if response.status_code == 429:
-                retry_after = int(response.headers.get("Retry-After", 1))
-                time.sleep(retry_after)
-                # Retry recursively if rate limited
-                return fetch_match(match)
-                
-            if response.status_code == 200:
-                return match, response.json()
+            status, payload = riot_get_json(
+                url,
+                params,
+                ttl_seconds=30 * 24 * 60 * 60,
+                session=session,
+            )
+            if status == 200:
+                return match, payload
             return match, None
 
-        # ThreadPoolExecutor runs requests concurrently. 
-        # max_workers=12 ensures we never shoot more than 12 requests exactly at the same time,
-        # protecting us from hitting the 20 req/1 sec Dev Key rate limit.
+        # ThreadPoolExecutor runs requests concurrently. The shared rate limiter
+        # in riot_api.py decides when each worker may issue its next request.
         with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
             future_to_match = {executor.submit(fetch_match, match): match for match in matches_id}
             for future in concurrent.futures.as_completed(future_to_match):
                 match, data = future.result()
                 if data:
                     matches_storage[match] = data
-                    
+
+        session.close()
         return matches_storage
     
     def player_metadata_call(self):
         url = f'{self.url_base_platform}/lol/league/v4/entries/by-puuid/{self.puuid}'
         params = {'api_key': self.api_key}
-        response = requests.get(url, params)
-        if response.status_code == 200:
-            player_metadata = response.json()
-            ranked_data = next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {})
+        status, payload = riot_get_json(url, params, ttl_seconds=5 * 60)
+        if status == 200 and isinstance(payload, list):
+            player_metadata = payload
+            ranked_data = dict(next((entry for entry in player_metadata if entry.get("queueType") == "RANKED_SOLO_5x5"), {}))
             if not ranked_data:
                 print(
                     f"Warning: no RANKED_SOLO_5x5 entry found for puuid {self.puuid}. "
@@ -186,11 +189,11 @@ class Caller:
 
         else:
             print(
-                f"Warning: metadata request failed for puuid {self.puuid} with status {response.status_code}. "
+                f"Warning: metadata request failed for puuid {self.puuid} with status {status}. "
                 "Using default zeroed metadata."
             )
             return {
-                "error": f'Error getting user metadata: {response.status_code}',
+                "error": f'Error getting user metadata: {status}',
                 "queueType": "RANKED_SOLO_5x5",
                 "wins": 0,
                 "losses": 0,
@@ -201,9 +204,11 @@ class Caller:
     def player_mastery(self, lookup_table):
         url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
         params = {'api_key': self.api_key}
-        response = requests.get(url, params)
+        status, payload = riot_get_json(url, params, ttl_seconds=30 * 60)
+        if status != 200 or not isinstance(payload, list):
+            raise RuntimeError(f'Error getting player mastery: {status}')
 
-        mastery_raw = response.json()[:3]
+        mastery_raw = payload[:3]
         top_three_masteries = []
         to_use = ["championLevel", "championPoints"]
 

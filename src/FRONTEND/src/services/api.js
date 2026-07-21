@@ -5,6 +5,41 @@ const API_CACHE_VERSION = 'performance-metric-v1';
 // This prevents refetching data every time you save a file
 const apiCache = window.__API_CACHE__ || (window.__API_CACHE__ = new Map());
 
+const defaultRateLimitStatus = {
+  warning: false,
+  shortWindow: "0/18",
+  longWindow: "0/90",
+  resetSeconds: 0,
+  initialized: false,
+};
+
+export const getRateLimitStatus = () => (
+  window.__RIOT_RATE_LIMIT_STATUS__ || defaultRateLimitStatus
+);
+
+const dispatchRateLimitStatus = (status) => {
+  window.__RIOT_RATE_LIMIT_STATUS__ = status;
+  window.dispatchEvent(new CustomEvent("riot-rate-limit-status", { detail: status }));
+};
+
+const publishRateLimitStatus = (response) => {
+  const shortWindow = response.headers.get("X-Riot-Rate-Limit-Short");
+  const longWindow = response.headers.get("X-Riot-Rate-Limit-Long");
+  if (!shortWindow && !longWindow) return;
+
+  dispatchRateLimitStatus({
+    warning: response.headers.get("X-Riot-Rate-Limit-Warning") === "approaching",
+    shortWindow,
+    longWindow,
+    resetSeconds: Number(response.headers.get("X-Riot-Rate-Limit-Reset") || 0),
+    initialized: true,
+  });
+};
+
+const publishCachedRateLimitStatus = () => {
+  dispatchRateLimitStatus(getRateLimitStatus());
+};
+
 /**
  * Fetches player data and recent matches from the backend.
  * 
@@ -18,16 +53,18 @@ const apiCache = window.__API_CACHE__ || (window.__API_CACHE__ = new Map());
  * @returns {Promise<Object>} The player and matches data
  */
 export const getPlayerData = async (region, nickname, tag, options = { save: false, count: 20, start: 0 }) => {
-  const { save, count, start = 0 } = options;
+  const { save, count, start = 0, signal } = options;
   const url = `${API_BASE_URL}/matches/${region}/${nickname}/${tag}?save=${save}&count=${count}&start=${start}&cacheVersion=${API_CACHE_VERSION}`;
   
   // Return cached data if available
   if (apiCache.has(url)) {
     console.log("Returning cached data for", url);
+    publishCachedRateLimitStatus();
     return apiCache.get(url);
   }
 
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
+  publishRateLimitStatus(response);
   
   if (!response.ok) {
     throw new Error(`Failed to fetch: ${response.statusText}`);
@@ -38,6 +75,28 @@ export const getPlayerData = async (region, nickname, tag, options = { save: fal
   // Save to cache
   apiCache.set(url, data);
   
+  return data;
+};
+
+/** Fetches only the match dates needed to extend the activity heatmap. */
+export const getPlayerActivity = async (region, nickname, tag, options = {}) => {
+  const { count = 40, start = 20, signal } = options;
+  const url = `${API_BASE_URL}/activity/${region}/${nickname}/${tag}?count=${count}&start=${start}&cacheVersion=${API_CACHE_VERSION}`;
+
+  if (apiCache.has(url)) {
+    console.log("Returning cached data for", url);
+    publishCachedRateLimitStatus();
+    return apiCache.get(url);
+  }
+
+  const response = await fetch(url, { signal });
+  publishRateLimitStatus(response);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch activity: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  apiCache.set(url, data);
   return data;
 };
 
