@@ -99,7 +99,7 @@ export default function RateLimitIndicator() {
   return (
     <aside
       aria-live="polite"
-      className={`fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-80 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
+      className={`fixed bottom-4 right-4 z-50 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
         isWarning
           ? "border-amber-400/50"
           : isSafe
