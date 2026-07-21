@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getPlayerActivity, getPlayerData, getRateLimitStatus } from "../services/api";
+import { getPlayerActivity, getPlayerData } from "../services/api";
 import { Link, NavLink } from "react-router-dom";
 
 const noIcon = "/icons/noicon.jpg";
@@ -57,69 +57,6 @@ const getPerformanceBadgeClass = (band) => {
   }
 };
 
-const RateLimitIndicator = ({ status }) => {
-  const [longUsed = 0, longLimit = 90] = String(status.longWindow || "0/90")
-    .split("/")
-    .map(Number);
-  const usagePercent = Math.min(
-    100,
-    Math.round((longUsed / Math.max(1, longLimit)) * 100),
-  );
-  const isWarning = status.warning;
-
-  return (
-    <aside
-      aria-live="polite"
-      className={`fixed bottom-4 right-4 z-50 w-[calc(100%-2rem)] max-w-80 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
-        isWarning ? "border-amber-400/50" : "border-primary/30"
-      }`}
-    >
-      <div className="flex items-center gap-3 px-4 py-3">
-        <div
-          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-            isWarning
-              ? "bg-amber-400/15 text-amber-300"
-              : "bg-primary/15 text-primary"
-          }`}
-        >
-          <span className="material-symbols-outlined text-xl">
-            {isWarning ? "warning" : "speed"}
-          </span>
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center justify-between gap-3">
-            <p className="truncate text-xs font-bold uppercase tracking-widest text-on-surface">
-              Riot API Capacity
-            </p>
-            <span
-              className={`text-xs font-bold ${
-                isWarning ? "text-amber-300" : "text-primary"
-              }`}
-            >
-              {status.initialized ? `${longUsed}/${longLimit}` : "Checking..."}
-            </span>
-          </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-container-highest">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${
-                isWarning ? "bg-amber-400" : "bg-primary"
-              }`}
-              style={{ width: `${status.initialized ? usagePercent : 0}%` }}
-            />
-          </div>
-          <p className="mt-1.5 text-[11px] text-on-surface-variant">
-            {!status.initialized
-              ? "Waiting for the first API response"
-              : isWarning
-                ? `Approaching limit · budget resets in ~${status.resetSeconds}s`
-                : `${usagePercent}% of the two-minute request budget used`}
-          </p>
-        </div>
-      </div>
-    </aside>
-  );
-};
-
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
   const navigate = useNavigate();
@@ -140,7 +77,6 @@ export default function PlayerProfile() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreMatches, setHasMoreMatches] = useState(true);
   const [loadMoreError, setLoadMoreError] = useState(null);
-  const [rateLimitStatus, setRateLimitStatus] = useState(() => getRateLimitStatus());
   const profileKey = `${region}/${nickname}/${tag}`;
 
   const handleDuoClick = (playerName) => {
@@ -154,16 +90,6 @@ export default function PlayerProfile() {
   };
 
 
-
-  useEffect(() => {
-    const handleRateLimitStatus = (event) => {
-      const status = event.detail;
-      setRateLimitStatus(status || getRateLimitStatus());
-    };
-
-    window.addEventListener("riot-rate-limit-status", handleRateLimitStatus);
-    return () => window.removeEventListener("riot-rate-limit-status", handleRateLimitStatus);
-  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -633,7 +559,6 @@ export default function PlayerProfile() {
   if (loading) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col items-center justify-center">
-        <RateLimitIndicator status={rateLimitStatus} />
         <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
         <h2 className="mt-4 text-xl font-headline text-on-surface">
           Analyzing matches...
@@ -645,7 +570,6 @@ export default function PlayerProfile() {
   if (error) {
     return (
       <main className="min-h-screen pt-24 pb-12 flex flex-col gap-3 items-center justify-center">
-        <RateLimitIndicator status={rateLimitStatus} />
         <h2 className="text-2xl font-headline text-error">
           Summoner not found!
         </h2>
@@ -664,7 +588,6 @@ export default function PlayerProfile() {
 
   return (
     <main className="min-h-screen pt-24 pb-12 flex flex-col items-center">
-      <RateLimitIndicator status={rateLimitStatus} />
       {/* Expanded to 1600px for full PC width, 2 columns on extra large screens */}
       <div className="w-full max-w-400 px-6 grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
         {/* ========================================== */}

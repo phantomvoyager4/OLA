@@ -40,6 +40,17 @@ const publishCachedRateLimitStatus = () => {
   dispatchRateLimitStatus(getRateLimitStatus());
 };
 
+export const refreshRateLimitStatus = async (options = {}) => {
+  const response = await fetch(`${API_BASE_URL}/rate-limit`, {
+    signal: options.signal,
+  });
+  publishRateLimitStatus(response);
+  if (!response.ok) {
+    throw new Error(`Failed to refresh rate limit status: ${response.statusText}`);
+  }
+  return getRateLimitStatus();
+};
+
 /**
  * Fetches player data and recent matches from the backend.
  * 

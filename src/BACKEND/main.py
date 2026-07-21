@@ -47,6 +47,12 @@ def root():
     return {"instruction": "Open this link: http://127.0.0.1:8000/docs#/",
              "status": "Running"}
 
+
+@app.get('/api/rate-limit')
+def get_rate_limit():
+    """Expose limiter state without consuming Riot API quota."""
+    return RIOT_RATE_LIMITER.snapshot()
+
 @app.get('/api/matches/{platform}/{player_name}/{player_tag}')
 def get_matches(
     player_name: str, 
