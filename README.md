@@ -43,6 +43,14 @@ The interesting part of this project is not only the UI. It is the engineering a
 - Highlight the strongest performer on each team.
 - Assign every player a role-aware performance score and quality band.
 
+### Live meta tier list
+
+- Build an EUW Master+ tier list from current-patch ranked solo matches.
+- Seed the sample from Master, Grandmaster, and Challenger league entries.
+- Rank champion-role combinations with sample-aware win, pick, and ban signals.
+- Filter the result by role or champion without making another Riot API request.
+- Publish collection results as an atomic snapshot, so readers never see partial data.
+
 ### Production-minded API handling
 
 - Enforce both short- and long-window Riot API limits globally.
@@ -88,6 +96,9 @@ flowchart LR
     A --> P["Concurrent match pipeline"]
     P --> S["Role-aware scoring"]
     S --> F
+    A --> T["Controlled Master+ collector"]
+    T --> J["Atomic tier-list snapshot"]
+    J --> F
     F --> R
     F -->|"Live capacity status"| I["Global API indicator"]
     I --> R
@@ -166,12 +177,26 @@ Stop the stack with `Ctrl+C`, then remove the containers with:
 docker compose down
 ```
 
+### Refresh the EUW Master+ tier list
+
+The page reads a completed JSON snapshot; it does not start a large Riot API job during an HTTP request. Stop the API while running the separate collector so both processes cannot spend the same key budget independently:
+
+```bash
+docker compose stop backend
+docker compose run --rm backend python -m BACKEND.tier_list_fetcher --players-per-tier 10 --matches-per-player 10 --min-games 3
+docker compose up -d backend
+```
+
+The collector discovers the latest EUW patch, deduplicates match IDs, rejects remakes and non-ranked games, applies a hard match cap, and atomically replaces `data/tier_list/euw_master_plus_latest.json`. The snapshot keeps Riot's public patch name (`26.14`) separate from the internal Data Dragon/match-v5 version (`16.14`). A compact 5-player-per-tier run is useful for local smoke testing; a larger sample produces more stable rankings.
+
 ## API overview
 
 | Method | Endpoint | Purpose |
 |---|---|---|
 | `GET` | `/api/matches/{platform}/{name}/{tag}` | Full player and match analysis |
 | `GET` | `/api/activity/{platform}/{name}/{tag}` | Lightweight heatmap data |
+| `GET` | `/api/tier-list` | Latest completed EUW Master+ ranking snapshot |
+| `GET` | `/api/tier-list/status` | Snapshot readiness and sample metadata |
 | `GET` | `/api/rate-limit` | Current local limiter capacity |
 | `GET` | `/docs` | Interactive OpenAPI documentation |
 
@@ -186,16 +211,19 @@ GET /api/matches/EUW/PlayerName/EUW?count=20&start=0&save=false
 ```text
 .
 ├── data/static/                  # Data Dragon lookup tables and UI assets
+├── data/tier_list/               # Last atomically published tier-list snapshot
 ├── src/
 │   ├── BACKEND/
 │   │   ├── main.py              # FastAPI routes and response metadata
 │   │   ├── model.py             # Riot models and performance scoring
 │   │   ├── pipeline.py          # Full and lightweight data pipelines
+│   │   ├── tier_list_fetcher.py # Controlled EUW Master+ collection CLI
+│   │   ├── tier_list_backend.py # Aggregation, persistence, and read API
 │   │   └── riot_api.py          # Cache, limiter, retries, and transport
 │   └── FRONTEND/
 │       ├── src/components/      # Shared interface components
 │       ├── src/pages/           # Routed application views
-│       └── src/services/api.js  # Frontend API and status integration
+│       └── src/services/         # Frontend API and status integrations
 ├── docker-compose.yml
 └── README.md
 ```

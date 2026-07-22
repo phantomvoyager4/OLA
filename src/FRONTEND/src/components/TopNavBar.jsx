@@ -27,7 +27,6 @@ export default function TopNavBar() {
           >
             Dashboard
           </NavLink>
-          {/* Invisible tier list link */}
           <NavLink
             to="/tier-list"
             className={({ isActive }) =>
@@ -40,7 +39,6 @@ export default function TopNavBar() {
           >
             Tier list
           </NavLink>
-          {/* Invisible prediction link */}
           <NavLink
             to="/prediction"
             className={({ isActive }) =>

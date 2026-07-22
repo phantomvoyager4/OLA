@@ -1,412 +1,396 @@
-export default function TierList() {
+import { useEffect, useMemo, useState } from "react";
+import { getTierList } from "../services/tierListApi";
+
+const ROLES = [
+  { value: "ALL", label: "All roles", icon: "grid_view" },
+  { value: "TOP", label: "Top", icon: "shield" },
+  { value: "JUNGLE", label: "Jungle", icon: "forest" },
+  { value: "MIDDLE", label: "Mid", icon: "route" },
+  { value: "BOTTOM", label: "Bot", icon: "my_location" },
+  { value: "UTILITY", label: "Support", icon: "volunteer_activism" },
+];
+
+const TIER_ORDER = ["S", "A", "B", "C", "D"];
+const TIER_STYLES = {
+  S: {
+    label: "Meta defining",
+    badge: "border-primary/50 bg-primary/15 text-primary-fixed",
+    glow: "from-primary/18",
+  },
+  A: {
+    label: "Powerful picks",
+    badge: "border-secondary/50 bg-secondary/10 text-secondary-fixed",
+    glow: "from-secondary/12",
+  },
+  B: {
+    label: "Strong and reliable",
+    badge: "border-[#5f8edb]/40 bg-[#5f8edb]/10 text-[#92b7f0]",
+    glow: "from-[#5f8edb]/10",
+  },
+  C: {
+    label: "Situational picks",
+    badge: "border-[#d49a55]/40 bg-[#d49a55]/10 text-[#e7b87b]",
+    glow: "from-[#d49a55]/10",
+  },
+  D: {
+    label: "Challenging in this meta",
+    badge: "border-error/35 bg-error/10 text-on-error-container",
+    glow: "from-error/8",
+  },
+};
+
+const numberFormatter = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 0 });
+
+const formatNumber = (value) => numberFormatter.format(Number(value) || 0);
+
+const formatPercent = (value) => {
+  if (value === null || value === undefined) return "--";
+  return `${Number(value).toFixed(1)}%`;
+};
+
+const formatPatch = (patch) => {
+  const value = String(patch || "Latest");
+  if (value.toLowerCase() === "latest") return value;
+  return value.toLowerCase().startsWith("v") ? value : `v${value}`;
+};
+
+const formatLastUpdated = (value) => {
+  if (!value) return "Awaiting first snapshot";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return String(value);
+
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+};
+
+function ChampionPortrait({ champion }) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const initials = champion.championName
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+
   return (
-    <main className="pt-24 pb-12 px-8 min-h-screen">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero Header Section */}
-        <header className="mb-12">
-          <h1 className="text-6xl font-bold tracking-tighter text-on-surface mb-4">
-            Champion Tier List
-          </h1>
-          <p className="text-on-surface-variant max-w-3xl leading-relaxed text-lg">
-            Checking how your main is performing in latest patch or looking for a new one? With our tier list you are sure to always stay up to date
-            which latest meta! 
+    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-outline-variant/40 bg-surface-container-highest">
+      <div className="absolute inset-0 flex items-center justify-center font-headline text-sm font-bold text-on-surface-variant">
+        {initials}
+      </div>
+      {champion.championImage && !imageFailed && (
+        <img
+          alt={`${champion.championName} portrait`}
+          className="relative h-full w-full object-cover"
+          loading="lazy"
+          onError={() => setImageFailed(true)}
+          src={champion.championImage}
+        />
+      )}
+    </div>
+  );
+}
+
+function Metric({ label, value, accent = false }) {
+  return (
+    <div className="min-w-19">
+      <p className="mb-1 text-[9px] font-bold uppercase tracking-[0.18em] text-on-surface-variant md:hidden">
+        {label}
+      </p>
+      <p className={`font-headline text-sm font-semibold ${accent ? "text-secondary-fixed" : "text-on-surface"}`}>
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function ChampionRow({ champion, showRole }) {
+  return (
+    <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-outline-variant/10 px-5 py-5 transition-colors first:border-t-0 hover:bg-white/[0.025] md:grid-cols-[minmax(230px,1.7fr)_0.7fr_0.75fr_0.75fr_0.75fr_0.65fr] md:items-center md:px-7">
+      <div className="col-span-2 flex min-w-0 items-center gap-4 md:col-span-1">
+        <ChampionPortrait champion={champion} />
+        <div className="min-w-0">
+          <p className="truncate font-headline text-base font-bold uppercase tracking-tight text-on-surface">
+            {champion.championName}
           </p>
+          {showRole && (
+            <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.16em] text-on-surface-variant">
+              {ROLES.find((role) => role.value === champion.role)?.label || champion.role}
+            </p>
+          )}
+        </div>
+      </div>
+      <Metric label="Games" value={formatNumber(champion.games)} />
+      <Metric label="Win rate" value={formatPercent(champion.winRate)} accent={champion.winRate >= 52} />
+      <Metric label="Pick rate" value={formatPercent(champion.pickRate)} />
+      <Metric label="Ban rate" value={formatPercent(champion.banRate)} />
+      <Metric label="Score" value={champion.score === null ? "--" : champion.score.toFixed(1)} />
+    </div>
+  );
+}
+
+function TierSection({ tier, champions, showRole }) {
+  const style = TIER_STYLES[tier];
+
+  return (
+    <section className="relative overflow-hidden rounded-xl border border-outline-variant/15 bg-surface-container">
+      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-r ${style.glow} via-transparent to-transparent`} />
+      <div className="relative grid md:grid-cols-[150px_1fr]">
+        <header className="border-b border-outline-variant/15 px-5 py-5 md:block md:border-b-0 md:border-r md:px-7">
+          <div className="flex items-center gap-4 md:sticky md:top-24 md:flex-col md:items-start">
+            <div className={`flex h-14 w-14 items-center justify-center rounded-lg border font-headline text-3xl font-black ${style.badge}`}>
+              {tier}
+            </div>
+            <div>
+              <p className="font-headline text-sm font-bold uppercase tracking-wider text-on-surface">Tier {tier}</p>
+              <p className="mt-1 text-xs text-on-surface-variant">{style.label}</p>
+            </div>
+          </div>
         </header>
 
-        {/* Filter & Sorting Bar */}
-        <section className="bg-surface-container-low p-1 rounded-lg mb-8 border border-outline-variant/10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-1">
-            <div className="bg-surface-container p-5 flex flex-col gap-1 hover:bg-surface-container-high transition-colors cursor-pointer">
-              <span className="text-[10px] text-on-surface-variant uppercase tracking-widest font-label font-bold">
-                Server Region
-              </span>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-on-surface">Korea (KR)</span>
-                <span
-                  className="material-symbols-outlined text-primary"
-                  data-icon="expand_more"
-                >
-                  expand_more
-                </span>
+        <div className="relative min-w-0">
+          <div className="hidden grid-cols-[minmax(230px,1.7fr)_0.7fr_0.75fr_0.75fr_0.75fr_0.65fr] px-7 py-3 text-[9px] font-bold uppercase tracking-[0.18em] text-on-surface-variant md:grid">
+            <span>Champion</span>
+            <span>Games</span>
+            <span>Win rate</span>
+            <span>Pick rate</span>
+            <span>Ban rate</span>
+            <span>Score</span>
+          </div>
+          {champions.map((champion) => (
+            <ChampionRow champion={champion} key={champion.id} showRole={showRole} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function TierListSkeleton() {
+  return (
+    <div aria-label="Loading tier list" className="space-y-4" role="status">
+      {["S", "A", "B"].map((tier, tierIndex) => (
+        <div className="overflow-hidden rounded-xl border border-outline-variant/15 bg-surface-container" key={tier}>
+          <div className="grid md:grid-cols-[150px_1fr]">
+            <div className="border-b border-outline-variant/10 p-6 md:border-b-0 md:border-r">
+              <div className="h-14 w-14 animate-pulse rounded-lg bg-surface-container-highest" />
+            </div>
+            <div className="divide-y divide-outline-variant/10 px-6">
+              {Array.from({ length: tierIndex === 0 ? 3 : 2 }).map((_, rowIndex) => (
+                <div className="flex items-center gap-4 py-5" key={rowIndex}>
+                  <div className="h-12 w-12 animate-pulse rounded-md bg-surface-container-highest" />
+                  <div className="h-4 w-36 animate-pulse rounded bg-surface-container-highest" />
+                  <div className="ml-auto hidden h-4 w-2/5 animate-pulse rounded bg-surface-container-highest md:block" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function EmptyState({ filtered = false }) {
+  return (
+    <div className="rounded-xl border border-dashed border-outline-variant/40 bg-surface-container/60 px-6 py-16 text-center">
+      <span className="material-symbols-outlined mb-4 text-4xl text-primary">{filtered ? "search_off" : "hourglass_empty"}</span>
+      <h2 className="font-headline text-xl font-bold text-on-surface">
+        {filtered ? "No champions match these filters" : "The first tier-list snapshot is not ready yet"}
+      </h2>
+      <p className="mx-auto mt-2 max-w-lg text-sm leading-relaxed text-on-surface-variant">
+        {filtered
+          ? "Try another role or clear the champion search."
+          : "Run the EUW Master+ collector, then refresh this page to display the generated ranking."}
+      </p>
+    </div>
+  );
+}
+
+export default function TierList() {
+  const [tierList, setTierList] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
+  const [selectedRole, setSelectedRole] = useState("ALL");
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadTierList = async () => {
+      setLoading(true);
+      setError("");
+
+      try {
+        setTierList(await getTierList({ signal: controller.signal }));
+      } catch (requestError) {
+        if (requestError.name !== "AbortError") {
+          setError(requestError.message || "Unable to load the tier list.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    loadTierList();
+    return () => controller.abort();
+  }, [reloadKey]);
+
+  const filteredChampions = useMemo(() => {
+    const query = search.trim().toLocaleLowerCase();
+    return (tierList?.champions || []).filter((champion) => {
+      const matchesRole = selectedRole === "ALL" || champion.role === selectedRole;
+      const matchesSearch = !query || champion.championName.toLocaleLowerCase().includes(query);
+      return matchesRole && matchesSearch;
+    });
+  }, [search, selectedRole, tierList]);
+
+  const groupedChampions = useMemo(
+    () => Object.fromEntries(TIER_ORDER.map((tier) => [
+      tier,
+      filteredChampions
+        .filter((champion) => champion.tier === tier)
+        .sort((left, right) => (right.score ?? -1) - (left.score ?? -1)),
+    ])),
+    [filteredChampions],
+  );
+
+  const hasData = (tierList?.champions.length || 0) > 0;
+  const region = tierList?.region || "EUW";
+  const rank = (tierList?.rank || "MASTER+").replaceAll("_", " ");
+
+  return (
+    <main className="relative min-h-screen overflow-hidden px-5 pb-20 pt-28 md:px-8">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-120 w-240 -translate-x-1/2 rounded-full bg-primary/8 blur-[140px]" />
+      <div className="relative mx-auto max-w-7xl">
+        <header className="mb-10 border-b border-outline-variant/20 pb-9">
+          <div className="mb-5 flex flex-wrap items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em]">
+            <span className="rounded-full border border-secondary/30 bg-secondary/10 px-3 py-1.5 text-secondary-fixed">
+              Data-driven meta
+            </span>
+            <span className="text-on-surface-variant">Ranked Solo</span>
+            <span className="h-1 w-1 rounded-full bg-outline" />
+            <span className="text-on-surface-variant">Latest patch</span>
+          </div>
+          <div className="flex flex-col justify-between gap-7 lg:flex-row lg:items-end">
+            <div>
+              <h1 className="max-w-4xl font-headline text-4xl font-bold tracking-[-0.04em] text-on-surface sm:text-5xl lg:text-6xl">
+                {region.toUpperCase()} {rank} <span className="text-primary-fixed">Champion Tier List</span>
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-on-surface-variant md:text-base">
+                Ranked from real high-elo matches, with sample-aware scoring across every role. Use win, pick and ban rates together—not a single noisy metric.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:flex">
+              <div className="rounded-lg border border-outline-variant/20 bg-surface-container px-4 py-3">
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-on-surface-variant">Patch</p>
+                <p className="mt-1 font-headline text-sm font-bold text-primary-fixed">{formatPatch(tierList?.patch)}</p>
+              </div>
+              <div className="rounded-lg border border-outline-variant/20 bg-surface-container px-4 py-3">
+                <p className="text-[9px] font-bold uppercase tracking-[0.18em] text-on-surface-variant">Matches</p>
+                <p className="mt-1 font-headline text-sm font-bold text-on-surface">
+                  {tierList?.sampleMatches === null || tierList?.sampleMatches === undefined
+                    ? "--"
+                    : formatNumber(tierList.sampleMatches)}
+                </p>
               </div>
             </div>
-            <div className="bg-surface-container p-5 flex flex-col gap-1 hover:bg-surface-container-high transition-colors cursor-pointer">
-              <span className="text-[10px] text-on-surface-variant uppercase tracking-widest font-label font-bold">
-                Role / Position
-              </span>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-on-surface">
-                  Jungle
-                </span>
-                <span
-                  className="material-symbols-outlined text-primary"
-                  data-icon="filter_list"
-                >
-                  filter_list
-                </span>
-              </div>
+          </div>
+        </header>
+
+        <section className="mb-7 rounded-xl border border-outline-variant/15 bg-surface-container-low p-3">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div className="flex flex-wrap gap-2" aria-label="Filter by role">
+              {ROLES.map((role) => {
+                const active = selectedRole === role.value;
+                return (
+                  <button
+                    aria-pressed={active}
+                    className={`flex cursor-pointer items-center gap-2 rounded-md border px-3.5 py-2.5 font-headline text-xs font-bold transition-all ${
+                      active
+                        ? "border-primary/40 bg-primary/15 text-primary-fixed shadow-[0_0_18px_rgba(158,36,230,0.12)]"
+                        : "border-transparent bg-surface-container text-on-surface-variant hover:border-outline-variant/40 hover:text-on-surface"
+                    }`}
+                    key={role.value}
+                    onClick={() => setSelectedRole(role.value)}
+                    type="button"
+                  >
+                    <span className="material-symbols-outlined text-[17px]">{role.icon}</span>
+                    {role.label}
+                  </button>
+                );
+              })}
             </div>
-            <div className="bg-surface-container p-5 flex flex-col gap-1 hover:bg-surface-container-high transition-colors cursor-pointer">
-              <span className="text-[10px] text-on-surface-variant uppercase tracking-widest font-label font-bold">
-                Competitive Rank
-              </span>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-on-surface">Challenger</span>
-              </div>
-            </div>
-            <div className="bg-surface-container p-5 flex flex-col gap-1 hover:bg-surface-container-high transition-colors cursor-pointer">
-              <span className="text-[10px] text-on-surface-variant uppercase tracking-widest font-label font-bold">
-                Patch Version
-              </span>
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-primary">
-                  v14.04.1
-                </span>
-                <span
-                  className="material-symbols-outlined text-primary"
-                  data-icon="update"
-                >
-                  update
-                </span>
-              </div>
-            </div>
+
+            <label className="relative block w-full xl:w-72">
+              <span className="sr-only">Search champion</span>
+              <span className="material-symbols-outlined pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[19px] text-on-surface-variant">search</span>
+              <input
+                className="w-full rounded-md border border-outline-variant/25 bg-surface-container py-2.5 pl-11 pr-4 text-sm text-on-surface outline-none transition-colors placeholder:text-outline focus:border-primary/60"
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder="Search champion"
+                type="search"
+                value={search}
+              />
+            </label>
           </div>
         </section>
 
-        {/* Expanded Data Table */}
-        <div className="bg-surface-container rounded-sm overflow-hidden relative border border-outline-variant/10">
-          {/* Signature Gradient Light Leak */}
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-primary/10 to-transparent blur-[100px] pointer-events-none"></div>
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="border-b border-outline-variant/15 text-[10px] text-on-surface-variant uppercase tracking-[0.2em] font-label font-bold bg-surface-container-high/30">
-                <th className="px-8 py-6">Rank</th>
-                <th className="px-8 py-6">Champion</th>
-                <th className="px-8 py-6">Win Rate</th>
-                <th className="px-8 py-6">Pick Rate</th>
-                <th className="px-8 py-6">Ban Rate</th>
-                <th className="px-8 py-6 text-right">Best Synergy</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-outline-variant/10">
-              {/* S+ Tier Rows */}
-              <tr className="hover:bg-primary/5 transition-colors group">
-                <td className="px-8 py-7">
-                  <span className="text-primary px-3 py-1 text-sm font-black tracking-tighter">
-                    S+
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-primary/30">
-                      <img
-                        className="w-full h-full object-cover"
-                        alt="Stylized esports character portrait"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfyPy1Nak7gW9_1AmSN1v7AJX7K0J2d6l42vSvNEtts_0IT8uxjzivv0GVQWXLtTUBrMsdwgubdofOa2mFxl5IZ285_hFCLo5xOigZVW7rOpXFWEW2KO9d7AniOVDNBtIONESkbsgyaRwucq6kSwSF9FXRZ589kIruNt2j8JnKF4DK8F-aQWgdaHCn8RXs9vHQCKL_-W8yWPe-zKqqzw9ZI1XLtY5UDXY7jAd875g1s9465Xw5gC0Ma4NHDxLbLRUBUE2nkombSCg"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Lee Sin
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        The Blind Monk
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-primary text-xl">
-                      54.2%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-primary w-[54.2%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">12.8%</td>
-                <td className="px-8 py-7 text-error/90 font-bold">45.1%</td>
-                <td className="px-8 py-7">
-                  <div className="flex justify-end -space-x-2">
-                    <div className="w-10 h-10 rounded-full border-2 border-surface-container bg-surface-container-high overflow-hidden">
-                      <img
-                        alt="Avatar"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5aDXF5Ht3L8lcGK3zs8ne89CPYpWqwzpeiljBTkger7si18WKbWc3JiM06BN3o-XgnuKtyBNHrKb6gmloRtheN8aFJ6qcprOS_pB6yzKLuMzQl9d8doMBjiuwt-BchxxfnEPMfGvON51c2r-1cvuP1b2CIGfbwcsea3HkNiDWlPkBj4MFd_v03xkKjrTybtBT0M2sYLybWBRU7YLAdrL0btCNnsohESJ_-ww9a1BRERGXd_5ZIBxDIWWT3RSgcmg2R6TPeyYcmH0"
-                      />
-                    </div>
-                    <div className="w-10 h-10 rounded-full border-2 border-surface-container bg-surface-container-high overflow-hidden">
-                      <img
-                        alt="Avatar"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Hj05i14wg3Fd0-dWStL895LKF6Ju5COI444lNmTNgNDsuGN_ajsjGeK_oiZBpoeggbW7wO0pCzKLO6r8-ghpK0lE03uk1lk07rzvt_77WUUVy7NUWJhhL_VABJSTJm03U34OxZ1U2LHrka5m_QTT87YvR1--KgseLu7rB3ti-TrjqVYl3vTfDByWFprTDAIUNMUZKgJpjnT0ce9vUjWa8NyEcmMxhbPxmTPoZFNoX8VngxrViAoygjUJTX_6md3zHqSGAcHE1lU"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
+        {loading && <TierListSkeleton />}
 
-              {/* S Tier Row */}
-              <tr className="hover:bg-primary/5 transition-colors group">
-                <td className="px-8 py-7">
-                  <span className="text-primary-dim px-3 py-1 text-sm font-bold tracking-tighter">
-                    S
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant/30">
-                      <img
-                        className="w-full h-full object-cover"
-                        alt="Character portrait"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsq4aQBgdyvVqeLmEYFaotUZSwmJpKIoiWuWLqyVWAoILT-NJ6RDz_51dhmFUHrn-DSHQcvB5FX-oaSOdon-ak2kh0y08PJUgVV2_Nu8z4KBe59Jdf0cy8l7QybKHamVG_6KKg3c7D8_7QQfUIkUNpj-f35MispgcJg5tWDcDpX8U0Qi2wwOIaK_juocvkQrwj66cuvtln9eQ1rV17x_IZnvIleHZn03MT4DL7hfX9LRNVYz-5A9wotICxLuW7pngWA-otSI7mfqc"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Nidalee
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        The Bestial Huntress
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-on-surface text-xl">
-                      52.8%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-primary-dim w-[52.8%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">9.4%</td>
-                <td className="px-8 py-7 text-on-surface-variant font-medium">
-                  32.2%
-                </td>
-                <td className="px-8 py-7 text-right">
-                  <div className="flex justify-end">
-                    <div className="w-10 h-10 rounded-full border-2 border-surface-container bg-surface-container-high overflow-hidden">
-                      <img
-                        alt="Avatar"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAPaWQGHDjzWD_JxVchJ93h04C7YyPua-zqmawEeD9zIY0562aIlRQ3sp0y2tgsGkCaK7jHXnAkpyZvkR35mIWWePv0FjpAnr-t3Qab1K99ihsgNpdSBxiF_yRXWz4iUxiecVSGniL0Z85ejJIYXWBftosWxaNbT5gZABeru8GWGt2pXuT_b4tyZm6znZ51CIDOCxKXx_m3AUy9S3reX5SemHXejdtF8CWPIVIJ6y3K7Sb_fTv2ojKvyd-GV2DOe5Ecl3-Y1siDPw"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
-              {/* A Tier Row */}
-              <tr className="hover:bg-primary/5 transition-colors group">
-                <td className="px-8 py-7">
-                  <span className="text-on-surface-variant px-3 py-1 text-sm font-bold tracking-tighter">
-                    A
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant/30">
-                      <img
-                        className="w-full h-full object-cover"
-                        alt="Character portrait"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCADD4F5GdDiYzSMGj1PS1X170jE7MdNLfUwdBnZgh5-wxCkGV1uoi2d_nRiKKuJhVBG2pcvOWAOQjTscIDrzEdml691XD7Z6t3ZyF87sGI3VGd91ygG5VVX883dSko2efw91rdXGbmEY015vkoi8eELHF67wq3K49OYUt1NhtbSttMB8ugVmQZOEHqZxcNpeXT9vjELjTUnxHkh37dS_y6lV2ZHlIwyphk0zL-E54GHwDzK9yCIGZUpP2NvA4kG0MoyRsLJg9iZD4"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Kha'Zix
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        The Voidreaver
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-on-surface text-xl">
-                      51.1%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-outline-variant w-[51.1%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">10.2%</td>
-                <td className="px-8 py-7 text-on-surface-variant font-medium">
-                  18.5%
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex justify-end -space-x-2">
-                    <div className="w-10 h-10 rounded-full border-2 border-surface-container bg-surface-container-high overflow-hidden">
-                      <img
-                        alt="Avatar"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuJ0u54zLNHwrs99hRK7Yh8AT6kls8RCPEafVtIJUGndJ3YZwoA0zaRYvazM6SRFzxG5nDiwKxlG34AhZVkCfCMZKbRPgWUXNGarBAVdy8HyWsjv0pUVJ3RzzaLm3iDjMiHYT8ireYRI0n3RSdShvHW9lESiUInrvv0WtfF0KZNHXs1v-51fdrerS9RgXLH65xfF_rzJxR2YlXNq63RtfYLJFNZ2cRThdFlDgLPlaW7TTy0RzW3_sahUcEdljaGPXkgv1RDETcqpA"
-                      />
-                    </div>
-                    <div className="w-10 h-10 rounded-full border-2 border-surface-container bg-surface-container-high overflow-hidden">
-                      <img
-                        alt="Avatar"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwkaiEvZbl0dsUVpyrf-kg1bJ28AZVk5G-3UWnOsauOvW6pYIKvBEBUnLpTtyTY7toHx52uuMvk6WLQS1Mu0WZtvuzsC8-rx6WJ9aoesNm5xpiVp4Ro3w6V_j4KpM9qPYPFWD5Ao98M2GX3UJWv7B3OPAkOCYY3Uzab6pzz71wuvVZ8z1WXqEpnmJ4xtIpU5AsMoMqMnmMzBYgnLGqHYl856iE8pZd3zTSe1uYY80zliLhkAgnPBok7PWd0ZBkz04Araje1eAVXks"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-
-              {/* B Tier Row */}
-              <tr className="hover:bg-primary/5 transition-colors group border-b border-outline-variant/10">
-                <td className="px-8 py-7">
-                  <span className="text-outline px-3 py-1 text-sm font-bold tracking-tighter">
-                    B
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant/30">
-                      <img
-                        className="w-full h-full object-cover"
-                        alt="Character portrait"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQSUIhyboAcgrJ4IjB70hrwHX9uBavI_qvhR6G3MQXf1xTYTQGW6da5fE6CiCV9MvnIIg5_yR8DZdcoUDBuXTbKraCFBFahiqkwgXLYtrdqUPN5ryGOwJtyaEiplnozck21YNTu8E8bkcua2DPK5vFrWm4QqQFiQ7iVd9q831SGUwpIHejkmMpkGH34ntftMxWKC07C75XATTWdmuE4hLy_0VgFjNeZIMS0Sa0w9fXqWp2oGiIK-JyHX7org5fpGD2YBfkYxRkj7w"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Jarvan IV
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        Exemplar of Demacia
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-on-surface text-xl">
-                      49.4%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-outline-variant/30 w-[49.4%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">7.1%</td>
-                <td className="px-8 py-7 text-on-surface-variant font-medium">
-                  5.2%
-                </td>
-                <td className="px-8 py-7 text-right">
-                  <span className="text-[10px] text-on-surface-variant tracking-widest uppercase italic">
-                    Low Variance
-                  </span>
-                </td>
-              </tr>
-
-              {/* Extended Row 1 */}
-              <tr className="hover:bg-primary/5 transition-colors group">
-                <td className="px-8 py-7">
-                  <span className="text-on-surface-variant px-3 py-1 text-sm font-bold tracking-tighter">
-                    B
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant/30">
-                      <div className="w-full h-full flex items-center justify-center bg-surface-container-highest text-primary font-bold">
-                        VI
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Vi
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        The Piltover Enforcer
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-on-surface text-xl">
-                      48.9%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-outline-variant/30 w-[48.9%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">6.5%</td>
-                <td className="px-8 py-7 text-on-surface-variant font-medium">
-                  4.1%
-                </td>
-                <td className="px-8 py-7 text-right">
-                  <span className="text-primary text-[10px] font-bold uppercase tracking-widest">
-                    + Orianna
-                  </span>
-                </td>
-              </tr>
-
-              {/* Extended Row 2 */}
-              <tr className="hover:bg-primary/5 transition-colors group">
-                <td className="px-8 py-7">
-                  <span className="text-error/70 px-3 py-1 text-sm font-bold tracking-tighter">
-                    C
-                  </span>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-sm bg-surface-container-high overflow-hidden border border-outline-variant/30">
-                      <div className="w-full h-full flex items-center justify-center bg-surface-container-highest text-on-surface-variant font-bold">
-                        GR
-                      </div>
-                    </div>
-                    <div>
-                      <div className="text-on-surface font-bold text-lg leading-tight uppercase">
-                        Graves
-                      </div>
-                      <div className="text-[10px] text-on-surface-variant tracking-widest uppercase mt-1">
-                        The Outlaw
-                      </div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7">
-                  <div className="flex items-center gap-4">
-                    <span className="font-bold text-error text-xl">
-                      46.5%
-                    </span>
-                    <div className="w-16 h-1.5 bg-surface-container-low rounded-full overflow-hidden">
-                      <div className="h-full bg-error-container w-[46.5%]"></div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-7 text-on-surface font-medium">11.2%</td>
-                <td className="px-8 py-7 text-on-surface-variant font-medium">
-                  21.4%
-                </td>
-                <td className="px-8 py-7 text-right">
-                  <span className="text-[10px] text-on-surface-variant tracking-widest uppercase italic">
-                    Declining
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-
-          {/* Table Footer / Load More */}
-          <div className="p-8 flex justify-center bg-surface-container-low/50">
-            <button className="px-8 py-3 border border-primary/30 text-primary font-headline font-bold uppercase tracking-widest hover:bg-primary/10 transition-all rounded-sm flex items-center gap-3">
-              <span
-                className="material-symbols-outlined text-sm"
-                data-icon="add"
-              >
-                add
-              </span>
-              Load More Strategic Data
+        {!loading && error && (
+          <div className="rounded-xl border border-error/30 bg-error/5 px-6 py-14 text-center">
+            <span className="material-symbols-outlined mb-4 text-4xl text-error">cloud_off</span>
+            <h2 className="font-headline text-xl font-bold text-on-surface">Tier list could not be loaded</h2>
+            <p className="mx-auto mt-2 max-w-lg text-sm text-on-surface-variant">{error}</p>
+            <button
+              className="mt-6 cursor-pointer rounded-md bg-primary px-5 py-2.5 font-headline text-xs font-bold uppercase tracking-wider text-on-primary transition-all hover:bg-primary-fixed-dim"
+              onClick={() => setReloadKey((value) => value + 1)}
+              type="button"
+            >
+              Try again
             </button>
           </div>
-        </div>
+        )}
+
+        {!loading && !error && !hasData && <EmptyState />}
+        {!loading && !error && hasData && filteredChampions.length === 0 && <EmptyState filtered />}
+
+        {!loading && !error && filteredChampions.length > 0 && (
+          <div className="space-y-4">
+            {TIER_ORDER.map((tier) => (
+              groupedChampions[tier].length > 0 && (
+                <TierSection
+                  champions={groupedChampions[tier]}
+                  key={tier}
+                  showRole={selectedRole === "ALL"}
+                  tier={tier}
+                />
+              )
+            ))}
+          </div>
+        )}
+
+        {!loading && !error && hasData && (
+          <footer className="mt-7 border-t border-outline-variant/20 pt-5 text-on-surface-variant">
+            <div className="flex flex-col gap-2 text-[10px] uppercase tracking-[0.16em] sm:flex-row sm:items-center sm:justify-between">
+              <p>
+                Showing <span className="font-bold text-on-surface">{filteredChampions.length}</span> champion-role entries
+              </p>
+              <p>
+                Last updated <span className="font-semibold normal-case tracking-normal text-on-surface">{formatLastUpdated(tierList.lastUpdated)}</span>
+              </p>
+            </div>
+            <p className="mt-5 max-w-5xl border-t border-outline-variant/10 pt-4 text-[9px] leading-relaxed text-outline">
+              Open League Analyzer is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties. Riot Games and all associated properties are trademarks or registered trademarks of Riot Games, Inc.
+            </p>
+          </footer>
+        )}
       </div>
     </main>
   );

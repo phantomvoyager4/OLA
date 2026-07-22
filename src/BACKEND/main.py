@@ -4,8 +4,10 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .pipeline import activity_pipeline, pipeline, load_api_key
 from .riot_api import RIOT_RATE_LIMITER
+from .tier_list_backend import tier_list_router
 
 app = FastAPI()
+app.include_router(tier_list_router)
 
 app.add_middleware(
     CORSMiddleware,
