@@ -20,6 +20,7 @@ export default function SignIn() {
       <div className="glass-panel ghost-border rounded-2xl p-8 md:p-10 w-full max-w-md flex flex-col items-center relative z-10 shadow-2xl">
         {/* Logo/Header */}
         <div className="flex flex-col items-center mb-8 w-full text-center">
+          <div className='font-body text-xl pb-2'> *Not available yet, coming soon* </div>
           <Link to="/" className="text-4xl font-bold tracking-tight text-secondary font-headline mb-2 hover:scale-105 transition-transform">
             OLA
           </Link>

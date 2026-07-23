@@ -54,6 +54,11 @@ export default function TopNavBar() {
         </div>
       </div>
       <div className="flex items-center gap-4">
+        <Link to='/techstack'>
+        <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors pt-1.5">
+          info
+        </span>
+        </Link>
         <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">
           notifications
         </span>
