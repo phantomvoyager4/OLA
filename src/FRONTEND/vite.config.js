@@ -7,7 +7,7 @@ export default defineConfig({
     react(), 
     tailwindcss()
   ],
-  publicDir: '/data/static',
+  publicDir: '../../data/static',
   server: {
     host: '0.0.0.0',
     port: 5173, 

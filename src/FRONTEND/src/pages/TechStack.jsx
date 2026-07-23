@@ -408,7 +408,7 @@ export default function TechStack() {
             </p>
           </Reveal>
 
-          <div className="tech-pipeline mt-12 grid gap-3 md:grid-cols-4">
+          <div className="tech-pipeline mt-12 grid gap-6 md:grid-cols-4">
             {pipeline.map((step, index) => (
               <Reveal
                 key={step.number}

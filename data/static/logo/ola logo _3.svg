@@ -1,0 +1,57 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 512 512"
+  role="img"
+  aria-labelledby="ola-mark-title ola-mark-description"
+>
+  <title id="ola-mark-title">Open League Analyzer mark</title>
+  <desc id="ola-mark-description">
+    A segmented analytics ring surrounding an ascending chart and data points.
+  </desc>
+
+  <g fill="none" stroke-width="24">
+    <path
+      d="M242 68A190 190 0 0 0 73 207"
+      stroke="#9E24E6"
+    />
+    <path
+      d="M72 289A190 190 0 0 0 143 420"
+      stroke="#9E24E6"
+    />
+    <path
+      d="M275 69A190 190 0 0 1 366 105"
+      stroke="#10A85C"
+    />
+    <path
+      d="M401 141A190 190 0 0 1 296 442"
+      stroke="#10A85C"
+    />
+    <path
+      d="M250 444A190 190 0 0 1 168 423"
+      stroke="#10A85C"
+    />
+  </g>
+
+  <g>
+    <rect x="178" y="307" width="46" height="91" rx="2" fill="#9E24E6" />
+    <rect x="235" y="272" width="46" height="126" rx="2" fill="#FAFDFC" />
+    <rect x="292" y="231" width="46" height="167" rx="2" fill="#10A85C" />
+  </g>
+
+  <path
+    d="M104 269L151 285L232 231L340 155"
+    fill="none"
+    stroke="#FAFDFC"
+    stroke-linecap="square"
+    stroke-linejoin="miter"
+    stroke-width="15"
+  />
+  <path d="M329 145L363 137L355 171Z" fill="#FAFDFC" />
+
+  <g stroke="#FAFDFC" stroke-width="13">
+    <circle cx="82" cy="260" r="27" fill="#9E24E6" />
+    <circle cx="233" cy="231" r="20" fill="none" />
+    <circle cx="385" cy="122" r="26" fill="#10A85C" />
+    <circle cx="264" cy="450" r="26" fill="#10A85C" />
+  </g>
+</svg>

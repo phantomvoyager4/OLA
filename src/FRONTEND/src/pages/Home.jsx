@@ -1,14 +1,60 @@
-import { useState } from 'react';
+import { createElement, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+const popularPlayers = [
+  { name: 'Hide on bush', tier: 'Challenger', lp: '1205 LP', tone: 'challenger' },
+  { name: 'Agurin', tier: 'Challenger', lp: '1560 LP', tone: 'challenger' },
+  { name: 'Thebausffs', tier: 'Master', lp: '244 LP', tone: 'master' },
+];
+
+function HomeReveal({ as: Component = 'div', delay = 0, className = '', children }) {
+  return createElement(
+    Component,
+    {
+      className: `home-reveal ${className}`,
+      'data-home-reveal': true,
+      style: { '--home-reveal-delay': `${delay}ms` },
+    },
+    children,
+  );
+}
 
 export default function Home() {
   const [nickname, setNickname] = useState('');
   const [tag, setTag] = useState('');
   const [region, setRegion] = useState('EUW');
+  const pageRef = useRef(null);
   const navigate = useNavigate();
+  const isSearchReady = Boolean(nickname.trim() && tag.trim());
+
+  useEffect(() => {
+    const revealItems = pageRef.current?.querySelectorAll('[data-home-reveal]');
+
+    if (!revealItems?.length) return undefined;
+
+    if (!('IntersectionObserver' in window)) {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+    );
+
+    revealItems.forEach((item) => observer.observe(item));
+
+    return () => observer.disconnect();
+  }, []);
 
   const handleAnalyze = () => {
-    if (!nickname || !tag) return;
+    if (!isSearchReady) return;
 
     // Clean up inputs (remove # from tag if included)
     const cleanTag = tag.replace('#', '');
@@ -22,29 +68,44 @@ export default function Home() {
 
   return (
     <>
-      <main className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
+      <main ref={pageRef} className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
-        <div className="absolute inset-0 pointer-events-none flex items-center justify-center">
-          <div className="w-250 h-250 rounded-full bg-secondary blur-[100px] translate-y-[5%]"></div>
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="home-ambient-glow home-ambient-glow-primary"></div>
+          <div className="home-ambient-glow home-ambient-glow-secondary"></div>
         </div>
 
         {/* Search Section (The Core) */}
         <div className="w-full max-w-4xl px-6 relative z-10 text-center flex flex-col gap-12">
-          <div className="space-y-4">
-            <h1 className="font-headline text-5xl md:text-7xl font-bold headline-tracking text-text-home">
+          <div className="space-y-4 pb-6">
+            <HomeReveal
+              as="h1"
+              delay={100}
+              className="font-headline text-5xl md:text-7xl font-bold headline-tracking text-text-home"
+            >
               OPEN LEAGUE <span className="text-title-text">ANALYZER</span>
-            </h1>
-            <p className="font-body text-text-home text-lg md:text-xl max-w-2xl mx-auto">
+            </HomeReveal>
+            <HomeReveal
+              as="p"
+              delay={230}
+              className="font-body text-text-home text-lg md:text-xl max-w-2xl mx-auto"
+            >
               Precise data analytics for the modern summoner. Track performance,
               analyze metrics, and forge your legacy.
-            </p>
+            </HomeReveal>
           </div>
-          <div className="w-full glass-panel ghost-border rounded-lg p-2 md:p-4 flex flex-col md:flex-row items-stretch gap-2">
+          <HomeReveal
+            delay={360}
+            className="home-search-reveal home-search-panel w-full glass-panel ghost-border rounded-xl p-2 md:p-4 flex flex-col md:flex-row items-stretch gap-2"
+          >
             <div className="flex-1 flex flex-col md:flex-row items-center gap-2">
               {/* Nickname Input */}
-              <div className="relative grow w-full">
+              <div
+                className="home-search-control relative grow w-full"
+                style={{ '--control-delay': '470ms' }}
+              >
                 <input
-                  className="w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
+                  className="home-search-input w-full bg-surface-container-low border-none focus:outline-none rounded-md text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="Nickname"
                   type="text"
                   value={nickname}
@@ -63,9 +124,12 @@ export default function Home() {
                 />
               </div>
               {/* Tag Input */}
-              <div className="relative w-full md:w-40">
+              <div
+                className="home-search-control relative w-full md:w-40"
+                style={{ '--control-delay': '550ms' }}
+              >
                 <input
-                  className="w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
+                  className="home-search-input w-full bg-surface-container-low border-none focus:outline-none rounded-md text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="#TAG"
                   type="text"
                   value={tag}
@@ -73,9 +137,12 @@ export default function Home() {
                 />
               </div>
               {/* Region Select */}
-              <div className="relative w-full md:w-80">
+              <div
+                className="home-search-control relative w-full md:w-80"
+                style={{ '--control-delay': '630ms' }}
+              >
                 <select
-                  className="custom-select-appearance w-full bg-surface-container-low border-none focus:outline-none focus:ring-1 focus:ring-primary rounded-sm text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer" value={region}
+                  className="home-search-input custom-select-appearance w-full bg-surface-container-low border-none focus:outline-none rounded-md text-on-surface p-4 pr-10 font-headline text-sm cursor-pointer" value={region}
                   onChange={(e) => setRegion(e.target.value)}
                 >
                   <option value="EUW">EUW</option>
@@ -102,38 +169,51 @@ export default function Home() {
             {/* Search Button */}
             <button
               onClick={handleAnalyze}
-              className="bg-primary text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2 active:scale-95"
+              disabled={!isSearchReady}
+              className={`home-search-control home-analyze-button ${isSearchReady ? 'is-ready' : ''} font-headline font-bold px-8 py-4 rounded-lg flex items-center justify-center gap-2`}
+              style={{ '--control-delay': '710ms' }}
             >
               <span className="material-symbols-outlined">insert_chart</span>{" "}
               ANALYZE
             </button>
-          </div>
+          </HomeReveal>
         </div>
 
         {/* Recent Archives */}
         <div className="w-full max-w-4xl px-6 mt-24 relative z-10 flex flex-col gap-4">
-          <div className="flex items-center justify-between border-b border-outline-variant/30 pb-2">
+          <HomeReveal
+            delay={80}
+            className="flex items-center justify-between border-b border-outline-variant/30 pb-2"
+          >
             <h2 className="font-headline text-sm font-bold text-on-surface tracking-widest">
               Popular Players
             </h2>
             <button className="text-on-surface text-xs font-bold tracking-widest hover:underline transition-all cursor-pointer">
               VIEW ALL
             </button>
-          </div>
+          </HomeReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { name: "Hide on bush", rank: "Challenger • 1205 LP" },
-              { name: "Agurin", rank: "Challenger • 1560 LP" },
-              { name: "Thebausffs", rank: "Master • 244 LP" }
-            ].map((player, i) => (
-              <div key={i} className="glass-panel ghost-border rounded-lg p-4 flex items-center justify-between hover:border-primary/50 transition-colors cursor-pointer group">
-                <div>
-                  <p className="font-headline font-bold text-on-surface text-lg">{player.name}</p>
-                  <p className="font-body text-xs text-on-surface-variant">{player.rank}</p>
+            {popularPlayers.map((player, i) => (
+              <HomeReveal
+                key={player.name}
+                delay={170 + i * 100}
+                className=""
+              >
+                <div className={`home-player-card home-player-card-${player.tone} glass-panel ghost-border rounded-xl p-4 flex items-center justify-between cursor-pointer group`}>
+                  <div>
+                    <span className="home-rank-badge">
+                      <span className="home-rank-dot" />
+                      {player.tier}
+                    </span>
+                    <p className="mt-3 font-headline font-bold text-on-surface text-lg">{player.name}</p>
+                    <p className="mt-0.5 font-body text-xs text-on-surface-variant">{player.lp}</p>
+                  </div>
+                  <span className="home-player-arrow material-symbols-outlined">
+                    arrow_forward
+                  </span>
                 </div>
-                <span className="material-symbols-outlined text-sm text-outline group-hover:text-primary transition-colors">history</span>
-              </div>
+              </HomeReveal>
             ))}
           </div>
         </div>

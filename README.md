@@ -1,7 +1,7 @@
 # Open League Analyzer
 
 <p align="center">
-  <img src="data/static/logo/ola%20logo.png" width="260" alt="Open League Analyzer logo" />
+  <img src="data/static/logo/ola_logo.png" width="260" alt="Open League Analyzer logo" />
 </p>
 
 <p align="center">

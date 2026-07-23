@@ -702,15 +702,15 @@ def summarizer(input: list):
             "KDA": round(kda_sum / count, 2),
             "CS": round(cs_sum / count, 2),
             "KP": round(kp_sum / count, 2),
-            "needVisionPings": round(need_vision_sum / count, 2),
-            "enemyVisionPings": round(enemy_vision_sum / count, 2),
-            "allInPings": round(all_in_sum / count, 2),
-            "pushPings": round(push_sum / count, 2),
-            "assistMePings": round(assist_me_sum / count, 2),
-            "commandPings": round(command_sum / count, 2),
-            "dangerPings": round(danger_sum / count, 2),
-            "enemyMissingPings": round(missing_sum / count, 2),
-            "onMyWayPings": round(on_my_way_sum / count, 2),
-            "retreatPings": round(retreat_sum / count, 2)
+            "needVisionPings": int(need_vision_sum / count),
+            "enemyVisionPings": int(enemy_vision_sum / count),
+            "allInPings": int(all_in_sum / count),
+            "pushPings": int(push_sum / count),
+            "assistMePings": int(assist_me_sum / count),
+            "commandPings": int(command_sum / count),
+            "dangerPings": int(danger_sum / count),
+            "enemyMissingPings": int(missing_sum / count),
+            "onMyWayPings": int(on_my_way_sum / count),
+            "retreatPings": int(retreat_sum / count)
         }
     }
