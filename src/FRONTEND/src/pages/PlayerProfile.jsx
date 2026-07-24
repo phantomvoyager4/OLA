@@ -562,7 +562,8 @@ export default function PlayerProfile() {
 
         topDuoPlayers = Object.values(teammatesMap)
           .filter((p) => p.total > 2)
-          .sort((a, b) => b.total - a.total || b.wins - a.wins);
+          .sort((a, b) => b.total - a.total || b.wins - a.wins)
+          .slice(0, 3);
 
         // Format label "Gold 3" or "Gold III"
         displayRankText = `${tierStr.charAt(0) + tierStr.slice(1).toLowerCase()} ${rankDiv}`;
@@ -795,7 +796,7 @@ export default function PlayerProfile() {
                   <h2 className="font-headline font-bold text-xl text-on-surface">
                     Activity
                   </h2>
-                  <div className="flex items-center gap-2 pb-1">
+                  <div className="flex items-center gap-2 pb-1 pt-3">
                     <span className="text-[11px] text-outline font-bold uppercase tracking-wide">
                       Past 91 Days
                     </span>
@@ -1072,7 +1073,7 @@ export default function PlayerProfile() {
           </div>
 
           <div className="flex flex-col gap-3">
-            {(MatchesCD.length > 0 ? MatchesCD : mockMatches).map(
+            {MatchesCD.map(
               (match, idx) => (
                 <div
                   key={match.matchId || idx}
