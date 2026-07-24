@@ -63,16 +63,28 @@
 body {
   background-color: #0b0c0f;
   color: #fafdfc;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow-x: hidden;
 }
 .material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
 }
 .bioluminescent-glow {
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(137, 30, 199, 0.15) 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(13, 131, 72, 0.15) 0%, transparent 60%);
+  background:
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(137, 30, 199, 0.15) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(13, 131, 72, 0.15) 0%,
+      transparent 60%
+    );
 }
 .glass-panel {
   background: rgba(33, 39, 39, 0.6);
@@ -144,7 +156,11 @@ body {
   border: 1px solid rgba(16, 168, 92, 0.28);
   border-radius: 1rem;
   background:
-    linear-gradient(145deg, rgba(16, 168, 92, 0.045), rgba(158, 36, 230, 0.035)),
+    linear-gradient(
+      145deg,
+      rgba(16, 168, 92, 0.045),
+      rgba(158, 36, 230, 0.035)
+    ),
     rgba(15, 16, 19, 0.96);
   box-shadow:
     0 28px 70px rgba(0, 0, 0, 0.48),
@@ -290,6 +306,18 @@ body {
   }
 }
 
+.home-page {
+  background:
+    radial-gradient(
+      circle at 50% 18%,
+      rgba(255, 255, 255, 0.035),
+      transparent 44%
+    ),
+    linear-gradient(180deg, #121318 0%,
+      #0f1115 58%,
+      #0d0f12 100%);
+}
+
 .home-ambient-glow {
   position: absolute;
   border-radius: 9999px;
@@ -306,7 +334,7 @@ body {
   left: -12rem;
   width: 44rem;
   height: 44rem;
-  background: rgba(137, 30, 199, 0.16);
+  background: rgba(137, 30, 199, 0.35);
 }
 
 .home-ambient-glow-secondary {
@@ -314,7 +342,7 @@ body {
   bottom: -15rem;
   width: 48rem;
   height: 48rem;
-  background: rgba(13, 131, 72, 0.14);
+  background: rgba(13, 131, 72, 0.35);
   animation-delay: 220ms, 1.7s;
 }
 
@@ -340,13 +368,13 @@ body {
 
 .home-search-panel {
   position: relative;
-  border-color: rgba(158, 36, 230, 0.3);
+  border-color: rgba(158, 36, 230, 0.32);
   background:
-    linear-gradient(135deg, rgba(158, 36, 230, 0.055), rgba(16, 168, 92, 0.035)),
-    rgba(20, 20, 23, 0.74);
+    linear-gradient(135deg, rgba(158, 36, 230, 0.045), rgba(16, 168, 92, 0.03)),
+    rgba(28, 29, 34, 0.86);
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.035);
+    0 24px 70px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.055);
   transition:
     border-color 250ms ease,
     box-shadow 250ms ease;
@@ -355,13 +383,14 @@ body {
 .home-search-panel:focus-within {
   border-color: rgba(185, 92, 248, 0.52);
   box-shadow:
-    0 26px 75px rgba(0, 0, 0, 0.3),
+    0 26px 75px rgba(0, 0, 0, 0.24),
     0 0 0 1px rgba(158, 36, 230, 0.1),
     0 0 38px rgba(158, 36, 230, 0.1);
 }
 
 .home-search-input {
   border: 1px solid transparent;
+  background-color: rgba(25, 27, 31, 0.96);
   transition:
     border-color 220ms ease,
     background-color 220ms ease,
@@ -369,19 +398,19 @@ body {
 }
 
 .home-search-input:hover {
-  background-color: rgba(30, 30, 36, 0.92);
+  background-color: rgba(32, 34, 39, 0.97);
 }
 
 .home-search-input:focus {
   border-color: rgba(185, 92, 248, 0.46);
-  background-color: rgba(30, 30, 36, 0.96);
+  background-color: rgba(35, 37, 42, 0.98);
   box-shadow: 0 0 0 3px rgba(158, 36, 230, 0.11);
 }
 
 .home-analyze-button {
   border: 1px solid rgba(112, 113, 122, 0.32);
-  background: rgba(37, 38, 44, 0.78);
-  color: rgba(166, 166, 176, 0.65);
+  background: rgba(42, 44, 50, 0.88);
+  color: rgba(182, 183, 192, 0.72);
   cursor: not-allowed;
   transition:
     background 260ms ease,
@@ -415,8 +444,11 @@ body {
   min-height: 8.6rem;
   overflow: hidden;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 58%),
-    rgba(20, 20, 23, 0.72);
+    linear-gradient(145deg, rgba(255, 255, 255, 0.045), transparent 58%),
+    rgba(27, 29, 33, 0.86);
+  box-shadow:
+    0 12px 34px rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.035);
   transition:
     transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 260ms ease,
@@ -619,7 +651,11 @@ body {
   border: 1px solid rgba(112, 113, 122, 0.22);
   border-radius: 9999px;
   background:
-    radial-gradient(circle at center, rgba(158, 36, 230, 0.12), transparent 34%),
+    radial-gradient(
+      circle at center,
+      rgba(158, 36, 230, 0.12),
+      transparent 34%
+    ),
     rgba(15, 16, 19, 0.52);
 }
 
@@ -778,7 +814,11 @@ body {
   overflow: hidden;
   border: 1px solid rgba(66, 67, 74, 0.55);
   border-radius: 1rem;
-  background: linear-gradient(150deg, rgba(30, 30, 36, 0.82), rgba(15, 16, 19, 0.88));
+  background: linear-gradient(
+    150deg,
+    rgba(30, 30, 36, 0.82),
+    rgba(15, 16, 19, 0.88)
+  );
   padding: 1.5rem;
   transition:
     transform 300ms ease,
@@ -857,7 +897,11 @@ body {
 
 .tech-stack-card-python .tech-stack-icon {
   border-color: rgba(185, 92, 248, 0.34);
-  background: linear-gradient(135deg, rgba(158, 36, 230, 0.14), rgba(16, 168, 92, 0.12));
+  background: linear-gradient(
+    135deg,
+    rgba(158, 36, 230, 0.14),
+    rgba(16, 168, 92, 0.12)
+  );
   color: #c877ff;
 }
 

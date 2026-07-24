@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <>
-      <main ref={pageRef} className="min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
+      <main ref={pageRef} className="home-page min-h-screen pt-16 flex flex-col items-center justify-center relative overflow-hidden">
         {/* Clean Gradient Background Effects */}
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="home-ambient-glow home-ambient-glow-primary"></div>

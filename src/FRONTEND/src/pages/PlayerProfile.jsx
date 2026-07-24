@@ -26,6 +26,27 @@ const masterIcon = "/tiers/master.png";
 const grandmasterIcon = "/tiers/grandmaster.png";
 const challengerIcon = "/tiers/challenger.png";
 
+const INITIAL_MATCH_COUNT = 20;
+const INITIAL_ACTIVITY_COUNT = 40;
+const ACTIVITY_BATCH_SIZE = 20;
+const ACTIVITY_WINDOW_DAYS = 90;
+
+const activityBatchReachesWindowStart = (dates) => {
+  const cutoff = new Date();
+  cutoff.setHours(0, 0, 0, 0);
+  cutoff.setDate(cutoff.getDate() - ACTIVITY_WINDOW_DAYS);
+
+  const cutoffKey = [
+    cutoff.getFullYear(),
+    String(cutoff.getMonth() + 1).padStart(2, "0"),
+    String(cutoff.getDate()).padStart(2, "0"),
+  ].join("-");
+
+  return dates.some(
+    (date) => typeof date === "string" && date.slice(0, 10) <= cutoffKey,
+  );
+};
+
 const handleDuoClick = (playerName) => {
   if (!playerName || !playerName.includes('#')) return;
   const [nickname, tag] = playerName.split('#');
@@ -77,6 +98,13 @@ export default function PlayerProfile() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreMatches, setHasMoreMatches] = useState(true);
   const [loadMoreError, setLoadMoreError] = useState(null);
+  const [nextActivityStart, setNextActivityStart] = useState(
+    INITIAL_MATCH_COUNT,
+  );
+  const [loadingMoreActivity, setLoadingMoreActivity] = useState(false);
+  const [hasMoreActivity, setHasMoreActivity] = useState(true);
+  const [activityStopReason, setActivityStopReason] = useState(null);
+  const [activityLoadError, setActivityLoadError] = useState(null);
   const profileKey = `${region}/${nickname}/${tag}`;
 
   const handleDuoClick = (playerName) => {
@@ -101,12 +129,16 @@ export default function PlayerProfile() {
         setPlayerData(null);
         setExtraDates([]);
         setLoadedProfileKey(null);
-        setNextMatchesStart(20);
+        setNextMatchesStart(INITIAL_MATCH_COUNT);
         setHasMoreMatches(true);
         setLoadMoreError(null);
+        setNextActivityStart(INITIAL_MATCH_COUNT);
+        setHasMoreActivity(true);
+        setActivityStopReason(null);
+        setActivityLoadError(null);
         const data = await getPlayerData(region, nickname, tag, {
           save: false,
-          count: 20,
+          count: INITIAL_MATCH_COUNT,
           signal: controller.signal,
         });
         console.log("Fetched Player Data:", data);
@@ -136,31 +168,74 @@ export default function PlayerProfile() {
     const fetchActivity = async () => {
       try {
         const activity = await getPlayerActivity(region, nickname, tag, {
-          count: 40,
-          start: 20,
+          count: INITIAL_ACTIVITY_COUNT,
+          start: INITIAL_MATCH_COUNT,
           signal: controller.signal,
         });
         if (!controller.signal.aborted && Array.isArray(activity?.dates)) {
+          const reachedWindow = activityBatchReachesWindowStart(activity.dates);
+          const reachedHistoryEnd = activity.matches < INITIAL_ACTIVITY_COUNT;
+
           setExtraDates(activity.dates);
+          setNextActivityStart(INITIAL_MATCH_COUNT + INITIAL_ACTIVITY_COUNT);
+          setHasMoreActivity(!reachedWindow && !reachedHistoryEnd);
+          setActivityStopReason(
+            reachedWindow ? "window" : reachedHistoryEnd ? "history" : null,
+          );
+          setActivityLoadError(null);
         }
       } catch (err) {
         if (err.name !== "AbortError") {
           console.error("Failed to fetch player activity:", err);
+          setActivityLoadError(
+            err.message || "Could not load activity matches.",
+          );
         }
       }
     };
 
     if (
       loadedProfileKey === profileKey &&
-      playerData &&
-      Array.isArray(playerData) &&
-      playerData.length > 0
+      loadedProfileKey !== null
     ) {
       fetchActivity();
     }
 
     return () => controller.abort();
-  }, [playerData, loadedProfileKey, profileKey, region, nickname, tag]);
+  }, [loadedProfileKey, profileKey, region, nickname, tag]);
+
+  const handleFetchMoreActivity = async () => {
+    if (loadingMoreActivity || !hasMoreActivity) return;
+
+    setLoadingMoreActivity(true);
+    setActivityLoadError(null);
+
+    try {
+      const activity = await getPlayerActivity(region, nickname, tag, {
+        count: ACTIVITY_BATCH_SIZE,
+        start: nextActivityStart,
+      });
+      const newDates = Array.isArray(activity?.dates) ? activity.dates : [];
+      const reachedWindow = activityBatchReachesWindowStart(newDates);
+      const reachedHistoryEnd = activity?.matches < ACTIVITY_BATCH_SIZE;
+
+      // Dates intentionally remain duplicated: each entry represents one game.
+      setExtraDates((previousDates) => [...previousDates, ...newDates]);
+      setNextActivityStart(
+        (currentStart) => currentStart + ACTIVITY_BATCH_SIZE,
+      );
+      setHasMoreActivity(!reachedWindow && !reachedHistoryEnd);
+      setActivityStopReason(
+        reachedWindow ? "window" : reachedHistoryEnd ? "history" : null,
+      );
+    } catch (err) {
+      setActivityLoadError(
+        err.message || "Could not load more activity matches.",
+      );
+    } finally {
+      setLoadingMoreActivity(false);
+    }
+  };
 
   const handleShowMore = async () => {
     if (loadingMore || !hasMoreMatches) return;
@@ -170,7 +245,7 @@ export default function PlayerProfile() {
     try {
       const extraData = await getPlayerData(region, nickname, tag, {
         save: false,
-        count: 20,
+        count: INITIAL_MATCH_COUNT,
         start: nextMatchesStart,
       });
       const newMatches = Array.isArray(extraData)
@@ -194,8 +269,10 @@ export default function PlayerProfile() {
           : [...previousMatches, ...uniqueNewMatches];
       });
 
-      setNextMatchesStart((currentStart) => currentStart + 20);
-      setHasMoreMatches(newMatches.length === 20);
+      setNextMatchesStart(
+        (currentStart) => currentStart + INITIAL_MATCH_COUNT,
+      );
+      setHasMoreMatches(newMatches.length === INITIAL_MATCH_COUNT);
     } catch (err) {
       setLoadMoreError(err.message || "Could not load more matches.");
     } finally {
@@ -330,9 +407,12 @@ export default function PlayerProfile() {
         let teammatesMap = {};
 
         Object.values(playerData).forEach((match, matchIndex) => {
-          // extraDates already contains matches 20-59 fetched for the heatmap.
-          // Only the initial page contributes dates here to avoid double-counting.
-          if (matchIndex < 20 && match?.metadata?.gameDateDay) {
+          // extraDates contains the lightweight activity pages.
+          // Only the initial full page contributes here to avoid double-counting.
+          if (
+            matchIndex < INITIAL_MATCH_COUNT &&
+            match?.metadata?.gameDateDay
+          ) {
             dates.push(match.metadata.gameDateDay);
           }
           const callerPlayer = match.players?.find(
@@ -715,9 +795,52 @@ export default function PlayerProfile() {
                   <h2 className="font-headline font-bold text-xl text-on-surface">
                     Activity
                   </h2>
-                  <span className="text-[11px] text-outline font-bold uppercase tracking-wide pb-1">
-                    Past 91 Days
-                  </span>
+                  <div className="flex items-center gap-2 pb-1">
+                    <span className="text-[11px] text-outline font-bold uppercase tracking-wide">
+                      Past 91 Days
+                    </span>
+                    <div className="group relative">
+                      <button
+                        type="button"
+                        onClick={handleFetchMoreActivity}
+                        disabled={loadingMoreActivity || !hasMoreActivity}
+                        aria-label={
+                          hasMoreActivity
+                            ? `Fetch ${ACTIVITY_BATCH_SIZE} more games`
+                            : "Activity history loaded"
+                        }
+                        className="flex h-7 w-7 items-center justify-center rounded-md border border-secondary/30 bg-secondary/10 text-secondary transition-all duration-200 hover:border-secondary/60 hover:bg-secondary/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-default disabled:border-outline-variant/20 disabled:bg-surface-container-highest/35 disabled:text-outline"
+                      >
+                        <span
+                          className={`material-symbols-outlined text-[16px] ${
+                            loadingMoreActivity ? "animate-spin" : ""
+                          }`}
+                        >
+                          {loadingMoreActivity
+                            ? "progress_activity"
+                            : hasMoreActivity
+                              ? "add"
+                              : "check"}
+                        </span>
+                      </button>
+                      <div className="pointer-events-none absolute right-0 top-full z-50 mt-2 hidden w-max max-w-56 flex-col items-end rounded-lg border border-outline-variant/30 bg-surface-container px-3 py-2 text-right shadow-[0_6px_20px_rgba(0,0,0,0.45)] group-hover:flex group-focus-within:flex">
+                        <span className="text-[11px] font-bold text-on-surface">
+                          {Math.min(MatchesCD.length, INITIAL_MATCH_COUNT) +
+                            extraDates.length}{" "}
+                          matches loaded
+                        </span>
+                        <span className="mt-0.5 text-[10px] font-medium text-outline">
+                          {loadingMoreActivity
+                            ? `Fetching ${ACTIVITY_BATCH_SIZE} more games...`
+                            : hasMoreActivity
+                              ? `Click to fetch ${ACTIVITY_BATCH_SIZE} more games.`
+                              : activityStopReason === "window"
+                                ? "The 90-day window is covered."
+                                : "No older matches are available."}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex flex-col">
@@ -785,6 +908,12 @@ export default function PlayerProfile() {
                     <div className="w-3 h-3 rounded-sm bg-primary"></div>
                     <span>More</span>
                   </div>
+
+                  {activityLoadError && (
+                    <p className="mt-2 text-right text-[11px] font-medium text-error">
+                      {activityLoadError} Try again.
+                    </p>
+                  )}
                 </div>
               </div>
 
