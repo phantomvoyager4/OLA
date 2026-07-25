@@ -30,6 +30,7 @@ const INITIAL_MATCH_COUNT = 20;
 const INITIAL_ACTIVITY_COUNT = 40;
 const ACTIVITY_BATCH_SIZE = 20;
 const ACTIVITY_WINDOW_DAYS = 90;
+const APEX_TIERS = new Set(["MASTER", "GRANDMASTER", "CHALLENGER"]);
 
 const activityBatchReachesWindowStart = (dates) => {
   const cutoff = new Date();
@@ -565,8 +566,11 @@ export default function PlayerProfile() {
           .sort((a, b) => b.total - a.total || b.wins - a.wins)
           .slice(0, 3);
 
-        // Format label "Gold 3" or "Gold III"
-        displayRankText = `${tierStr.charAt(0) + tierStr.slice(1).toLowerCase()} ${rankDiv}`;
+        const formattedTier =
+          tierStr.charAt(0) + tierStr.slice(1).toLowerCase();
+        displayRankText = APEX_TIERS.has(tierStr.toUpperCase())
+          ? formattedTier
+          : `${formattedTier} ${rankDiv}`;
         if (lp !== undefined) {
           displayLp = `${lp} LP`;
         }
@@ -780,7 +784,7 @@ export default function PlayerProfile() {
                 </div>
                 <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
                   <span className="text-sm text-on-surface-variant">
-                    Score σ
+                    Score std. dev.
                   </span>
                   <span className="text-2xl font-bold text-on-surface">
                     {performanceStdDev.toFixed(1)}

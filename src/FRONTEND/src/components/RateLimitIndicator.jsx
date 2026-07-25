@@ -63,8 +63,10 @@ export default function RateLimitIndicator() {
     100,
     Math.round((longUsed / Math.max(1, longLimit)) * 100),
   );
-  const isWarning = status.warning;
-  const isSafe = status.initialized && !isWarning;
+  const isFull =
+    status.initialized && longLimit > 0 && longUsed >= longLimit;
+  const isWarning = status.warning && !isFull;
+  const isSafe = status.initialized && !isWarning && !isFull;
 
   if (!expanded) {
     return (
@@ -73,7 +75,9 @@ export default function RateLimitIndicator() {
         onClick={expand}
         aria-label="Expand Riot API status"
         className={`group fixed bottom-5 right-0 z-50 flex h-12 w-10 items-center justify-center rounded-l-xl border border-r-0 bg-surface-container/95 shadow-[0_10px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all hover:w-12 ${
-          isWarning
+          isFull
+            ? "border-red-400/60 text-red-300"
+            : isWarning
             ? "border-amber-400/50 text-amber-300"
             : isSafe
               ? "border-emerald-400/40 text-emerald-300"
@@ -86,7 +90,9 @@ export default function RateLimitIndicator() {
         {status.initialized && (
           <span
             className={`absolute right-1.5 top-1.5 h-2 w-2 rounded-full ${
-              isWarning
+              isFull
+                ? "bg-red-400 shadow-[0_0_8px_rgba(248,113,113,0.85)]"
+                : isWarning
                 ? "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]"
                 : "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]"
             }`}
@@ -100,7 +106,9 @@ export default function RateLimitIndicator() {
     <aside
       aria-live="polite"
       className={`fixed bottom-4 right-4 z-50 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
-        isWarning
+        isFull
+          ? "border-red-400/60"
+          : isWarning
           ? "border-amber-400/50"
           : isSafe
             ? "border-emerald-400/40"
@@ -119,7 +127,9 @@ export default function RateLimitIndicator() {
       <div className="flex items-center gap-3 px-4 py-3 pr-10">
         <div
           className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
-            isWarning
+            isFull
+              ? "bg-red-400/15 text-red-300"
+              : isWarning
               ? "bg-amber-400/15 text-amber-300"
               : isSafe
                 ? "bg-emerald-400/15 text-emerald-300"
@@ -127,7 +137,7 @@ export default function RateLimitIndicator() {
           }`}
         >
           <span className="material-symbols-outlined text-xl">
-            {isWarning ? "warning" : "speed"}
+            {isFull ? "block" : isWarning ? "warning" : "speed"}
           </span>
         </div>
         <div className="min-w-0 flex-1">
@@ -137,7 +147,9 @@ export default function RateLimitIndicator() {
             </p>
             <span
               className={`text-xs font-bold ${
-                isWarning
+                isFull
+                  ? "text-red-300"
+                  : isWarning
                   ? "text-amber-300"
                   : isSafe
                     ? "text-emerald-300"
@@ -150,7 +162,9 @@ export default function RateLimitIndicator() {
           <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-container-highest">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
-                isWarning
+                isFull
+                  ? "bg-red-400"
+                  : isWarning
                   ? "bg-amber-400"
                   : isSafe
                     ? "bg-emerald-400"
@@ -162,7 +176,9 @@ export default function RateLimitIndicator() {
           <p className="mt-1.5 text-[11px] text-on-surface-variant">
             {!status.initialized
               ? "Waiting for the first API response"
-              : isWarning
+              : isFull
+                ? `Request limit reached - budget resets in ~${status.resetSeconds}s`
+                : isWarning
                 ? `Approaching limit - budget resets in ~${status.resetSeconds}s`
                 : `Free to go - ${usagePercent}% of request budget used`}
           </p>
