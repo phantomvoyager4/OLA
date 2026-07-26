@@ -74,7 +74,7 @@ export default function RateLimitIndicator() {
         type="button"
         onClick={expand}
         aria-label="Expand Riot API status"
-        className={`group fixed bottom-5 right-0 z-50 flex h-12 w-10 items-center justify-center rounded-l-xl border border-r-0 bg-surface-container/95 shadow-[0_10px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all hover:w-12 ${
+        className={`rate-limit-indicator group fixed bottom-5 right-0 z-50 flex h-12 w-10 items-center justify-center rounded-l-xl border border-r-0 bg-surface-container/95 shadow-[0_10px_30px_rgba(0,0,0,0.4)] backdrop-blur-xl transition-all hover:w-12 ${
           isFull
             ? "border-red-400/60 text-red-300"
             : isWarning
@@ -105,7 +105,7 @@ export default function RateLimitIndicator() {
   return (
     <aside
       aria-live="polite"
-      className={`fixed bottom-4 right-4 z-50 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-colors ${
+      className={`rate-limit-indicator fixed bottom-4 right-4 z-50 overflow-hidden rounded-xl border bg-surface-container/95 shadow-[0_12px_40px_rgba(0,0,0,0.45)] backdrop-blur-xl transition-[bottom,border-color] ${
         isFull
           ? "border-red-400/60"
           : isWarning

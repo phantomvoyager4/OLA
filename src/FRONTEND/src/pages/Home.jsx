@@ -76,8 +76,8 @@ export default function Home() {
         </div>
 
         {/* Search Section (The Core) */}
-        <div className="w-full max-w-4xl px-6 relative z-10 text-center flex flex-col gap-12">
-          <div className="space-y-4 pb-6">
+        <div className="w-full max-w-4xl px-6 relative z-10 text-center flex flex-col gap-8 xl:gap-10">
+          <div className="space-y-3 pb-2">
             <HomeReveal
               as="h1"
               delay={100}
@@ -180,7 +180,7 @@ export default function Home() {
         </div>
 
         {/* Recent Archives */}
-        <div className="w-full max-w-4xl px-6 mt-24 relative z-10 flex flex-col gap-4">
+        <div className="w-full max-w-4xl px-6 mt-8 xl:mt-12 relative z-10 flex flex-col gap-3">
           <HomeReveal
             delay={80}
             className="flex items-center justify-between border-b border-outline-variant/30 pb-2"

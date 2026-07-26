@@ -1,4 +1,5 @@
 import TopNavBar from './components/TopNavBar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import TierList from './pages/TierList';
 import Match from './pages/Match';
@@ -8,23 +9,29 @@ import PlayerProfile from './pages/PlayerProfile';
 import Prediction from './pages/Prediction';
 import TechStack from './pages/TechStack';
 import RateLimitIndicator from './components/RateLimitIndicator';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isHomePage = pathname === '/';
+
   return (
-    <>
+    <div className={`app-shell ${isHomePage ? 'app-shell-home' : ''}`}>
       <TopNavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/tier-list" element={<TierList />} />
-        <Route path="/player/:region/:riotId" element={<PlayerProfile />} />
-        <Route path='/match/:matchId' element={<Match />} />
-        <Route path='/login' element={<SignIn />} />
-        <Route path='/signup' element={<SignUp />} />
-        <Route path='/techstack' element={<TechStack />} />
-        <Route path='/prediction' element={<Prediction />} />
-      </Routes>
+      <div className="app-route-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/tier-list" element={<TierList />} />
+          <Route path="/player/:region/:riotId" element={<PlayerProfile />} />
+          <Route path='/match/:matchId' element={<Match />} />
+          <Route path='/login' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/techstack' element={<TechStack />} />
+          <Route path='/prediction' element={<Prediction />} />
+        </Routes>
+      </div>
       <RateLimitIndicator />
-    </>
+      <Footer compact={isHomePage} />
+    </div>
   );
 }
