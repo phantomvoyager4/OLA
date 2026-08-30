@@ -271,7 +271,7 @@ export default function TopNavBar() {
           )}
         </div>
         <span className="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary transition-colors">
-          settings
+          search
         </span>
         <Link to='/login'>
         <button className="bg-primary-container text-on-primary-container hover:shadow-[0_0_10px_rgba(83,238,222,0.4)] transition-all cursor-pointer duration-300 font-headline px-5 py-2 text-sm rounded-md flex items-center justify-center gap-2 active:scale-95">

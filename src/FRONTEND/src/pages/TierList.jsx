@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { getTierList } from "../services/tierListApi";
 
@@ -110,7 +111,7 @@ function Metric({ label, value, accent = false }) {
 
 function ChampionRow({ champion, showRole }) {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-outline-variant/10 px-5 py-5 transition-colors first:border-t-0 hover:bg-white/[0.025] md:grid-cols-[minmax(230px,1.7fr)_0.7fr_0.75fr_0.75fr_0.75fr_0.65fr] md:items-center md:px-7">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-5 border-t border-outline-variant/10 px-5 py-5 transition-colors first:border-t-0 hover:bg-white/2.5 md:grid-cols-[minmax(230px,1.7fr)_0.7fr_0.75fr_0.75fr_0.75fr_0.65fr] md:items-center md:px-7">
       <div className="col-span-2 flex min-w-0 items-center gap-4 md:col-span-1">
         <ChampionPortrait champion={champion} />
         <div className="min-w-0">
@@ -138,7 +139,8 @@ function TierSection({ tier, champions, showRole }) {
 
   return (
     <section className="relative overflow-hidden rounded-xl border border-outline-variant/15 bg-surface-container">
-      <div className={`pointer-events-none absolute inset-0 bg-gradient-to-r ${style.glow} via-transparent to-transparent`} />
+      
+      <div className={`pointer-events-none absolute inset-0 bg-linear-to-r ${style.glow} via-transparent to-transparent`} />
       <div className="relative grid md:grid-cols-[150px_1fr]">
         <header className="border-b border-outline-variant/15 px-5 py-5 md:block md:border-b-0 md:border-r md:px-7">
           <div className="flex items-center gap-4 md:sticky md:top-24 md:flex-col md:items-start">
@@ -266,6 +268,15 @@ export default function TierList() {
 
   return (
     <main className="relative min-h-screen overflow-hidden px-5 pb-20 pt-28 md:px-8">
+      <div className="absolute top-24 left-8 md:left-12 z-20">
+        <Link
+          to="/"
+          className="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors font-bold tracking-tight"
+        >
+          <span className="material-symbols-outlined">arrow_back</span>
+          Back
+        </Link>
+      </div>
       <div className="pointer-events-none absolute left-1/2 top-0 h-120 w-240 -translate-x-1/2 rounded-full bg-primary/8 blur-[140px]" />
       <div className="relative mx-auto max-w-7xl">
         <header className="mb-10 border-b border-outline-variant/20 pb-9">
