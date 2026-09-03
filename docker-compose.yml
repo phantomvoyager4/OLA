@@ -14,7 +14,7 @@ services:
     build: ./src/FRONTEND
     ports:
     - "5173:5173"
-    stdin_open: true   # Zapobiega natychmiastowemu zamykaniu się kontenera Node w trybie dev
+    stdin_open: true   
     tty: true
     depends_on:
       - backend
