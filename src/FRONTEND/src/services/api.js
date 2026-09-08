@@ -112,6 +112,67 @@ export const getPlayerActivity = async (region, nickname, tag, options = {}) => 
 };
 
 /**
+ * Reports whether the server has an AI provider key configured.
+ * Lets the profile skip the overview panel instead of showing a failed one.
+ *
+ * @returns {Promise<boolean>} True when overviews can be generated
+ */
+export const getOverviewAvailability = async (options = {}) => {
+  const url = `${API_BASE_URL}/overview/status`;
+
+  if (apiCache.has(url)) {
+    return apiCache.get(url);
+  }
+
+  const response = await fetch(url, { signal: options.signal });
+  if (!response.ok) return false;
+
+  const data = await response.json();
+  const available = Boolean(data?.available);
+  // Only a positive answer is cached, so adding the key and reloading is enough
+  // to turn the panel on without clearing the HMR-surviving cache.
+  if (available) apiCache.set(url, available);
+  return available;
+};
+
+/**
+ * Generates a short natural-language summary of a player's recent form.
+ * The digest is built in the browser from data already on screen, so this
+ * costs no Riot API quota.
+ *
+ * @param {Object} digest - Numeric profile summary matching the backend schema
+ * @param {Object} options - { signal }
+ * @returns {Promise<{overview: string, model: string, cached: boolean}>}
+ */
+export const getPlayerOverview = async (digest, options = {}) => {
+  const body = JSON.stringify(digest);
+  const cacheKey = `${API_BASE_URL}/overview:${body}`;
+
+  if (apiCache.has(cacheKey)) {
+    return apiCache.get(cacheKey);
+  }
+
+  const response = await fetch(`${API_BASE_URL}/overview`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body,
+    signal: options.signal,
+  });
+
+  if (!response.ok) {
+    const detail = await response
+      .json()
+      .then((payload) => payload?.detail)
+      .catch(() => null);
+    throw new Error(detail || `Failed to generate overview: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  apiCache.set(cacheKey, data);
+  return data;
+};
+
+/**
  * Retrieves a specific match from the cached player data.
  * Useful for displaying match details without refetching the API.
  * 

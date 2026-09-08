@@ -2,6 +2,7 @@ import time
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from .ai_overview import OverviewUnavailable, ProfileDigest, generate_overview, load_groq_key
 from .pipeline import activity_pipeline, pipeline, load_api_key
 from .riot_api import RIOT_RATE_LIMITER
 from .tier_list_backend import tier_list_router
@@ -110,4 +111,21 @@ def get_activity(
     return result
 
 
+@app.get('/api/overview/status')
+def get_overview_status():
+    """Let the frontend skip the overview panel when no key is configured."""
+    return {"available": bool(load_groq_key())}
 
+
+@app.post('/api/overview')
+def post_overview(digest: ProfileDigest):
+    """Summarise a profile the browser has already computed.
+
+    Takes a digest rather than a Riot ID on purpose: the page holds these
+    numbers already, so generating the summary costs no Riot API quota.
+    """
+    try:
+        return generate_overview(digest)
+    except OverviewUnavailable as error:
+        # 503 rather than 500: the profile is fine, only this panel is missing.
+        raise HTTPException(status_code=503, detail=str(error))

@@ -35,6 +35,7 @@ The interesting part of this project is not only the UI. It is the engineering a
 - Discover recurring duo partners and their shared win rate.
 - Compare average KDA, CS, kill participation, and communication patterns.
 - Inspect performance distribution using average, median, and standard deviation.
+- Read a short AI-written summary of recent form, generated from the statistics already on the page.
 
 ### Match analysis
 
@@ -62,7 +63,7 @@ The interesting part of this project is not only the UI. It is the engineering a
 
 ## Performance scoring
 
-Open League Analyzer computes a score locally—there is no opaque external model involved.
+Open League Analyzer computes a score locally—there is no opaque external model involved. The optional AI overview only describes these numbers in prose; it never produces or influences them.
 
 For every participant, the backend extracts signals including:
 
@@ -130,6 +131,7 @@ A thread-safe sliding-window limiter is shared by all backend requests. The fron
 | Match payload | 30 days | Completed matches are immutable |
 | Ranked metadata | 5 minutes | LP and rank change frequently |
 | Champion mastery | 30 minutes | Useful but not time-critical |
+| AI overview text | 1 hour | A free-tier model quota is shared by every visitor |
 
 ## Technology choices
 
@@ -141,7 +143,8 @@ A thread-safe sliding-window limiter is shared by all backend requests. The fron
 | Backend | FastAPI, Python 3.12 | Typed endpoints and straightforward data pipelines |
 | HTTP client | Requests | Mature Riot API integration and session pooling |
 | Concurrency | ThreadPoolExecutor | Parallel match retrieval for an I/O-bound workload |
-| Deployment | Docker Compose | Reproducible frontend/backend environment |
+| Narrative summary | Groq (`qwen3.8-27b`) | Free hosted inference behind an ordered model fallback |
+| Deployment | Docker Compose | Reproducible frontend/backend environment, with separate dev and prod image stages |
 
 ## Running locally
 
@@ -156,9 +159,12 @@ Create a `.env` file in the repository root:
 
 ```env
 RIOT_API_KEY=RGAPI-your-key-here
+GROQ_API_KEY=gsk_your-key-here
 ```
 
-The key stays on the backend and is never sent to the browser.
+Keys stay on the backend and are never sent to the browser.
+
+`GROQ_API_KEY` is optional and free from the [Groq Console](https://console.groq.com/keys); it powers the AI overview on the player profile. Without it the panel is simply not rendered and everything else works unchanged. Set `GROQ_MODEL` as well to pin a specific model instead of using the built-in fallback order.
 
 ### 2. Start the application
 
@@ -170,6 +176,8 @@ Open:
 
 - Application: [http://localhost:5173](http://localhost:5173)
 - FastAPI documentation: [http://localhost:8000/docs](http://localhost:8000/docs)
+
+Both services run a hot-reloading development server against the mounted source, so edits to Python or React files apply without a rebuild. Only dependency changes—`requirements.txt` or `package.json`—need `--build` again. Compose builds the backend image's `dev` stage; a plain `docker build` still produces the `prod` image, which bakes the source in and runs without a reloader.
 
 Stop the stack with `Ctrl+C`, then remove the containers with:
 
@@ -198,6 +206,8 @@ The collector discovers the latest EUW patch, deduplicates match IDs, rejects re
 | `GET` | `/api/tier-list` | Latest completed EUW Master+ ranking snapshot |
 | `GET` | `/api/tier-list/status` | Snapshot readiness and sample metadata |
 | `GET` | `/api/rate-limit` | Current local limiter capacity |
+| `POST` | `/api/overview` | Natural-language summary of a posted profile digest |
+| `GET` | `/api/overview/status` | Whether a model provider key is configured |
 | `GET` | `/docs` | Interactive OpenAPI documentation |
 
 Example:
@@ -217,6 +227,7 @@ GET /api/matches/EUW/PlayerName/EUW?count=20&start=0&save=false
 │   │   ├── main.py              # FastAPI routes and response metadata
 │   │   ├── model.py             # Riot models and performance scoring
 │   │   ├── pipeline.py          # Full and lightweight data pipelines
+│   │   ├── ai_overview.py       # Profile digest schema and summary generation
 │   │   ├── tier_list_fetcher.py # Controlled EUW Master+ collection CLI
 │   │   ├── tier_list_backend.py # Aggregation, persistence, and read API
 │   │   └── riot_api.py          # Cache, limiter, retries, and transport
