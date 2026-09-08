@@ -1,0 +1,27 @@
+# The backend builds with the repo root as its context, and Docker only reads a
+# .dockerignore from the context root - so this is the file that governs what
+# gets sent to the daemon on every backend build.
+.git
+.gitignore
+.env
+.env.*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Frontend build output and dependencies (the frontend image builds its own)
+node_modules/
+src/FRONTEND/dist/
+src/FRONTEND/node_modules/
+
+# Generated pipeline output, not an input to the image
+data/example_data/
+
+# Docs and editor state
+*.md
+.vscode/
+.idea/

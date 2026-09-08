@@ -1,24 +1,39 @@
+# Development stack: both services run their own hot-reloading dev server and
+# read source straight off the host, so a save on Windows is live in the
+# container without a rebuild. Only `requirements.txt` / `package.json` changes
+# still need `docker compose up --build`.
 services:
   backend:
     build:
       context: .
       dockerfile: ./src/BACKEND/Dockerfile
+      target: dev
     ports:
       - "8000:8000"
     env_file:
-      - .env 
+      - .env
+    environment:
+      # Docker Desktop on Windows does not forward inotify events across the
+      # bind mount, so the watcher has to poll for changes instead.
+      WATCHFILES_FORCE_POLLING: "true"
     volumes:
       - ./data:/app/data
+      # Live source. Anonymous volume keeps the image's __pycache__ from being
+      # shadowed by whatever the host happens to have lying around.
+      - ./src:/app/src
+      - /app/src/__pycache__
 
   frontend:
     build: ./src/FRONTEND
     ports:
-    - "5173:5173"
-    stdin_open: true   
+      - "5173:5173"
+    stdin_open: true
     tty: true
     depends_on:
       - backend
     volumes:
       - ./data:/data
       - ./src/FRONTEND:/app
+      # Anonymous volume: keeps the image's Linux-built node_modules instead of
+      # the host's, which on Windows would be the wrong platform binaries.
       - /app/node_modules
