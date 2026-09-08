@@ -1,6 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getPlayerActivity, getPlayerData } from "../services/api";
+import {
+  getOverviewAvailability,
+  getPlayerActivity,
+  getPlayerData,
+  getPlayerOverview,
+} from "../services/api";
 import { Link, NavLink } from "react-router-dom";
 
 const noIcon = "/icons/noicon.jpg";
@@ -31,6 +36,26 @@ const INITIAL_ACTIVITY_COUNT = 40;
 const ACTIVITY_BATCH_SIZE = 20;
 const ACTIVITY_WINDOW_DAYS = 90;
 const APEX_TIERS = new Set(["MASTER", "GRANDMASTER", "CHALLENGER"]);
+
+// Keeps the posted digest inside the backend schema's bounds so a freak game
+// (a 40-kill deathless ARAM-like score) cannot turn into a 422.
+const clampNumber = (value, max, digits = 2) => {
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed)) return 0;
+  return Number(Math.min(Math.max(parsed, 0), max).toFixed(digits));
+};
+
+const mostFrequent = (values, limit) => {
+  const counts = new Map();
+  values.forEach((value) => {
+    if (!value) return;
+    counts.set(value, (counts.get(value) || 0) + 1);
+  });
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([value]) => value);
+};
 
 const activityBatchReachesWindowStart = (dates) => {
   const cutoff = new Date();
@@ -106,6 +131,10 @@ export default function PlayerProfile() {
   const [hasMoreActivity, setHasMoreActivity] = useState(true);
   const [activityStopReason, setActivityStopReason] = useState(null);
   const [activityLoadError, setActivityLoadError] = useState(null);
+  const [overview, setOverview] = useState(null);
+  const [overviewLoading, setOverviewLoading] = useState(false);
+  const [overviewError, setOverviewError] = useState(null);
+  const [overviewAvailable, setOverviewAvailable] = useState(false);
   const profileKey = `${region}/${nickname}/${tag}`;
 
   const handleDuoClick = (playerName) => {
@@ -119,6 +148,21 @@ export default function PlayerProfile() {
   };
 
 
+
+  // Asked once: if the server has no provider key, the panel never renders.
+  useEffect(() => {
+    const controller = new AbortController();
+
+    getOverviewAvailability({ signal: controller.signal })
+      .then((available) => {
+        if (!controller.signal.aborted) setOverviewAvailable(available);
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setOverviewAvailable(false);
+      });
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -137,6 +181,8 @@ export default function PlayerProfile() {
         setHasMoreActivity(true);
         setActivityStopReason(null);
         setActivityLoadError(null);
+        setOverview(null);
+        setOverviewError(null);
         const data = await getPlayerData(region, nickname, tag, {
           save: false,
           count: INITIAL_MATCH_COUNT,
@@ -363,6 +409,11 @@ export default function PlayerProfile() {
   let performanceStdDev = 0;
   let dates = [];
   let topDuoPlayers = [];
+  // Raw rank fields kept alongside the display strings: the AI digest needs the
+  // unformatted values, not "Gold III".
+  let tierRaw = "UNRANKED";
+  let rankDivisionRaw = "";
+  let leaguePointsRaw = 0;
 
   if (playerData && Array.isArray(playerData) && playerData.length > 0) {
     const firstMatch = playerData[0];
@@ -374,6 +425,9 @@ export default function PlayerProfile() {
         const tierStr = callerPlayer.metadata.tier; // e.g., "GOLD"
         const rankDiv = callerPlayer.metadata.rank; // e.g., "III"
         const lp = callerPlayer.metadata.leaguePoints; // e.g., 69
+        tierRaw = tierStr;
+        rankDivisionRaw = rankDiv || "";
+        leaguePointsRaw = lp ?? 0;
         wins = callerPlayer.metadata.wins;
         losses = callerPlayer.metadata.losses;
         winrate = callerPlayer.metadata.winrate;
@@ -480,6 +534,7 @@ export default function PlayerProfile() {
                   : callerPlayer.win === "true",
 
               champ: callerPlayer.championName,
+              role: callerPlayer.teamPosition,
               champimageLink: callerPlayer.championImageLink,
               mainRune: mainRuneItem?.runeIconLink,
               mainRuneName: mainRuneItem?.name,
@@ -623,6 +678,69 @@ export default function PlayerProfile() {
       daysSinceLastActivity = Math.floor(diffTime / (1000 * 60 * 60 * 24));
     }
   }
+
+  // Everything the AI overview needs is already on this page, so the digest is
+  // assembled here and posted; the server spends no Riot API quota to reply.
+  const rankedMatches = MatchesCD.filter(
+    (match) => !(match.duration && parseInt(match.duration.split(":")[0], 10) < 5),
+  );
+  const overviewDigest =
+    rankedMatches.length > 0
+      ? {
+          tier: tierRaw,
+          rank: rankDivisionRaw,
+          league_points: Math.max(0, Math.round(Number(leaguePointsRaw) || 0)),
+          wins: Math.max(0, Math.round(Number(wins) || 0)),
+          losses: Math.max(0, Math.round(Number(losses) || 0)),
+          winrate: clampNumber(parseFloat(winrate), 100, 1),
+          kda: clampNumber(KDA_mean, 100),
+          cs_per_min: clampNumber(CS_mean, 20),
+          kill_participation: clampNumber(KP_mean, 100, 1),
+          score_average: clampNumber(performanceAverage, 100, 1),
+          score_median: clampNumber(performanceMedian, 100, 1),
+          score_stddev: clampNumber(performanceStdDev, 100, 1),
+          main_role: mostFrequent(rankedMatches.map((m) => m.role), 1)[0] || "UNKNOWN",
+          top_champions: mostFrequent(rankedMatches.map((m) => m.champ), 3),
+          games_analyzed: rankedMatches.length,
+          games_last_90_days: totalGamesInActiveDays,
+          avg_games_per_active_day: clampNumber(avgGamesPerActiveDay, 100, 1),
+          days_since_last_game:
+            typeof daysSinceLastActivity === "number" ? daysSinceLastActivity : null,
+        }
+      : null;
+
+  // Serialised so the effect depends on a stable primitive. The digest object is
+  // rebuilt on every render, so passing it directly would refetch endlessly.
+  const overviewDigestKey =
+    overviewAvailable && overviewDigest ? JSON.stringify(overviewDigest) : null;
+
+  useEffect(() => {
+    if (!overviewDigestKey) return undefined;
+
+    const controller = new AbortController();
+
+    const fetchOverview = async () => {
+      setOverviewLoading(true);
+      setOverviewError(null);
+      try {
+        const result = await getPlayerOverview(JSON.parse(overviewDigestKey), {
+          signal: controller.signal,
+        });
+        if (!controller.signal.aborted) setOverview(result.overview);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setOverview(null);
+          setOverviewError(err.message || "Could not generate an overview.");
+        }
+      } finally {
+        if (!controller.signal.aborted) setOverviewLoading(false);
+      }
+    };
+
+    fetchOverview();
+
+    return () => controller.abort();
+  }, [overviewDigestKey]);
 
   const mockHeatmap = Array.from({ length: 13 }, (_, colIndex) =>
     Array.from({ length: 7 }, (_, rowIndex) => {
@@ -792,6 +910,43 @@ export default function PlayerProfile() {
                 </div>
               </div>
             </div>
+            {/* 3b. AI OVERVIEW --- */}
+            {overviewAvailable && (overviewLoading || overview || overviewError) && (
+              <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="font-headline font-bold text-xl text-on-surface flex items-center gap-2">
+                    <span className="material-symbols-outlined text-secondary text-[20px]">
+                      auto_awesome
+                    </span>
+                    AI Overview
+                  </h2>
+                  <span className="text-[10px] text-outline font-bold uppercase tracking-widest">
+                    {rankedMatches.length} matches
+                  </span>
+                </div>
+
+                {overviewLoading ? (
+                  <div className="flex flex-col gap-2 animate-pulse" aria-hidden="true">
+                    <div className="h-3 w-full rounded bg-surface-container-highest/60"></div>
+                    <div className="h-3 w-11/12 rounded bg-surface-container-highest/60"></div>
+                    <div className="h-3 w-8/12 rounded bg-surface-container-highest/60"></div>
+                  </div>
+                ) : overview ? (
+                  <p className="text-sm leading-relaxed text-on-surface-variant border-l-2 border-secondary/50 pl-4">
+                    {overview}
+                  </p>
+                ) : (
+                  <p className="text-sm text-outline pl-1">
+                    {overviewError}
+                  </p>
+                )}
+
+                <p className="mt-4 text-[10px] text-outline uppercase tracking-wide">
+                  Generated from the stats on this page. Numbers above are authoritative.
+                </p>
+              </div>
+            )}
+
             {/* ACTIVITY HEATMAP & 90 DAY SUMMARY --- */}
             <div className="glass-panel px-12 ghost-border rounded-xl p-6 md:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Left Side: Activity Heatmap */}
