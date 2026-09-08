@@ -2,6 +2,7 @@ import requests
 import json
 import math
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 import concurrent.futures
 
@@ -9,6 +10,34 @@ try:
     from .riot_api import riot_get_json
 except ImportError:
     from riot_api import riot_get_json
+
+
+@lru_cache(maxsize=1)
+def _fallback_patch():
+    """Patch read from the static runes table when no lookup table is passed in.
+
+    Cached so the file is read once per process instead of once per participant
+    (ten times per match).
+    """
+    project_root = Path(__file__).resolve().parent.parent.parent
+    lookup_path = project_root / "data" / "static" / "runes_lookup_table.json"
+    try:
+        with open(lookup_path, "r", encoding="utf-8") as f:
+            return json.load(f).get("patch", "14.1.1")
+    except (OSError, ValueError) as error:
+        print(f"Warning: could not read patch from {lookup_path} ({error}). Using 14.1.1.")
+        return "14.1.1"
+
+
+def _timestamp_to_datetime(timestamp_ms):
+    """Convert Riot's millisecond epoch into a datetime, or None when unusable."""
+    if timestamp_ms is None:
+        return None
+    try:
+        return datetime.fromtimestamp(float(timestamp_ms) / 1000)
+    except (TypeError, ValueError, OSError, OverflowError):
+        print(f"Warning: unusable timestamp {timestamp_ms!r}")
+        return None
 
 
 class Caller:
@@ -83,6 +112,15 @@ class Caller:
         self.url_base_platform = f'https://{self.platform}.api.riotgames.com'
         self.url_base = f'https://{self.region}.api.riotgames.com'
         self.count = count
+        # Populated by get_puuid(). Declared here so the later calls that need it
+        # fail with a clear message instead of an AttributeError.
+        self.puuid = None
+
+    def _require_puuid(self):
+        """Return the resolved PUUID, or fail with an actionable message."""
+        if not self.puuid:
+            raise RuntimeError("PUUID not resolved yet; call get_puuid() first.")
+        return self.puuid
 
     def get_puuid(self):
         """
@@ -106,6 +144,10 @@ class Caller:
         Args:
         puuid - unique riot account ID obtained in get_puuid function
         start - offset for match history
+
+        Raises:
+        RuntimeError - on a failed call. Returning an error string here made an
+        API outage look like an empty match history to the activity pipeline.
         """
         url = f'{self.url_base}/lol/match/v5/matches/by-puuid/{puuid}/ids'
         params = {
@@ -115,10 +157,9 @@ class Caller:
             'queue': 420
         }
         status, payload = riot_get_json(url, params, ttl_seconds=120)
-        if status == 200:
-            return payload
-        else:
-            return f'Error getting user matches ID: {status}'
+        if status != 200 or not isinstance(payload, list):
+            raise RuntimeError(f'Error getting user matches ID: {status}')
+        return payload
     
     def last_matches_data_call(self, matches_id: list):
         """
@@ -128,38 +169,48 @@ class Caller:
         """
         
         matches_storage = {}
-        session = requests.Session()
-        adapter = requests.adapters.HTTPAdapter(pool_connections=12, pool_maxsize=12)
-        session.mount('https://', adapter)
-        
-        def fetch_match(match):
-            url = f'{self.url_base}/lol/match/v5/matches/{match}'
-            params = {'api_key': self.api_key}
-            
-            status, payload = riot_get_json(
-                url,
-                params,
-                ttl_seconds=30 * 24 * 60 * 60,
-                session=session,
-            )
-            if status == 200:
-                return match, payload
-            return match, None
 
-        # ThreadPoolExecutor runs requests concurrently. The shared rate limiter
-        # in riot_api.py decides when each worker may issue its next request.
-        with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
-            future_to_match = {executor.submit(fetch_match, match): match for match in matches_id}
-            for future in concurrent.futures.as_completed(future_to_match):
-                match, data = future.result()
-                if data:
-                    matches_storage[match] = data
+        # The session is closed by the context manager even if a worker raises.
+        with requests.Session() as session:
+            adapter = requests.adapters.HTTPAdapter(pool_connections=12, pool_maxsize=12)
+            session.mount('https://', adapter)
 
-        session.close()
+            def fetch_match(match):
+                url = f'{self.url_base}/lol/match/v5/matches/{match}'
+                params = {'api_key': self.api_key}
+
+                status, payload = riot_get_json(
+                    url,
+                    params,
+                    ttl_seconds=30 * 24 * 60 * 60,
+                    session=session,
+                )
+                if status == 200:
+                    return match, payload
+                return match, None
+
+            # ThreadPoolExecutor runs requests concurrently. The shared rate limiter
+            # in riot_api.py decides when each worker may issue its next request.
+            with concurrent.futures.ThreadPoolExecutor(max_workers=12) as executor:
+                future_to_match = {executor.submit(fetch_match, match): match for match in matches_id}
+                for future in concurrent.futures.as_completed(future_to_match):
+                    submitted_match = future_to_match[future]
+                    try:
+                        match, data = future.result()
+                    except Exception as error:
+                        # One bad match must not abort the whole batch.
+                        print(
+                            f"Warning: fetching match {submitted_match} failed "
+                            f"({type(error).__name__}: {error}). Skipping it."
+                        )
+                        continue
+                    if data:
+                        matches_storage[match] = data
+
         return matches_storage
     
     def player_metadata_call(self):
-        url = f'{self.url_base_platform}/lol/league/v4/entries/by-puuid/{self.puuid}'
+        url = f'{self.url_base_platform}/lol/league/v4/entries/by-puuid/{self._require_puuid()}'
         params = {'api_key': self.api_key}
         status, payload = riot_get_json(url, params, ttl_seconds=5 * 60)
         if status == 200 and isinstance(payload, list):
@@ -202,7 +253,7 @@ class Caller:
         return ranked_data
     
     def player_mastery(self, lookup_table):
-        url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self.puuid}'
+        url = f'https://{self.platform}.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/{self._require_puuid()}'
         params = {'api_key': self.api_key}
         status, payload = riot_get_json(url, params, ttl_seconds=30 * 60)
         if status != 200 or not isinstance(payload, list):
@@ -241,15 +292,11 @@ class Player:
         """
         self.player_data = player_data
 
-        # Use passed lookup or fallback to default
+        # Use passed lookup or fall back to the patch cached from the static table
         if runes_lookup:
             currentPatch = runes_lookup.get("patch", "14.1.1")
         else:
-            project_root = Path(__file__).resolve().parent.parent
-            lookup_path = project_root / "data" / "static" / "runes_lookup_table.json"
-            with open(lookup_path, "r") as f:
-                lookup_table = json.load(f)
-            currentPatch = lookup_table.get("patch", "14.1.1")
+            currentPatch = _fallback_patch()
 
         self.player_data = player_data
         default_value = "No data"
@@ -449,12 +496,20 @@ class Match:
         self.gameVersion = info.get("gameVersion", "No data")
         self.platformId = info.get("platformId", "No data")
         self.queueId = info.get("queueId", 0)
-        gameStartDate = datetime.fromtimestamp(info["gameStartTimestamp"] / 1000).strftime('%Y-%m-%d %H:%M:%S')
-        gameEndDate = datetime.fromtimestamp(info["gameEndTimestamp"] / 1000).strftime('%H:%M:%S')
-        self.gameDate = f"{gameStartDate} - {gameEndDate}"
+        # A truncated payload used to raise KeyError here and kill the whole batch.
+        gameStart = _timestamp_to_datetime(info.get("gameStartTimestamp"))
+        gameEnd = _timestamp_to_datetime(info.get("gameEndTimestamp"))
+        if gameStart and gameEnd:
+            self.gameDate = (
+                f"{gameStart.strftime('%Y-%m-%d %H:%M:%S')} - {gameEnd.strftime('%H:%M:%S')}"
+            )
+        elif gameStart:
+            self.gameDate = gameStart.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            self.gameDate = "No data"
         duration_sec = int(info.get("gameDuration", 0))
         self.gameDuration_min = float(f"{duration_sec // 60}.{duration_sec % 60:02d}")
-        self.gameDateDay = datetime.fromtimestamp(info["gameStartTimestamp"] / 1000).strftime('%Y-%m-%d')
+        self.gameDateDay = gameStart.strftime('%Y-%m-%d') if gameStart else "No data"
 
         # Team Results Summary (store list of team IDs and their win status)
         self.teams = []
