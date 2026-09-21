@@ -111,6 +111,40 @@ export const getPlayerActivity = async (region, nickname, tag, options = {}) => 
   return data;
 };
 
+/** Thrown when the backend's per-client suggestion throttle rejects a call. */
+export class SuggestionsThrottledError extends Error {
+  constructor(retryAfterSeconds) {
+    super('Too many suggestion requests');
+    this.retryAfterMs = Math.max(1, retryAfterSeconds) * 1000;
+  }
+}
+
+/**
+ * Riot ID autocomplete served from the backend's local player index.
+ * Costs no Riot API quota. Not cached here: usePlayerSuggestions keeps its
+ * own short-lived cache so new players show up without a reload.
+ *
+ * @param {string} query - "name" or "name#tag", at least 2 characters
+ * @param {string} region - Region label from the search form (e.g. EUW)
+ * @param {Object} options - { signal, limit }
+ * @returns {Promise<Array<{name: string, tag: string, platform: string}>>}
+ */
+export const getPlayerSuggestions = async (query, region, options = {}) => {
+  const { signal, limit = 8 } = options;
+  const params = new URLSearchParams({ q: query, platform: region, limit: String(limit) });
+  const response = await fetch(`${API_BASE_URL}/players/suggest?${params}`, { signal });
+
+  if (response.status === 429) {
+    throw new SuggestionsThrottledError(Number(response.headers.get('Retry-After') || 1));
+  }
+  if (!response.ok) {
+    throw new Error(`Failed to fetch suggestions: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return Array.isArray(data?.suggestions) ? data.suggestions : [];
+};
+
 /**
  * Reports whether the server has an AI provider key configured.
  * Lets the profile skip the overview panel instead of showing a failed one.

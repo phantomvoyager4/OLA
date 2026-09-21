@@ -25,3 +25,7 @@ dist-ssr
 *.sln
 *.sw?
 parquet_example
+
+# Autocomplete index built from fetched matches
+data/player_index.json
+data/player_index.json.tmp

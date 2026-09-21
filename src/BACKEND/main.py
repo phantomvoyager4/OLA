@@ -1,13 +1,22 @@
+from contextlib import asynccontextmanager
 import time
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from .ai_overview import OverviewUnavailable, ProfileDigest, generate_overview, load_groq_key
 from .pipeline import activity_pipeline, pipeline, load_api_key
+from .player_index import PLAYER_INDEX, SUGGEST_THROTTLE
 from .riot_api import RIOT_RATE_LIMITER
 from .tier_list_backend import tier_list_router
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    yield
+    # Index writes are throttled; flush whatever arrived since the last one.
+    PLAYER_INDEX.save_if_due(force=True)
+
+
+app = FastAPI(lifespan=lifespan)
 app.include_router(tier_list_router)
 
 app.add_middleware(
@@ -55,6 +64,24 @@ def root():
 def get_rate_limit():
     """Expose limiter state without consuming Riot API quota."""
     return RIOT_RATE_LIMITER.snapshot()
+
+@app.get('/api/players/suggest')
+def suggest_players(
+    request: Request,
+    q: str = Query(..., min_length=2, max_length=40),
+    platform: str = Query('EUW', max_length=20),
+    limit: int = Query(8, ge=1, le=15),
+):
+    """Autocomplete Riot IDs from the local index. Never calls Riot."""
+    client = request.client.host if request.client else "unknown"
+    retry_after = SUGGEST_THROTTLE.try_acquire(client)
+    if retry_after:
+        raise HTTPException(
+            status_code=429,
+            detail="Too many suggestion requests",
+            headers={"Retry-After": f"{max(1, round(retry_after))}"},
+        )
+    return {"suggestions": PLAYER_INDEX.suggest(q, platform, limit)}
 
 @app.get('/api/matches/{platform}/{player_name}/{player_tag}')
 def get_matches(

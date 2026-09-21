@@ -4,8 +4,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 try:
     from .model import Caller, Player, Match, summarizer, annotate_player_performance
+    from .player_index import PLAYER_INDEX
 except ImportError:
     from model import Caller, Player, Match, summarizer, annotate_player_performance
+    from player_index import PLAYER_INDEX
 import time
 from datetime import datetime
 
@@ -43,6 +45,10 @@ def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
             raise RuntimeError("No match payloads returned from Riot API")
         else:
             print(f"Matches raw data fetched {round(time.time() - start_timer,2)}")
+
+        # Feed search autocomplete from payloads we already paid for. Only the
+        # first page counts as a search, so "load more" doesn't inflate rank.
+        _index_matches(matches_data.values(), searched_puuid=puuidme if start == 0 else None)
 
         # Ensure we are looking in the project root correctly
         project_root = Path(__file__).resolve().parent.parent.parent
@@ -176,6 +182,7 @@ def activity_pipeline(api_key, player_name, player_tag, platform, count=40, star
             return {"dates": [], "matches": 0}
 
         matches_data = usercall.last_matches_data_call(match_ids)
+        _index_matches(matches_data.values())
         dates = []
         for match_id in match_ids:
             payload = matches_data.get(match_id)
@@ -188,6 +195,14 @@ def activity_pipeline(api_key, player_name, player_tag, platform, count=40, star
     except (ValueError, RuntimeError, OSError) as error:
         print(f"Activity pipeline error: {error}")
         return None
+
+
+def _index_matches(match_payloads, searched_puuid=None):
+    """Autocomplete is a nicety; never let it fail a profile request."""
+    try:
+        PLAYER_INDEX.record_matches(match_payloads, searched_puuid=searched_puuid)
+    except Exception as error:
+        print(f"Player index warning: {type(error).__name__}: {error}")
 
 
 def load_api_key():

@@ -1,5 +1,9 @@
 import { createElement, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PlayerSuggestionList from '../components/PlayerSuggestionList';
+import usePlayerSuggestions from '../hooks/usePlayerSuggestions';
+
+const SUGGESTION_LIST_ID = 'home-player-suggestions';
 
 const popularPlayers = [
   { name: 'Hide on bush', tier: 'Challenger', lp: '1205 LP', tone: 'challenger' },
@@ -25,7 +29,19 @@ export default function Home() {
   const [region, setRegion] = useState('EUW');
   const pageRef = useRef(null);
   const navigate = useNavigate();
+  const [isSuggestOpen, setIsSuggestOpen] = useState(false);
+  const [highlight, setHighlight] = useState({ list: null, index: -1 });
   const isSearchReady = Boolean(nickname.trim() && tag.trim());
+
+  const cleanTagInput = tag.replace('#', '').trim();
+  const suggestionQuery = cleanTagInput ? `${nickname}#${cleanTagInput}` : nickname;
+  const { suggestions, loading: suggestionsLoading, query: suggestionsFor } =
+    usePlayerSuggestions(suggestionQuery, region, { enabled: isSuggestOpen });
+  const showSuggestions = isSuggestOpen && nickname.trim().length >= 2;
+  // The highlight belongs to one result set; a new set starts unhighlighted.
+  const activeSuggestion = highlight.list === suggestions ? highlight.index : -1;
+  const highlighted = showSuggestions ? suggestions[activeSuggestion] : undefined;
+  const setActiveSuggestion = (index) => setHighlight({ list: suggestions, index });
 
   useEffect(() => {
     const revealItems = pageRef.current?.querySelectorAll('[data-home-reveal]');
@@ -53,17 +69,43 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
+  const openProfile = (name, playerTag) => {
+    // Standardize URL by removing spaces and making uppercase; drop a leading #.
+    const cleanRegion = region.replace(/\s+/g, '').toUpperCase();
+    navigate(`/player/${cleanRegion}/${name}-${playerTag.replace('#', '')}`);
+  };
+
+  const selectSuggestion = (player) => {
+    setNickname(player.name);
+    setTag(player.tag);
+    setIsSuggestOpen(false);
+    openProfile(player.name, player.tag);
+  };
+
+  const handleNicknameKeyDown = (event) => {
+    const count = showSuggestions ? suggestions.length : 0;
+
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      event.preventDefault();
+      setIsSuggestOpen(true);
+      if (!count) return;
+      const step = event.key === 'ArrowDown' ? 1 : -1;
+      // Cycle through -1 (nothing highlighted, Enter analyzes) and every option.
+      setActiveSuggestion(((activeSuggestion + 1 + step + count + 1) % (count + 1)) - 1);
+    } else if (event.key === 'Enter') {
+      event.preventDefault();
+      if (highlighted) selectSuggestion(highlighted);
+      else handleAnalyze();
+    } else if (event.key === 'Escape') {
+      setIsSuggestOpen(false);
+    }
+  };
+
   const handleAnalyze = () => {
     if (!isSearchReady) return;
-
-    // Clean up inputs (remove # from tag if included)
-    const cleanTag = tag.replace('#', '');
-    // Standardize URL by removing spaces and making uppercase
-    const cleanRegion = region.replace(/\s+/g, '').toUpperCase();
-
-    // Navigate to the player profile React route using React Router.
+    setIsSuggestOpen(false);
     // The PlayerProfile component itself will handle the backend data fetch.
-    navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
+    openProfile(nickname, tag);
   };
 
   return (
@@ -76,7 +118,8 @@ export default function Home() {
         </div>
 
         {/* Search Section (The Core) */}
-        <div className="w-full max-w-4xl px-6 relative z-10 text-center flex flex-col gap-12">
+        {/* z-20 so the suggestion dropdown paints over Popular Players (z-10). */}
+        <div className="w-full max-w-4xl px-6 relative z-20 text-center flex flex-col gap-12">
           <div className="space-y-4 pb-6">
             <HomeReveal
               as="h1"
@@ -101,10 +144,22 @@ export default function Home() {
             <div className="flex-1 flex flex-col md:flex-row items-center gap-2">
               {/* Nickname Input */}
               <div
-                className="home-search-control relative grow w-full"
+                className={`home-search-control relative grow w-full ${showSuggestions ? 'z-30' : ''}`}
                 style={{ '--control-delay': '470ms' }}
               >
                 <input
+                  role="combobox"
+                  aria-autocomplete="list"
+                  aria-expanded={showSuggestions}
+                  aria-controls={SUGGESTION_LIST_ID}
+                  aria-activedescendant={
+                    highlighted ? `${SUGGESTION_LIST_ID}-option-${activeSuggestion}` : undefined
+                  }
+                  autoComplete="off"
+                  spellCheck={false}
+                  onFocus={() => setIsSuggestOpen(true)}
+                  onBlur={() => setIsSuggestOpen(false)}
+                  onKeyDown={handleNicknameKeyDown}
                   className="home-search-input w-full bg-surface-container-low border-none focus:outline-none rounded-md text-on-surface placeholder:text-outline p-4 font-headline tracking-widest text-sm"
                   placeholder="Nickname"
                   type="text"
@@ -120,8 +175,20 @@ export default function Home() {
                     } else {
                       setNickname(value);
                     }
+                    setIsSuggestOpen(true);
                   }}
                 />
+                {showSuggestions && (
+                  <PlayerSuggestionList
+                    id={SUGGESTION_LIST_ID}
+                    suggestions={suggestions}
+                    query={suggestionsFor}
+                    loading={suggestionsLoading}
+                    activeIndex={activeSuggestion}
+                    onHover={setActiveSuggestion}
+                    onSelect={selectSuggestion}
+                  />
+                )}
               </div>
               {/* Tag Input */}
               <div
@@ -134,6 +201,7 @@ export default function Home() {
                   type="text"
                   value={tag}
                   onChange={(e) => setTag(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleAnalyze()}
                 />
               </div>
               {/* Region Select */}
