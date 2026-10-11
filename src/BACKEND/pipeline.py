@@ -132,7 +132,6 @@ def pipeline(api_key, player_name, player_tag, platform, count, save, start=0):
             print(f"objects created sucessfuly :) \n Timer: {round(time.time() - start_timer,2)}")
 
         combined_records = annotate_player_performance(combined_records)
-        print(combined_records)
         
         # Ensure data folder exists relative to project root
         example_data_dir = data_dir / "example_data"
