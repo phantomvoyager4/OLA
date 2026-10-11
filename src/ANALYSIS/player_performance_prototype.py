@@ -9,7 +9,7 @@ This script builds a simple offline pipeline from the saved JSON snapshots:
 - saves a few visualizations for inspection
 
 The goal is not to be production-ready. It is a compact prototype that shows
-how a website-facing performance system could work with the existing data.
+how a website-facing performance system could work with the existing data. (!)
 """
 
 from __future__ import annotations
