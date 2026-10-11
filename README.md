@@ -85,6 +85,16 @@ Players are grouped by their in-game role. Each feature is standardized within t
 
 This avoids comparing fundamentally different responsibilities—for example, a support is evaluated against other supports rather than against an ADC.
 
+The role statistics and percentiles come from a fixed reference built from about 31,500 player-match rows of EUW ranked games (March–July 2026, remakes excluded), stored in `data/static/score_reference.json`. A game therefore gets the same score no matter which other matches are loaded with it. If the file is missing, players are compared with the other players in the current request instead. Rebuild the reference from a folder of collected matches with:
+
+```bash
+cd src
+python -m BACKEND.metascripts.build_score_reference --data-dir <folder with data_full_*.json>
+python -m unittest BACKEND.tests.test_scoring
+```
+
+The weights are hand-picked, so the score is checked against an outcome it never sees: on the reference data it separates wins from losses with a ROC-AUC of 0.785 (0.745 for supports, 0.835 for junglers).
+
 ## Architecture
 
 ```mermaid

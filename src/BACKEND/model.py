@@ -1,4 +1,5 @@
 import requests
+import bisect
 import json
 import math
 from datetime import datetime
@@ -555,6 +556,55 @@ PERFORMANCE_FEATURE_WEIGHTS = {
     "death_penalty": -0.12,
 }
 
+# Per-role means, standard deviations and score percentiles computed once from
+# the collected EUW dataset by metascripts/build_score_reference.py.
+SCORE_REFERENCE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "static" / "score_reference.json"
+
+
+@lru_cache(maxsize=1)
+def load_score_reference():
+    """Return the fixed scoring reference, or None if it is missing or stale.
+
+    Without a reference the API falls back to comparing players only with the
+    other players in the current request.
+    """
+    try:
+        with open(SCORE_REFERENCE_PATH, encoding="utf-8") as handle:
+            reference = json.load(handle)
+    except (OSError, ValueError):
+        return None
+    # A reference built from different features would mix two definitions.
+    if reference.get("features") != list(PERFORMANCE_FEATURE_WEIGHTS):
+        return None
+    return reference
+
+
+def _percentile_from_quantiles(score, quantiles):
+    """Place a score in the reference distribution, from 0 to 100.
+
+    quantiles[i] is the score at the i-th percentile of the reference sample;
+    scores between two stored percentiles are interpolated linearly.
+    """
+    if score <= quantiles[0]:
+        return 0.0
+    if score >= quantiles[-1]:
+        return 100.0
+    upper = bisect.bisect_right(quantiles, score)
+    lower = upper - 1
+    span = quantiles[upper] - quantiles[lower]
+    fraction = (score - quantiles[lower]) / span if span else 0.0
+    return (lower + fraction) * 100.0 / (len(quantiles) - 1)
+
+
+def _performance_band(percentile):
+    if percentile >= 80:
+        return "elite"
+    if percentile >= 60:
+        return "strong"
+    if percentile >= 40:
+        return "solid"
+    return "low"
+
 
 def _coerce_float(value, default=0.0):
     try:
@@ -599,8 +649,11 @@ def _extract_performance_features(player: dict, game_duration_min: float) -> dic
 def annotate_player_performance(matches: list) -> list:
     """Annotate each player in the fetched matches with a role-adjusted score.
 
-    The score is computed from the current request's data, so it stays fast and
-    does not require any pre-trained model to be loaded inside the API process.
+    Each feature is standardized against the player's role and combined with
+    PERFORMANCE_FEATURE_WEIGHTS. When the fixed reference is available, both the
+    standardization and the percentile come from the collected dataset, so a
+    game gets the same score no matter which other matches were loaded with it.
+    Otherwise players are compared only with the current request.
     """
 
     player_rows = []
@@ -633,9 +686,16 @@ def annotate_player_performance(matches: list) -> list:
         for feature_name, feature_value in row["features"].items():
             role_bucket[feature_name].append(feature_value)
 
+    reference_roles = (load_score_reference() or {}).get("roles", {})
+
     role_means = {}
     role_stdevs = {}
     for role, feature_map in group_stats.items():
+        if role in reference_roles:
+            role_means[role] = reference_roles[role]["mean"]
+            role_stdevs[role] = reference_roles[role]["std"]
+            continue
+
         role_means[role] = {}
         role_stdevs[role] = {}
         for feature_name, values in feature_map.items():
@@ -670,29 +730,19 @@ def annotate_player_performance(matches: list) -> list:
     for role, scored_rows in grouped_scores.items():
         sorted_rows = sorted(scored_rows, key=lambda item: item["score"])
         total = len(sorted_rows)
-        if total == 1:
-            score_lookup[(sorted_rows[0]["match_index"], sorted_rows[0]["player_index"])] = {
-                "performanceScore": 100.0,
-                "performanceBand": "elite",
-                "performanceRank": 1,
-                "performanceRoleCount": 1,
-            }
-            continue
+        quantiles = reference_roles.get(role, {}).get("quantiles")
 
         for rank_index, scored_row in enumerate(sorted_rows):
-            percentile = (rank_index / (total - 1)) * 100.0
-            if percentile >= 80:
-                band = "elite"
-            elif percentile >= 60:
-                band = "strong"
-            elif percentile >= 40:
-                band = "solid"
+            if quantiles:
+                percentile = _percentile_from_quantiles(scored_row["score"], quantiles)
+            elif total == 1:
+                percentile = 100.0
             else:
-                band = "low"
+                percentile = (rank_index / (total - 1)) * 100.0
 
             score_lookup[(scored_row["match_index"], scored_row["player_index"])] = {
                 "performanceScore": round(percentile, 1),
-                "performanceBand": band,
+                "performanceBand": _performance_band(percentile),
                 "performanceRank": rank_index + 1,
                 "performanceRoleCount": total,
             }
