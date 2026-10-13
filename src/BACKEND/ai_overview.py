@@ -36,9 +36,7 @@ logger = logging.getLogger(__name__)
 GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 GROQ_TIMEOUT = (3.05, 20.0)
 
-# Groq retires hosted models without notice, and a retired id answers 404 - which
-# is how this panel first broke. Ship an ordered fallback list rather than a
-# single id, so one retirement degrades to the next model instead of an outage.
+# Groq retires hosted models without notice, and a retired id answers 404.
 # Set GROQ_MODEL in .env to pin one explicitly.
 #
 # Reasoning models (openai/gpt-oss-*) are last on purpose: they spend the token

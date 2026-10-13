@@ -76,12 +76,12 @@ For every participant, the backend extracts signals including:
 
 Players are grouped by their in-game role. Each feature is standardized within that role, combined using explicit weights, and converted into a percentile. The result is presented as one of four readable bands:
 
-| Percentile | Band |
-|---:|---|
-| 80–100 | Elite |
-| 60–79 | Strong |
-| 40–59 | Solid |
-| 0–39 | Low |
+| Percentile | Band   |
+| ---------: | ------ |
+|    80–100 | Elite  |
+|     60–79 | Strong |
+|     40–59 | Solid  |
+|      0–39 | Low    |
 
 This avoids comparing fundamentally different responsibilities—for example, a support is evaluated against other supports rather than against an ADC.
 
@@ -134,27 +134,27 @@ A thread-safe sliding-window limiter is shared by all backend requests. The fron
 
 ### Cache strategy
 
-| Resource | Cache lifetime | Reason |
-|---|---:|---|
-| Riot ID → PUUID | 24 hours | Account identity rarely changes |
-| Recent match ID list | 2 minutes | Keeps history fresh |
-| Match payload | 30 days | Completed matches are immutable |
-| Ranked metadata | 5 minutes | LP and rank change frequently |
-| Champion mastery | 30 minutes | Useful but not time-critical |
-| AI overview text | 1 hour | A free-tier model quota is shared by every visitor |
+| Resource             | Cache lifetime | Reason                                             |
+| -------------------- | -------------: | -------------------------------------------------- |
+| Riot ID → PUUID     |       24 hours | Account identity rarely changes                    |
+| Recent match ID list |      2 minutes | Keeps history fresh                                |
+| Match payload        |        30 days | Completed matches are immutable                    |
+| Ranked metadata      |      5 minutes | LP and rank change frequently                      |
+| Champion mastery     |     30 minutes | Useful but not time-critical                       |
+| AI overview text     |         1 hour | A free-tier model quota is shared by every visitor |
 
 ## Technology choices
 
-| Layer | Technology | Why |
-|---|---|---|
-| Frontend | React 19, React Router | Component-driven UI and client-side routing |
-| Styling | Tailwind CSS 4 | Responsive design with a consistent visual system |
-| Build tooling | Vite 8 | Fast development feedback and optimized builds |
-| Backend | FastAPI, Python 3.12 | Typed endpoints and straightforward data pipelines |
-| HTTP client | Requests | Mature Riot API integration and session pooling |
-| Concurrency | ThreadPoolExecutor | Parallel match retrieval for an I/O-bound workload |
-| Narrative summary | Groq (`qwen3.8-27b`) | Free hosted inference behind an ordered model fallback |
-| Deployment | Docker Compose | Reproducible frontend/backend environment, with separate dev and prod image stages |
+| Layer             | Technology             | Why                                                                                |
+| ----------------- | ---------------------- | ---------------------------------------------------------------------------------- |
+| Frontend          | React 19, React Router | Component-driven UI and client-side routing                                        |
+| Styling           | Tailwind CSS 4         | Responsive design with a consistent visual system                                  |
+| Build tooling     | Vite 8                 | Fast development feedback and optimized builds                                     |
+| Backend           | FastAPI, Python 3.12   | Typed endpoints and straightforward data pipelines                                 |
+| HTTP client       | Requests               | Mature Riot API integration and session pooling                                    |
+| Concurrency       | ThreadPoolExecutor     | Parallel match retrieval for an I/O-bound workload                                 |
+| Narrative summary | Groq (`qwen3.8-27b`) | Free hosted inference behind an ordered model fallback                             |
+| Deployment        | Docker Compose         | Reproducible frontend/backend environment, with separate dev and prod image stages |
 
 ## Running locally
 
@@ -209,16 +209,16 @@ The collector discovers the latest EUW patch, deduplicates match IDs, rejects re
 
 ## API overview
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `GET` | `/api/matches/{platform}/{name}/{tag}` | Full player and match analysis |
-| `GET` | `/api/activity/{platform}/{name}/{tag}` | Lightweight heatmap data |
-| `GET` | `/api/tier-list` | Latest completed EUW Master+ ranking snapshot |
-| `GET` | `/api/tier-list/status` | Snapshot readiness and sample metadata |
-| `GET` | `/api/rate-limit` | Current local limiter capacity |
-| `POST` | `/api/overview` | Natural-language summary of a posted profile digest |
-| `GET` | `/api/overview/status` | Whether a model provider key is configured |
-| `GET` | `/docs` | Interactive OpenAPI documentation |
+| Method   | Endpoint                                  | Purpose                                             |
+| -------- | ----------------------------------------- | --------------------------------------------------- |
+| `GET`  | `/api/matches/{platform}/{name}/{tag}`  | Full player and match analysis                      |
+| `GET`  | `/api/activity/{platform}/{name}/{tag}` | Lightweight heatmap data                            |
+| `GET`  | `/api/tier-list`                        | Latest completed EUW Master+ ranking snapshot       |
+| `GET`  | `/api/tier-list/status`                 | Snapshot readiness and sample metadata              |
+| `GET`  | `/api/rate-limit`                       | Current local limiter capacity                      |
+| `POST` | `/api/overview`                         | Natural-language summary of a posted profile digest |
+| `GET`  | `/api/overview/status`                  | Whether a model provider key is configured          |
+| `GET`  | `/docs`                                 | Interactive OpenAPI documentation                   |
 
 Example:
 
