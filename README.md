@@ -44,22 +44,26 @@ The interesting part of this project is not only the UI. It is the engineering a
 - Highlight the strongest performer on each team.
 - Assign every player a role-aware performance score and quality band.
 
-### Live meta tier list
+Example:
+A 31-minute game, Swain mid, 5/10/12, a loss.
 
-- Build an EUW Master+ tier list from current-patch ranked solo matches.
-- Seed the sample from Master, Grandmaster, and Challenger league entries.
-- Rank champion-role combinations with sample-aware win, pick, and ban signals.
-- Filter the result by role or champion without making another Riot API request.
-- Publish collection results as an atomic snapshot, so readers never see partial data.
+|      Feature      | Player | Mid average |  Std |   z   | Weight | z × weight |
+|:-----------------:|:------:|:-----------:|:----:|:-----:|:------:|:----------:|
+| combat_efficiency | 2.27   | 3.50        | 3.42 | −0.36 | 0.22   | −0.08      |
+| damagePerMinute   | 955    | 893         | 334  | +0.19 | 0.18   | +0.03      |
+| goldPerMinute     | 347    | 418         | 76   | −0.93 | 0.10   | −0.09      |
+| vision_activity   | 2.08   | 3.24        | 1.41 | −0.82 | 0.14   | −0.12      |
+| farm_pressure     | 8.47   | 10.66       | 1.83 | −1.19 | 0.12   | −0.14      |
+| map_pressure      | 344    | 551         | 353  | −0.59 | 0.12   | −0.07      |
+| timeCCingOthers   | 60     | 24.3        | 19.3 | +1.85 | 0.06   | +0.11      |
+| soloKills         | 2      | 2.79        | 2.66 | −0.30 | 0.04   | −0.01      |
+| damage_share      | 24.9   | 23.4        | 7.0  | +0.21 | 0.06   | +0.01      |
+| survival_rate     | 0.15   | 0.26        | 0.17 | −0.64 | 0.05   | −0.03      |
+| death_penalty     | 2.81   | 2.34        | 0.62 | +0.76 | −0.12  | −0.09      |
+| Raw score         |        |             |      |       |        | −0.48      |
 
-### Production-minded API handling
-
-- Enforce both short- and long-window Riot API limits globally.
-- Cache immutable match payloads and frequently reused account metadata.
-- Retry transient failures and `429` responses with bounded exponential backoff.
-- Respect Riot's `Retry-After` response header.
-- Surface live API capacity in every application route without consuming Riot quota.
-- Cancel stale frontend requests when the viewed player changes.
+Going back to `score_reference.json`, we find corresponding score value and its index. In this case, most corresponding value is -0.490, which has an index of 25.
+This gives us a final score of a player, which basically mean that <b>he performed better than 25% of players on mid but worse than 75% players from this dataset</b>.
 
 ## Performance scoring
 
@@ -94,6 +98,23 @@ python -m unittest BACKEND.tests.test_scoring
 ```
 
 The weights are hand-picked, so the score is checked against an outcome it never sees: on the reference data it separates wins from losses with a ROC-AUC of 0.785 (0.745 for supports, 0.835 for junglers).
+
+### Live meta tier list
+
+- Build an EUW Master+ tier list from current-patch ranked solo matches.
+- Seed the sample from Master, Grandmaster, and Challenger league entries.
+- Rank champion-role combinations with sample-aware win, pick, and ban signals.
+- Filter the result by role or champion without making another Riot API request.
+- Publish collection results as an atomic snapshot, so readers never see partial data.
+
+### Production-minded API handling
+
+- Enforce both short- and long-window Riot API limits globally.
+- Cache immutable match payloads and frequently reused account metadata.
+- Retry transient failures and `429` responses with bounded exponential backoff.
+- Respect Riot's `Retry-After` response header.
+- Surface live API capacity in every application route without consuming Riot quota.
+- Cancel stale frontend requests when the viewed player changes.
 
 ## Architecture
 
