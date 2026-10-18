@@ -518,9 +518,11 @@ export default function PlayerProfile() {
             // The main rune is the keystone from the primary style group
             const mainRuneItem = runesData.find(r => r.runeIconLink && r.group === primaryStyle?.name) || runesData.find(r => r.runeIconLink && r.group !== 'Stat Perk') || runesData[5];
 
+            // The backend classifies remakes (metadata.isRemake); the flag covers older responses.
             const isRemake =
-              callerPlayer.gameEndedInEarlySurrender === true ||
-              callerPlayer.gameEndedInEarlySurrender === "true";
+              match.metadata?.isRemake ??
+              (callerPlayer.gameEndedInEarlySurrender === true ||
+                callerPlayer.gameEndedInEarlySurrender === "true");
 
             const MatchCallerData = {
               matchId: match.match_id || match.metadata?.matchId,
@@ -576,12 +578,8 @@ export default function PlayerProfile() {
 
         const performanceScores = MatchesCD
           .filter(match => {
-            const isRemake =
-              match.duration &&
-              parseInt(match.duration.split(":")[0], 10) < 5;
-
             return (
-              !isRemake &&
+              !match.isRemake &&
               match.performanceScore !== null &&
               match.performanceScore !== undefined
             );
@@ -680,9 +678,7 @@ export default function PlayerProfile() {
 
   // Everything the AI overview needs is already on this page, so the digest is
   // assembled here and posted; the server spends no Riot API quota to reply.
-  const rankedMatches = MatchesCD.filter(
-    (match) => !(match.duration && parseInt(match.duration.split(":")[0], 10) < 5),
-  );
+  const rankedMatches = MatchesCD.filter((match) => !match.isRemake);
   const overviewDigest =
     rankedMatches.length > 0
       ? {
@@ -1242,9 +1238,7 @@ export default function PlayerProfile() {
                   {/* Match Info */}
                   <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
                     {(() => {
-                      const isRemake =
-                        match.duration &&
-                        parseInt(match.duration.split(":")[0], 10) < 5;
+                      const isRemake = match.isRemake;
 
                       return (
                         <p
@@ -1351,7 +1345,7 @@ export default function PlayerProfile() {
                   <div className="flex flex-col gap-2 items-center pl-3">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-outline">Score</span>
                     {(() => {
-                      const isRemake = match.duration && parseInt(match.duration.split(":")[0], 10) < 5;
+                      const isRemake = match.isRemake;
 
                       const badgeBand = isRemake ? 'remake' : match.performanceBand;
 

@@ -52,6 +52,28 @@ class GameDurationTest(unittest.TestCase):
         self.assertAlmostEqual(model.game_duration_minutes({"gameDuration_min": 30.3}), 30.5)  # 30:30 saved as 30.3
 
 
+class RemakeTest(unittest.TestCase):
+    @staticmethod
+    def match(seconds=None, legacy_min=None, flag=None):
+        metadata = {"gameDuration_sec": seconds} if seconds is not None else {"gameDuration_min": legacy_min}
+        player = {"teamPosition": "TOP"} if flag is None else {"teamPosition": "TOP", "gameEndedInEarlySurrender": flag}
+        return {"metadata": metadata, "players": [dict(player) for _ in range(10)]}
+
+    def test_riot_flag_decides_when_present(self):
+        self.assertTrue(model.is_remake(self.match(seconds=170, flag=True)))
+        self.assertFalse(model.is_remake(self.match(seconds=170, flag=False)))
+
+    def test_legacy_matches_use_the_three_minute_limit(self):
+        self.assertTrue(model.is_remake(self.match(legacy_min=2.16)))  # 2:16
+        self.assertFalse(model.is_remake(self.match(legacy_min=3.08)))  # early surrender at 3:08 is a real game
+        self.assertFalse(model.is_remake(self.match(legacy_min=4.54)))
+
+    def test_remakes_are_marked_and_not_scored(self):
+        annotated = model.annotate_player_performance([self.match(seconds=100, flag=True)])
+        self.assertTrue(annotated[0]["metadata"]["isRemake"])
+        self.assertTrue(all(p["performanceScore"] is None and p["performanceBand"] == "remake" for p in annotated[0]["players"]))
+
+
 class FixedReferenceTest(unittest.TestCase):
     def setUp(self):
         self.matches = load_example_matches()

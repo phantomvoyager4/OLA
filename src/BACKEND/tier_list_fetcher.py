@@ -18,6 +18,7 @@ from urllib.parse import quote
 
 import requests
 
+from .model import REMAKE_MAX_SECONDS
 from .pipeline import load_api_key
 from .riot_api import riot_get_json
 
@@ -238,10 +239,11 @@ def is_eligible_match(
         match_patch == target_data_patch
         and int(info.get("queueId", 0) or 0) == config.queue_id
         and platform_id == config.platform_route.upper()
-        and int(info.get("gameDuration", 0) or 0) >= 300
+        and int(info.get("gameDuration", 0) or 0) >= REMAKE_MAX_SECONDS
         and (end_result in (None, "", "GameComplete"))
         and isinstance(participants, list)
         and len(participants) >= 10
+        and not any(isinstance(p, dict) and p.get("gameEndedInEarlySurrender") for p in participants)
     )
 
 

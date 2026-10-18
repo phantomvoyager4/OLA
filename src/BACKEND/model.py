@@ -633,6 +633,24 @@ def game_duration_minutes(match_metadata: dict) -> float:
     return minutes + round((legacy - minutes) * 100) / 60.0
 
 
+# /remake can only be started before 2:25 and the vote stays open at least 30
+# seconds, so a remade game ends before 3:00. Games ended by an early surrender
+# after that are real wins and losses.
+REMAKE_MAX_SECONDS = 180
+
+
+def is_remake(match: dict) -> bool:
+    """Return True if the match ended through /remake.
+
+    Riot marks remakes with gameEndedInEarlySurrender on every participant.
+    Matches saved before that flag was stored fall back to the game length.
+    """
+    flags = [player["gameEndedInEarlySurrender"] for player in match.get("players", []) if "gameEndedInEarlySurrender" in player]
+    if flags:
+        return any(flag is True or flag == "true" for flag in flags)
+    return game_duration_minutes(match.get("metadata") or {}) * 60 < REMAKE_MAX_SECONDS
+
+
 def _extract_performance_features(player: dict, game_duration_min: float) -> dict:
     kills = _coerce_float(player.get("kills"))
     deaths = _coerce_float(player.get("deaths"))
@@ -669,6 +687,7 @@ def annotate_player_performance(matches: list) -> list:
     standardization and the percentile come from the collected dataset, so a
     game gets the same score no matter which other matches were loaded with it.
     Otherwise players are compared only with the current request.
+    Remakes are marked with metadata.isRemake and get no score.
     """
 
     player_rows = []
@@ -678,6 +697,14 @@ def annotate_player_performance(matches: list) -> list:
             continue
 
         match_metadata = match.get("metadata", {}) or {}
+        remake = is_remake(match)
+        if isinstance(match.get("metadata"), dict):
+            match["metadata"]["isRemake"] = remake
+        if remake:
+            for player in match.get("players", []):
+                player.update({"performanceScore": None, "performanceBand": "remake"})
+            continue
+
         game_duration_min = game_duration_minutes(match_metadata)
 
         for player_index, player in enumerate(match.get("players", [])):

@@ -23,10 +23,10 @@ from BACKEND.model import (
     SCORE_REFERENCE_PATH,
     _extract_performance_features,
     game_duration_minutes,
+    is_remake,
 )
 
 ROLES = ("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY")
-MIN_GAME_MINUTES = 5.0  # shorter games are remakes and say nothing about performance
 MIN_ROWS_PER_ROLE = 200  # below this a role keeps the old per-request comparison
 
 
@@ -46,9 +46,9 @@ def load_matches(data_dir: Path) -> list[dict]:
 def collect_features(matches: list[dict]) -> dict[str, list[dict]]:
     rows = {role: [] for role in ROLES}
     for match in matches:
-        duration = game_duration_minutes(match.get("metadata") or {})
-        if duration < MIN_GAME_MINUTES:
+        if is_remake(match):  # remakes say nothing about performance
             continue
+        duration = game_duration_minutes(match.get("metadata") or {})
         for player in match["players"]:
             role = player.get("teamPosition")
             if role in rows:
@@ -103,7 +103,7 @@ def main() -> None:
             "rows": sum(role["count"] for role in roles.values()),
             "firstDay": days[0] if days else None,
             "lastDay": days[-1] if days else None,
-            "minGameMinutes": MIN_GAME_MINUTES,
+            "excludes": "remakes",
         },
         "roles": roles,
     }
