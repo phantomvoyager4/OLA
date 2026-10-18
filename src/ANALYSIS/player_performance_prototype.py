@@ -4,7 +4,6 @@ This script builds a simple offline pipeline from the saved JSON snapshots:
 - loads recent match data from src/ANALYSIS/data and data/example_data
 - flattens player rows into a modeling table
 - computes a role-adjusted performance score
-- trains a lightweight classifier for a high-performance label
 - clusters player archetypes per role
 - saves a few visualizations for inspection
 
@@ -22,20 +21,8 @@ from typing import Iterable, Sequence
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.compose import ColumnTransformer
 from sklearn.decomposition import PCA
-from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score,
-    classification_report,
-    confusion_matrix,
-    f1_score,
-    roc_auc_score,
-)
-from sklearn.model_selection import train_test_split
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.preprocessing import StandardScaler
 
 try:
     import matplotlib.pyplot as plt
@@ -68,23 +55,6 @@ NUMERIC_FEATURES = [
     "totalTimeSpentDead",
     "objectiveStolen",
 ]
-
-CLASSIFIER_NUMERIC_FEATURES = NUMERIC_FEATURES + [
-    "damageTakenOnTeamPercentage",
-    "goldEarned",
-    "goldSpent",
-    "damageTaken",
-    "gameDuration_min",
-    "death_penalty",
-    "combat_efficiency",
-    "map_pressure",
-    "vision_activity",
-    "farm_pressure",
-    "damage_share",
-    "survival_rate",
-]
-
-CLASSIFIER_FEATURE_COLUMNS = CLASSIFIER_NUMERIC_FEATURES + ["teamPosition"]
 
 
 def safe_div(numerator: float, denominator: float) -> float:
@@ -269,40 +239,12 @@ def role_adjusted_score(df: pd.DataFrame) -> pd.Series:
 def build_model_frame(df: pd.DataFrame) -> pd.DataFrame:
     model_df = add_derived_features(df)
     model_df["performance_score"] = role_adjusted_score(model_df)
-    model_df["high_performer"] = (model_df["performance_score"] >= 70).astype(int)
     model_df["performance_band"] = pd.cut(
         model_df["performance_score"],
         bins=[-0.1, 35, 55, 75, 100.1],
         labels=["low", "solid", "strong", "elite"],
     )
     return model_df
-
-
-def make_classification_pipeline() -> Pipeline:
-    numeric_pipeline = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="median")),
-            ("scaler", StandardScaler()),
-        ]
-    )
-
-    categorical_pipeline = Pipeline(
-        steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("encoder", OneHotEncoder(handle_unknown="ignore")),
-        ]
-    )
-
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ("num", numeric_pipeline, CLASSIFIER_NUMERIC_FEATURES),
-            ("cat", categorical_pipeline, ["teamPosition"]),
-        ],
-        remainder="drop",
-    )
-
-    classifier = LogisticRegression(max_iter=3000, class_weight="balanced")
-    return Pipeline(steps=[("preprocessor", preprocessor), ("classifier", classifier)])
 
 
 def cluster_archetypes(df: pd.DataFrame, n_clusters: int = 4) -> pd.DataFrame:
@@ -335,41 +277,6 @@ def cluster_archetypes(df: pd.DataFrame, n_clusters: int = 4) -> pd.DataFrame:
         clustered.loc[role_frame.index, "archetype_cluster"] = labels
 
     return clustered
-
-
-def fit_classifier(df: pd.DataFrame):
-    feature_frame = df.copy()
-    model = make_classification_pipeline()
-
-    x = feature_frame[CLASSIFIER_FEATURE_COLUMNS]
-    y = feature_frame["high_performer"]
-
-    stratify = y if y.nunique() > 1 and y.value_counts().min() >= 2 else None
-    x_train, x_test, y_train, y_test = train_test_split(
-        x,
-        y,
-        test_size=0.25,
-        random_state=42,
-        stratify=stratify,
-    )
-
-    model.fit(x_train, y_train)
-    y_pred = model.predict(x_test)
-
-    probability = None
-    if hasattr(model.named_steps["classifier"], "predict_proba"):
-        probability = model.predict_proba(x_test)[:, 1]
-
-    metrics = {
-        "accuracy": accuracy_score(y_test, y_pred),
-        "f1": f1_score(y_test, y_pred, zero_division=0),
-        "report": classification_report(y_test, y_pred, zero_division=0),
-        "confusion_matrix": confusion_matrix(y_test, y_pred),
-    }
-    if probability is not None and len(np.unique(y_test)) > 1:
-        metrics["roc_auc"] = roc_auc_score(y_test, probability)
-
-    return model, metrics, (x_test, y_test, y_pred)
 
 
 def plot_role_distribution(df: pd.DataFrame) -> Path:
@@ -482,38 +389,9 @@ def plot_pca_clusters(df: pd.DataFrame) -> Path:
     return path
 
 
-def plot_classifier_coefficients(model: Pipeline) -> Path:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    path = OUTPUT_DIR / "classifier_coefficients.png"
-    if plt is None:
-        path = OUTPUT_DIR / "classifier_coefficients.txt"
-        path.write_text("matplotlib is not installed in this environment.", encoding="utf-8")
-        return path
-
-    classifier = model.named_steps["classifier"]
-    feature_names = model.named_steps["preprocessor"].get_feature_names_out()
-
-    coefficients = classifier.coef_[0]
-    coef_frame = pd.DataFrame({"feature": feature_names, "coefficient": coefficients})
-    coef_frame = coef_frame.sort_values("coefficient", key=lambda s: s.abs(), ascending=False).head(12)
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-    colors = ["#2a9d8f" if value >= 0 else "#e76f51" for value in coef_frame["coefficient"]]
-    ax.barh(coef_frame["feature"][::-1], coef_frame["coefficient"][::-1], color=colors[::-1])
-    ax.set_title("Top classifier coefficients")
-    ax.set_xlabel("Impact on high-performance probability")
-    fig.tight_layout()
-
-    fig.savefig(path, dpi=160, bbox_inches="tight")
-    plt.close(fig)
-    return path
-
-
 @dataclass
 class PrototypeResult:
     dataframe: pd.DataFrame
-    model: Pipeline
-    metrics: dict
     plot_paths: list[Path]
 
 
@@ -529,42 +407,17 @@ def run_prototype() -> PrototypeResult:
 
     model_df = build_model_frame(df)
     model_df = cluster_archetypes(model_df)
-    model, metrics, _ = fit_classifier(model_df)
 
     plot_paths = [
         plot_role_distribution(model_df),
         plot_correlation_heatmap(model_df),
         plot_pca_clusters(model_df),
-        plot_classifier_coefficients(model),
     ]
 
     return PrototypeResult(
         dataframe=model_df,
-        model=model,
-        metrics=metrics,
         plot_paths=plot_paths,
     )
-
-
-def predict_player_performance(model: Pipeline, row: pd.Series) -> dict:
-    sample = add_derived_features(pd.DataFrame([row]))[CLASSIFIER_FEATURE_COLUMNS]
-    probability = float(model.predict_proba(sample)[0, 1]) if hasattr(model.named_steps["classifier"], "predict_proba") else float(model.predict(sample)[0])
-    score = round(probability * 100, 1)
-
-    if score >= 80:
-        band = "elite"
-    elif score >= 60:
-        band = "strong"
-    elif score >= 40:
-        band = "solid"
-    else:
-        band = "low"
-
-    return {
-        "performance_probability": round(probability, 3),
-        "performance_score": score,
-        "performance_band": band,
-    }
 
 
 if __name__ == "__main__":
@@ -573,13 +426,6 @@ if __name__ == "__main__":
     print("Prototype model complete")
     print(f"Rows used: {len(result.dataframe)}")
     print(f"Columns used: {len(result.dataframe.columns)}")
-    print("Metrics:")
-    print(f"  accuracy: {result.metrics['accuracy']:.3f}")
-    print(f"  f1: {result.metrics['f1']:.3f}")
-    if "roc_auc" in result.metrics:
-        print(f"  roc_auc: {result.metrics['roc_auc']:.3f}")
-    print("\nClassification report:")
-    print(result.metrics["report"])
     print("\nSaved plots:")
     for path in result.plot_paths:
         print(f"  {path}")
