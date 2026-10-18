@@ -7,6 +7,7 @@ import {
   getPlayerOverview,
 } from "../services/api";
 import { Link, NavLink } from "react-router-dom";
+import { formatGameDuration } from "../utils/duration";
 
 const noIcon = "/icons/noicon.jpg";
 
@@ -540,9 +541,7 @@ export default function PlayerProfile() {
               mainRuneName: mainRuneItem?.name,
               secondaryRune: secondaryStyle?.styleIconLink || runesData[4]?.styleIconLink,
               secondaryRuneName: secondaryStyle?.name || runesData[4]?.name,
-              duration: match.metadata?.gameDuration_min
-                ? match.metadata.gameDuration_min.toFixed(2).replace(".", ":")
-                : "30:00",
+              duration: formatGameDuration(match.metadata, "30:00"),
               type: "Ranked Solo",
               k: callerPlayer.kills,
               d: callerPlayer.deaths,

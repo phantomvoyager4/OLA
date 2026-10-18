@@ -38,6 +38,20 @@ class PercentileFromQuantilesTest(unittest.TestCase):
         self.assertAlmostEqual(model._percentile_from_quantiles(0.5, flat), 49.5)
 
 
+class GameDurationTest(unittest.TestCase):
+    def test_match_stores_decimal_minutes_and_seconds(self):
+        match = model.Match({"info": {"gameDuration": 1629}})  # 27:09
+        self.assertEqual(match.gameDuration_sec, 1629)
+        self.assertAlmostEqual(match.gameDuration_min, 27.15)
+
+    def test_seconds_are_preferred(self):
+        self.assertAlmostEqual(model.game_duration_minutes({"gameDuration_sec": 1629, "gameDuration_min": 27.15}), 27.15)
+
+    def test_legacy_minutes_seconds_value_is_converted(self):
+        self.assertAlmostEqual(model.game_duration_minutes({"gameDuration_min": 27.09}), 27.15)
+        self.assertAlmostEqual(model.game_duration_minutes({"gameDuration_min": 30.3}), 30.5)  # 30:30 saved as 30.3
+
+
 class FixedReferenceTest(unittest.TestCase):
     def setUp(self):
         self.matches = load_example_matches()

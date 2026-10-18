@@ -509,7 +509,8 @@ class Match:
         else:
             self.gameDate = "No data"
         duration_sec = int(info.get("gameDuration", 0))
-        self.gameDuration_min = float(f"{duration_sec // 60}.{duration_sec % 60:02d}")
+        self.gameDuration_sec = duration_sec
+        self.gameDuration_min = round(duration_sec / 60, 2)
         self.gameDateDay = gameStart.strftime('%Y-%m-%d') if gameStart else "No data"
 
         # Team Results Summary (store list of team IDs and their win status)
@@ -618,6 +619,20 @@ def _coerce_float(value, default=0.0):
         return float(default)
 
 
+def game_duration_minutes(match_metadata: dict) -> float:
+    """Return the game length in decimal minutes.
+
+    Matches saved before gameDuration_sec existed store gameDuration_min as
+    minutes.seconds (27:09 -> 27.09), so those are converted here.
+    """
+    seconds = match_metadata.get("gameDuration_sec")
+    if seconds is not None:
+        return _coerce_float(seconds) / 60.0
+    legacy = _coerce_float(match_metadata.get("gameDuration_min"))
+    minutes = math.floor(legacy)
+    return minutes + round((legacy - minutes) * 100) / 60.0
+
+
 def _extract_performance_features(player: dict, game_duration_min: float) -> dict:
     kills = _coerce_float(player.get("kills"))
     deaths = _coerce_float(player.get("deaths"))
@@ -632,7 +647,7 @@ def _extract_performance_features(player: dict, game_duration_min: float) -> dic
         "damagePerMinute": _coerce_float(player.get("damagePerMinute")),
         "goldPerMinute": _coerce_float(player.get("goldPerMinute")),
         "vision_activity": _coerce_float(player.get("visionScorePerMinute"))
-        + 0.25 * _coerce_float(player.get("wardsPlaced")),
+        + 0.25 * _coerce_float(player.get("wardsPlaced")) / max(game_duration_min, 1.0),
         "farm_pressure": _coerce_float(player.get("cs_min")) + _coerce_float(player.get("goldPerMinute")) / 100.0,
         "map_pressure": (
             _coerce_float(player.get("damageDealtToObjectives")) / (game_duration_min + 1.0)
@@ -663,7 +678,7 @@ def annotate_player_performance(matches: list) -> list:
             continue
 
         match_metadata = match.get("metadata", {}) or {}
-        game_duration_min = _coerce_float(match_metadata.get("gameDuration_min"))
+        game_duration_min = game_duration_minutes(match_metadata)
 
         for player_index, player in enumerate(match.get("players", [])):
             features = _extract_performance_features(player, game_duration_min)

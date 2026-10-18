@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getCachedMatch } from '../services/api';
+import { formatGameDuration, gameDurationSeconds } from '../utils/duration';
 import GoldIcon from '../../../../data/static/GoldIcon.svg'
 
 const getPerformanceBadgeClass = (band) => {
@@ -67,14 +68,14 @@ export default function Match() {
 
   const matchInfo = {
     result: caller?.win ? 'Victory' : 'Defeat',
-    duration: matchData.metadata?.gameDuration_min ? String(matchData.metadata.gameDuration_min.toFixed(2)).replace('.', ':') : '00:00',
+    duration: formatGameDuration(matchData.metadata),
     date: matchData.metadata?.gameDate || 'Unknown Date',
     gameMode: matchData.metadata?.gameType === 'MATCHED_GAME' ? 'Ranked Solo' : 'Ranked Solo',
   };
 
   const formatPlayer = (p) => {
     const cs = Number(p.totalMinionsKilled || 0) + Number(p.neutralMinionsKilled || 0);
-    const durationMin = matchData.metadata?.gameDuration_min || 1;
+    const durationMin = gameDurationSeconds(matchData.metadata) / 60 || 1;
     const items = (p.items || []).map(i => i?.image_path || null);
     // Pad items to 7 slots (6 standard + 1 trinket)
     while (items.length < 7) items.push(null);

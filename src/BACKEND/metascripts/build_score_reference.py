@@ -21,8 +21,8 @@ from pathlib import Path
 from BACKEND.model import (
     PERFORMANCE_FEATURE_WEIGHTS,
     SCORE_REFERENCE_PATH,
-    _coerce_float,
     _extract_performance_features,
+    game_duration_minutes,
 )
 
 ROLES = ("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY")
@@ -46,7 +46,7 @@ def load_matches(data_dir: Path) -> list[dict]:
 def collect_features(matches: list[dict]) -> dict[str, list[dict]]:
     rows = {role: [] for role in ROLES}
     for match in matches:
-        duration = _coerce_float((match.get("metadata") or {}).get("gameDuration_min"))
+        duration = game_duration_minutes(match.get("metadata") or {})
         if duration < MIN_GAME_MINUTES:
             continue
         for player in match["players"]:
