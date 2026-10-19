@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import math
 import sys
 import tempfile
 import urllib.parse
@@ -104,10 +105,9 @@ def main() -> int:
             if live is None or not 0 <= live <= 100:
                 problems.append(f"{mid}: {player.get('username')} score {live}")
                 continue
-            if band != band_of(live):
-                # Known: the band comes from the unrounded percentile, so 39.97 shows as 40.0 / "low".
-                kind = warnings if live in (40.0, 60.0, 80.0) else problems
-                kind.append(f"{mid}: score {live} shown with band {band}")
+            # The frontend shows Number(score).toFixed(0); the band must match that number.
+            if band != band_of(math.floor(live + 0.5)):
+                problems.append(f"{mid}: score {live} shown with band {band}")
             if position != player.get("teamPosition"):
                 warnings.append(f"{mid}: {player.get('username')} has no role, scored as {position}")
             if reference is not None:

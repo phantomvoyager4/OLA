@@ -809,9 +809,12 @@ def annotate_player_performance(matches: list) -> list:
             else:
                 percentile = (rank_index / (total - 1)) * 100.0
 
+            score = round(percentile, 1)
             score_lookup[(scored_row["match_index"], scored_row["player_index"])] = {
-                "performanceScore": round(percentile, 1),
-                "performanceBand": _performance_band(percentile),
+                "performanceScore": score,
+                # The frontend shows Number(score).toFixed(0), so the band has to
+                # match that number: 39.97 shows as 40 and must not be "low".
+                "performanceBand": _performance_band(math.floor(score + 0.5)),
                 "performanceRank": rank_index + 1,
                 "performanceRoleCount": total,
             }

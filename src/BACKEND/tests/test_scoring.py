@@ -98,6 +98,15 @@ class MissingRoleTest(unittest.TestCase):
             self.assertEqual(players[i]["performanceBand"], "unscored")
 
 
+class ShownBandTest(unittest.TestCase):
+    def test_band_follows_the_number_the_frontend_shows(self):
+        matches = load_example_matches()[:1]
+        with mock.patch.object(model, "_percentile_from_quantiles", return_value=39.97):
+            player = model.annotate_player_performance(copy.deepcopy(matches))[0]["players"][0]
+        self.assertEqual(player["performanceScore"], 40.0)
+        self.assertEqual(player["performanceBand"], "solid")
+
+
 class FixedReferenceTest(unittest.TestCase):
     def setUp(self):
         self.matches = load_example_matches()
