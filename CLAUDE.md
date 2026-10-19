@@ -37,9 +37,12 @@ Python runs on the system interpreter. `.env` is a dotenv file holding `RIOT_API
 
 ## Scoring gotchas
 
-- After changing a feature in `_extract_performance_features`, rebuild the score reference. It is only checked by feature names, so a stale one is used silently.
+- After changing how `_extract_performance_features` computes a feature, bump `FEATURE_VERSION` in `model.py` and rebuild the score reference. A reference built for other feature names or another version is refused with a printed warning.
 - `load_score_reference()` is `lru_cache`d: restart the backend after rebuilding the reference.
 - Without a usable reference (or for a role missing from it), players are ranked only against the current request, so scores depend on which matches were loaded.
+- Players with an empty `teamPosition` are scored in the one role their team is missing (`scoring_positions()`); if that is ambiguous they get no score and the band `unscored`.
+- `performanceBand` comes from the number the frontend shows (`floor(score + 0.5)`), not the raw percentile. Keep them in sync if the display rounding changes.
+- The reference data in `src/ANALYSIS/data` is EUW ranked solo, 98% patch 16.13 (Mar–Jul 2026). Evaluation results hold for that population, not necessarily the live patch or other regions.
 - Get game length with `game_duration_minutes()`: matches saved before `gameDuration_sec` existed store `gameDuration_min` as minutes.seconds.
 - Detect remakes with `is_remake()`; remakes are not scored.
 
