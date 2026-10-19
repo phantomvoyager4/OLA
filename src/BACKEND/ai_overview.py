@@ -196,8 +196,8 @@ SYSTEM_PROMPT = (
     f"Write at most {MAX_SENTENCES} sentences of plain prose addressed to the player as 'you'. "
     "Use ONLY the numbers provided; never invent a statistic, champion, rank or match. "
     "Name one clear strength and one specific thing to work on. "
-    "The performance score is a percentile against players in the same role across the games "
-    "analysed, so 50 is average, and a high standard deviation means inconsistent games. "
+    "The performance score is a percentile against a fixed reference of ranked games played in "
+    "the same role, so 50 is average, and a high standard deviation means inconsistent games. "
     "No markdown, no bullet points, no headings, and no preamble such as 'Here is'. "
     "Do not repeat every number back; pick the ones that tell the story."
 )
