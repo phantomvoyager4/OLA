@@ -35,8 +35,8 @@ def band_of(score: float) -> str:
     return next(name for limit, name in BANDS if score >= limit)
 
 
-def recomputed_percentile(player: dict, minutes: float, reference: dict) -> float | None:
-    role = reference["roles"].get(player.get("teamPosition") or "")
+def recomputed_percentile(player: dict, position: str | None, minutes: float, reference: dict) -> float | None:
+    role = reference["roles"].get(position or "")
     if not role:
         return None
     features = model._extract_performance_features(player, minutes)
@@ -95,8 +95,12 @@ def main() -> int:
             continue
 
         minutes = model.game_duration_minutes(meta)
-        for player in players:
+        for player, position in zip(players, model.scoring_positions(players)):
             live, band = player.get("performanceScore"), player.get("performanceBand")
+            if position is None:
+                if live is not None or band != "unscored":
+                    problems.append(f"{mid}: {player.get('username')} has no role but score {live} / band {band}")
+                continue
             if live is None or not 0 <= live <= 100:
                 problems.append(f"{mid}: {player.get('username')} score {live}")
                 continue
@@ -104,10 +108,12 @@ def main() -> int:
                 # Known: the band comes from the unrounded percentile, so 39.97 shows as 40.0 / "low".
                 kind = warnings if live in (40.0, 60.0, 80.0) else problems
                 kind.append(f"{mid}: score {live} shown with band {band}")
+            if position != player.get("teamPosition"):
+                warnings.append(f"{mid}: {player.get('username')} has no role, scored as {position}")
             if reference is not None:
-                expected = recomputed_percentile(copy.deepcopy(player), minutes, reference)
+                expected = recomputed_percentile(copy.deepcopy(player), position, minutes, reference)
                 if expected is None:
-                    warnings.append(f"{mid}: role {player.get('teamPosition')!r} not in reference, ranked within request")
+                    warnings.append(f"{mid}: role {position!r} not in reference, ranked within request")
                 elif abs(expected - live) > 0.05:
                     problems.append(f"{mid}: {player.get('username')} live {live} != current code {expected}")
                 else:

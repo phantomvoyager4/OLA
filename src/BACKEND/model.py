@@ -651,6 +651,28 @@ def is_remake(match: dict) -> bool:
     return game_duration_minutes(match.get("metadata") or {}) * 60 < REMAKE_MAX_SECONDS
 
 
+ROLES = ("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY")
+
+
+def scoring_positions(players: list) -> list:
+    """Return the role each player is scored in, or None if it can't be told.
+
+    Riot leaves teamPosition empty for some players, mostly ones who were AFK.
+    Such a player is scored in the one role their team is missing; ranked
+    alone they would otherwise get 100. With more than one gap on the team
+    the role is ambiguous and the player is not scored.
+    """
+    positions = [player.get("teamPosition") for player in players]
+    result = list(positions)
+    for team in {player.get("teamId") for player in players}:
+        members = [i for i, player in enumerate(players) if player.get("teamId") == team]
+        unknown = [i for i in members if positions[i] not in ROLES]
+        missing = set(ROLES) - {positions[i] for i in members}
+        for i in unknown:
+            result[i] = next(iter(missing)) if len(unknown) == 1 and len(missing) == 1 else None
+    return result
+
+
 def _extract_performance_features(player: dict, game_duration_min: float) -> dict:
     kills = _coerce_float(player.get("kills"))
     deaths = _coerce_float(player.get("deaths"))
@@ -687,7 +709,8 @@ def annotate_player_performance(matches: list) -> list:
     standardization and the percentile come from the collected dataset, so a
     game gets the same score no matter which other matches were loaded with it.
     Otherwise players are compared only with the current request.
-    Remakes are marked with metadata.isRemake and get no score.
+    Remakes are marked with metadata.isRemake and get no score. Players without
+    a role are scored in the role scoring_positions infers for them.
     """
 
     player_rows = []
@@ -706,14 +729,18 @@ def annotate_player_performance(matches: list) -> list:
             continue
 
         game_duration_min = game_duration_minutes(match_metadata)
+        players = match.get("players", [])
 
-        for player_index, player in enumerate(match.get("players", [])):
+        for player_index, (player, position) in enumerate(zip(players, scoring_positions(players))):
+            if position is None:
+                player.update({"performanceScore": None, "performanceBand": "unscored"})
+                continue
             features = _extract_performance_features(player, game_duration_min)
             player_rows.append(
                 {
                     "match_index": match_index,
                     "player_index": player_index,
-                    "teamPosition": player.get("teamPosition", "UNKNOWN") or "UNKNOWN",
+                    "teamPosition": position,
                     "features": features,
                 }
             )

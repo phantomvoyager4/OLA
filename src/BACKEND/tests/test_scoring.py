@@ -74,6 +74,30 @@ class RemakeTest(unittest.TestCase):
         self.assertTrue(all(p["performanceScore"] is None and p["performanceBand"] == "remake" for p in annotated[0]["players"]))
 
 
+class MissingRoleTest(unittest.TestCase):
+    def setUp(self):
+        self.match = next(m for m in load_example_matches() if not model.is_remake(m))
+
+    def test_missing_role_is_inferred_from_the_team(self):
+        scored = model.annotate_player_performance([copy.deepcopy(self.match)])[0]["players"][0]
+        blanked = copy.deepcopy(self.match)
+        blanked["players"][0]["teamPosition"] = ""
+        player = model.annotate_player_performance([blanked])[0]["players"][0]
+        self.assertEqual(player["performanceScore"], scored["performanceScore"])  # not 100 for being alone in its role
+        self.assertEqual(player["teamPosition"], "")  # the shown role is left alone
+
+    def test_two_gaps_on_a_team_leave_both_unscored(self):
+        team = self.match["players"][0]["teamId"]
+        teammates = [i for i, p in enumerate(self.match["players"]) if p["teamId"] == team][:2]
+        blanked = copy.deepcopy(self.match)
+        for i in teammates:
+            blanked["players"][i]["teamPosition"] = ""
+        players = model.annotate_player_performance([blanked])[0]["players"]
+        for i in teammates:
+            self.assertIsNone(players[i]["performanceScore"])
+            self.assertEqual(players[i]["performanceBand"], "unscored")
+
+
 class FixedReferenceTest(unittest.TestCase):
     def setUp(self):
         self.matches = load_example_matches()

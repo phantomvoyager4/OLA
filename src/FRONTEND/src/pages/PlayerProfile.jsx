@@ -93,6 +93,7 @@ const handleDuoClick = (playerName) => {
 const getPerformanceBadgeClass = (band) => {
   switch (String(band || '').toLowerCase()) {
     case 'remake':
+    case 'unscored':
       return 'bg-gray-500/10 text-gray-400 border-gray-400/20';
     case 'elite':
       return 'bg-amber-500/20 text-amber-300 border-amber-400/40';

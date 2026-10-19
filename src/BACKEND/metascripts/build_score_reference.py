@@ -20,13 +20,13 @@ from pathlib import Path
 
 from BACKEND.model import (
     PERFORMANCE_FEATURE_WEIGHTS,
+    ROLES,
     SCORE_REFERENCE_PATH,
     _extract_performance_features,
     game_duration_minutes,
     is_remake,
 )
 
-ROLES = ("TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY")
 MIN_ROWS_PER_ROLE = 200  # below this a role keeps the old per-request comparison
 
 
