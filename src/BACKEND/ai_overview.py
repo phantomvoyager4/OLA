@@ -63,6 +63,14 @@ TEMPERATURE = 0.3
 
 _UNSAFE_CHARS = re.compile(r"[^A-Za-z0-9 '._-]")
 
+# Where a profile's score std dev sits among players with as many games. On the
+# EUW reference data about 80% of score variance is game to game, so a 20-game
+# std near 25 is the median and pure chance would give 28.9; only the outer ~5%
+# on each side says anything about consistency. Measured for 15-20 games.
+CONSISTENCY_MIN_GAMES = 15
+STEADY_STDDEV_BELOW = 18.0
+SWINGY_STDDEV_ABOVE = 31.0
+
 
 class OverviewUnavailable(RuntimeError):
     """Raised when no overview can be produced (no key, quota spent, upstream down)."""
@@ -151,6 +159,16 @@ class ProfileDigest(BaseModel):
             return []
         return [_sanitize(name, 24) for name in value[:5]]
 
+    def consistency_label(self):
+        """Describe score_stddev against other players, so the model need not judge it."""
+        if self.games_analyzed < CONSISTENCY_MIN_GAMES:
+            return "too few games to judge consistency"
+        if self.score_stddev < STEADY_STDDEV_BELOW:
+            return "steadier than most players"
+        if self.score_stddev > SWINGY_STDDEV_ABOVE:
+            return "swingier than most players"
+        return "typical, most players swing this much from game to game"
+
     def cache_key(self, model):
         """Stable key over the digest's content, so identical form reuses a call.
 
@@ -183,7 +201,7 @@ class ProfileDigest(BaseModel):
                 f"Average kill participation: {self.kill_participation:.1f}%",
                 f"Performance score average: {self.score_average:.1f} out of 100",
                 f"Performance score median: {self.score_median:.1f}",
-                f"Score consistency (std dev, lower is steadier): {self.score_stddev:.1f}",
+                f"Score spread across games (std dev): {self.score_stddev:.1f}, {self.consistency_label()}",
                 f"Games in the last 90 days: {self.games_last_90_days}",
                 f"Average games per active day: {self.avg_games_per_active_day:.1f}",
                 f"Last played: {last_played}",
@@ -197,7 +215,10 @@ SYSTEM_PROMPT = (
     "Use ONLY the numbers provided; never invent a statistic, champion, rank or match. "
     "Name one clear strength and one specific thing to work on. "
     "The performance score is a percentile against a fixed reference of ranked games played in "
-    "the same role, so 50 is average, and a high standard deviation means inconsistent games. "
+    "the same role, so 50 is average. Single games swing widely for every player, a spread of about "
+    "25 points is normal, so judge consistency only by the label given with the score spread: never "
+    "call a typical spread inconsistent or make it the thing to work on, and a steady spread with a "
+    "low average means consistently weak games, not a strength. "
     "No markdown, no bullet points, no headings, and no preamble such as 'Here is'. "
     "Do not repeat every number back; pick the ones that tell the story."
 )

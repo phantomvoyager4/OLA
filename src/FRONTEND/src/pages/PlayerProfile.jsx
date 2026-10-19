@@ -8,6 +8,14 @@ import {
 } from "../services/api";
 import { Link, NavLink } from "react-router-dom";
 import { formatGameDuration } from "../utils/duration";
+import {
+  getKdaColorClass,
+  getKpColorClass,
+  getMatchScore,
+  getPerformanceBadgeClass,
+  summarizeScores,
+} from "../utils/performance";
+import PerformanceChart from "../components/PerformanceChart";
 
 const noIcon = "/icons/noicon.jpg";
 
@@ -90,22 +98,6 @@ const handleDuoClick = (playerName) => {
   navigate(`/player/${cleanRegion}/${nickname}-${cleanTag}`);
 };
 
-const getPerformanceBadgeClass = (band) => {
-  switch (String(band || '').toLowerCase()) {
-    case 'remake':
-    case 'unscored':
-      return 'bg-gray-500/10 text-gray-400 border-gray-400/20';
-    case 'elite':
-      return 'bg-amber-500/20 text-amber-300 border-amber-400/40';
-    case 'strong':
-      return 'bg-green-500/20 text-green-300 border-green-400/40';
-    case 'solid':
-      return 'bg-blue-500/20 text-blue-300 border-blue-400/40';
-    default:
-      return 'bg-red-500/20 text-red-300 border-red-400/40';
-  }
-};
-
 export default function PlayerProfile() {
   const { region, riotId } = useParams();
   const navigate = useNavigate();
@@ -137,7 +129,29 @@ export default function PlayerProfile() {
   const [overviewLoading, setOverviewLoading] = useState(false);
   const [overviewError, setOverviewError] = useState(null);
   const [overviewAvailable, setOverviewAvailable] = useState(false);
+  const [selectedMatchId, setSelectedMatchId] = useState(null);
   const profileKey = `${region}/${nickname}/${tag}`;
+
+  const handleChartSelect = (matchId) => {
+    setSelectedMatchId(matchId);
+    document
+      .getElementById(`match-tile-${matchId}`)
+      ?.scrollIntoView({ behavior: "smooth", block: "center" });
+  };
+
+  // A press anywhere outside the highlighted tile clears it. pointerdown fires
+  // before the chart's click handler, so picking another point still selects it.
+  useEffect(() => {
+    if (!selectedMatchId) return undefined;
+
+    const clearOnOutsidePress = (event) => {
+      const tile = document.getElementById(`match-tile-${selectedMatchId}`);
+      if (!tile?.contains(event.target)) setSelectedMatchId(null);
+    };
+
+    document.addEventListener("pointerdown", clearOnOutsidePress);
+    return () => document.removeEventListener("pointerdown", clearOnOutsidePress);
+  }, [selectedMatchId]);
 
   const handleDuoClick = (playerName) => {
     if (!playerName || !playerName.includes('#')) return;
@@ -185,6 +199,7 @@ export default function PlayerProfile() {
         setActivityLoadError(null);
         setOverview(null);
         setOverviewError(null);
+        setSelectedMatchId(null);
         const data = await getPlayerData(region, nickname, tag, {
           save: false,
           count: INITIAL_MATCH_COUNT,
@@ -550,6 +565,8 @@ export default function PlayerProfile() {
               d: callerPlayer.deaths,
               a: callerPlayer.assists,
               kda: callerPlayer.KDA,
+              kp: callerPlayer.killParticipation,
+              csMin: callerPlayer.cs_min,
               champLevel: callerPlayer.champLevel || 18,
               items: [
                 getItemImage(0),
@@ -577,41 +594,12 @@ export default function PlayerProfile() {
           }
         });
 
-        const performanceScores = MatchesCD
-          .filter(match => {
-            return (
-              !match.isRemake &&
-              match.performanceScore !== null &&
-              match.performanceScore !== undefined
-            );
-          })
-          .map(match => Number(match.performanceScore))
-          .filter(score => !Number.isNaN(score));
-
-        if (performanceScores.length > 0) {
-          // Average
-          performanceAverage =
-            performanceScores.reduce((sum, score) => sum + score, 0) /
-            performanceScores.length;
-
-          // Median
-          const sorted = [...performanceScores].sort((a, b) => a - b);
-          const mid = Math.floor(sorted.length / 2);
-
-          performanceMedian =
-            sorted.length % 2 === 0
-              ? (sorted[mid - 1] + sorted[mid]) / 2
-              : sorted[mid];
-
-          // Population standard deviation
-          const variance =
-            performanceScores.reduce(
-              (sum, score) => sum + Math.pow(score - performanceAverage, 2),
-              0
-            ) / performanceScores.length;
-
-          performanceStdDev = Math.sqrt(variance);
-        }
+        const scoreSummary = summarizeScores(
+          MatchesCD.map(getMatchScore).filter((score) => score !== null),
+        );
+        performanceAverage = scoreSummary.average;
+        performanceMedian = scoreSummary.median;
+        performanceStdDev = scoreSummary.stdDev;
 
 
         topDuoPlayers = Object.values(teammatesMap)
@@ -852,59 +840,47 @@ export default function PlayerProfile() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full shrink-0">
             {/* 3. RECENT MATCHES STATISTICS --- */}
-            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2">
-              <h2 className="font-headline font-bold text-xl text-on-surface mb-2">
-                Recent Statistics
-              </h2>
-              <p className="text-sm text-outline mb-4">Last 20 matches</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">
-                    Average CS/min
-                  </span>
-                  <span className="text-2xl font-bold text-on-surface">
-                    {CS_mean}
-                  </span>
+            {/* z-10 keeps the chart's hover card above the panels below it */}
+            <div className="glass-panel ghost-border rounded-xl p-6 md:col-span-2 relative z-10">
+              <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 mb-3">
+                <div>
+                  <h2 className="font-headline font-bold text-xl text-on-surface mb-1">
+                    Recent Statistics
+                  </h2>
+                  <p className="text-sm text-outline">Last 20 matches</p>
                 </div>
-                <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">KDA</span>
-                  <span className="text-2xl font-bold text-on-surface">
-                    {KDA_mean}
-                  </span>
-                </div>
-                <div className="flex flex-col border-l-2 border-primary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">
-                    Kill Participation
-                  </span>
-                  <span className="text-2xl font-bold text-on-surface">
-                    {KP_mean}%
-                  </span>
-                </div>
-                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">
-                    Score Average
-                  </span>
-                  <span className={`text-2xl font-bold text-on-surface`} >
-                    {performanceAverage.toFixed(1)}
-                  </span>
-                </div>
-                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">
-                    Score Median
-                  </span>
-                  <span className={`text-2xl font-bold text-on-surface`}>
-                    {performanceMedian.toFixed(1)}
-                  </span>
-                </div>
-                <div className="flex flex-col border-l-2 border-secondary/50 pl-4 py-1">
-                  <span className="text-sm text-on-surface-variant">
-                    Score std. dev.
-                  </span>
-                  <span className="text-2xl font-bold text-on-surface">
-                    {performanceStdDev.toFixed(1)}
-                  </span>
+                <div className="flex gap-5">
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-outline">
+                      KDA
+                    </span>
+                    <span className={`font-headline text-lg font-bold ${getKdaColorClass(KDA_mean)}`}>
+                      {KDA_mean}
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-outline">
+                      Kill Part.
+                    </span>
+                    <span className={`font-headline text-lg font-bold ${getKpColorClass(KP_mean)}`}>
+                      {KP_mean}%
+                    </span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-outline">
+                      CS/min
+                    </span>
+                    <span className="font-headline text-lg font-bold text-on-surface">
+                      {CS_mean}
+                    </span>
+                  </div>
                 </div>
               </div>
+              <PerformanceChart
+                games={MatchesCD.slice(0, INITIAL_MATCH_COUNT)}
+                selectedMatchId={selectedMatchId}
+                onSelect={handleChartSelect}
+              />
             </div>
             {/* 3b. AI OVERVIEW --- */}
             {overviewAvailable && (overviewLoading || overview || overviewError) && (
@@ -1232,9 +1208,11 @@ export default function PlayerProfile() {
               (match, idx) => (
                 <div
                   key={match.matchId || idx}
+                  id={`match-tile-${match.matchId}`}
                   onClick={() => navigate(`/match/${match.matchId}`)}
-                  className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer 
-                   ${match.win ? "border-l-4 border-l-primary/80 bg-primary/5" : "border-l-4 border-l-error/80 bg-error/5"}`}
+                  className={`glass-panel ghost-border rounded-xl p-5 flex flex-col md:flex-row items-center gap-4 transition-transform hover:translate-x-1 cursor-pointer
+                   ${match.win ? "border-l-4 border-l-primary/80 bg-primary/5" : "border-l-4 border-l-error/80 bg-error/5"}
+                   ${match.matchId === selectedMatchId ? "ring-2 ring-primary-fixed shadow-[0_0_24px_rgba(185,92,248,0.35)]" : ""}`}
                 >
                   {/* Match Info */}
                   <div className="flex flex-col items-center md:items-start w-full md:w-28 shrink-0">
