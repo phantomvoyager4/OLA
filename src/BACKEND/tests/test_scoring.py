@@ -1,7 +1,10 @@
 """Run from the src directory: python -m unittest BACKEND.tests.test_scoring"""
 
+import contextlib
 import copy
+import io
 import json
+import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
@@ -96,6 +99,33 @@ class MissingRoleTest(unittest.TestCase):
         for i in teammates:
             self.assertIsNone(players[i]["performanceScore"])
             self.assertEqual(players[i]["performanceBand"], "unscored")
+
+
+class FeatureTest(unittest.TestCase):
+    def test_turret_damage_is_not_added_to_objective_damage(self):
+        features = model._extract_performance_features({"damageDealtToObjectives": 9000, "damageDealtToTurrets": 6000}, 29.0)
+        self.assertAlmostEqual(features["map_pressure"], 300.0)
+
+    def test_crowd_control_and_solo_kills_are_per_minute(self):
+        player = {"timeCCingOthers": 60, "soloKills": 3}
+        short, long = (model._extract_performance_features(player, minutes) for minutes in (20.0, 40.0))
+        self.assertAlmostEqual(short["timeCCingOthers"], 2 * long["timeCCingOthers"])
+        self.assertAlmostEqual(short["soloKills"], 2 * long["soloKills"])
+
+
+class ReferenceVersionTest(unittest.TestCase):
+    def test_reference_for_other_feature_definitions_is_refused(self):
+        reference = json.loads(model.SCORE_REFERENCE_PATH.read_text(encoding="utf-8"))
+        reference["featureVersion"] = model.FEATURE_VERSION - 1
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "score_reference.json"
+            path.write_text(json.dumps(reference), encoding="utf-8")
+            model.load_score_reference.cache_clear()
+            try:
+                with mock.patch.object(model, "SCORE_REFERENCE_PATH", path), contextlib.redirect_stdout(io.StringIO()):
+                    self.assertIsNone(model.load_score_reference())
+            finally:
+                model.load_score_reference.cache_clear()
 
 
 class ShownBandTest(unittest.TestCase):

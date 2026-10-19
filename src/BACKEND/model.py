@@ -557,6 +557,11 @@ PERFORMANCE_FEATURE_WEIGHTS = {
     "death_penalty": -0.12,
 }
 
+# Bump whenever _extract_performance_features computes a feature differently.
+# The reference stores the version it was built for, so a stale one is refused
+# even when the feature names are unchanged.
+FEATURE_VERSION = 1
+
 # Per-role means, standard deviations and score percentiles computed once from
 # the collected EUW dataset by metascripts/build_score_reference.py.
 SCORE_REFERENCE_PATH = Path(__file__).resolve().parent.parent.parent / "data" / "static" / "score_reference.json"
@@ -575,7 +580,8 @@ def load_score_reference():
     except (OSError, ValueError):
         return None
     # A reference built from different features would mix two definitions.
-    if reference.get("features") != list(PERFORMANCE_FEATURE_WEIGHTS):
+    if reference.get("features") != list(PERFORMANCE_FEATURE_WEIGHTS) or reference.get("featureVersion") != FEATURE_VERSION:
+        print(f"Warning: {SCORE_REFERENCE_PATH.name} was built for other features; rebuild it. Ranking within requests instead.")
         return None
     return reference
 
@@ -689,12 +695,11 @@ def _extract_performance_features(player: dict, game_duration_min: float) -> dic
         "vision_activity": _coerce_float(player.get("visionScorePerMinute"))
         + 0.25 * _coerce_float(player.get("wardsPlaced")) / max(game_duration_min, 1.0),
         "farm_pressure": _coerce_float(player.get("cs_min")) + _coerce_float(player.get("goldPerMinute")) / 100.0,
-        "map_pressure": (
-            _coerce_float(player.get("damageDealtToObjectives")) / (game_duration_min + 1.0)
-            + _coerce_float(player.get("damageDealtToTurrets")) / (game_duration_min + 1.0)
-        ),
-        "timeCCingOthers": _coerce_float(player.get("timeCCingOthers")),
-        "soloKills": _coerce_float(player.get("soloKills")),
+        # Riot's objective damage already includes damage to turrets.
+        "map_pressure": _coerce_float(player.get("damageDealtToObjectives")) / (game_duration_min + 1.0),
+        # Per minute like the other features; game totals favour long games.
+        "timeCCingOthers": _coerce_float(player.get("timeCCingOthers")) / max(game_duration_min, 1.0),
+        "soloKills": _coerce_float(player.get("soloKills")) / max(game_duration_min, 1.0),
         "damage_share": team_damage_percentage,
         "survival_rate": 1.0 / (1.0 + total_time_spent_dead / 60.0),
         "death_penalty": math.log1p(deaths + total_time_spent_dead / 60.0),

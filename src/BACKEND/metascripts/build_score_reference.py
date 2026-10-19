@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from BACKEND.model import (
+    FEATURE_VERSION,
     PERFORMANCE_FEATURE_WEIGHTS,
     ROLES,
     SCORE_REFERENCE_PATH,
@@ -97,6 +98,7 @@ def main() -> None:
     )
     reference = {
         "features": list(PERFORMANCE_FEATURE_WEIGHTS),
+        "featureVersion": FEATURE_VERSION,
         "created": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "source": {
             "matches": len(matches),
