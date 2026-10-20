@@ -266,12 +266,6 @@ export default function PerformanceChart({ games, selectedMatchId, onSelect }) {
               const score = scores[index];
               const x = xForIndex(index);
               const isSelected = game.matchId === selectedMatchId;
-              // Same colours as the VICTORY / DEFEAT labels on the match tiles.
-              const resultStroke = game.isRemake
-                ? "stroke-outline"
-                : game.win
-                  ? "stroke-secondary"
-                  : "stroke-error";
 
               if (score === null) {
                 return (
@@ -281,7 +275,7 @@ export default function PerformanceChart({ games, selectedMatchId, onSelect }) {
                     cy={PAD.top + PLOT_HEIGHT + 6}
                     r="3"
                     fill="none"
-                    className={isSelected ? "stroke-primary-fixed" : resultStroke}
+                    className={isSelected ? "stroke-primary-fixed" : "stroke-outline"}
                     strokeWidth="1.5"
                   />
                 );
@@ -296,7 +290,7 @@ export default function PerformanceChart({ games, selectedMatchId, onSelect }) {
                     cx={x}
                     cy={yForScore(score)}
                     r={isSelected ? 6 : hoverIndex === index ? 5.5 : 4.5}
-                    className={`fill-primary-fixed ${resultStroke}`}
+                    className={`fill-primary-fixed`}
                     strokeWidth="1.25"
                   />
                 </g>
