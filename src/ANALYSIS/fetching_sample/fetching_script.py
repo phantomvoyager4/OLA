@@ -4,7 +4,7 @@ from pathlib import Path
 import json
 from collections import deque
 
-SRC_PATH = Path(__file__).resolve().parents[1]
+SRC_PATH = Path(__file__).resolve().parents[2]
 if str(SRC_PATH) not in sys.path:
     sys.path.insert(0, str(SRC_PATH))
 
@@ -14,7 +14,8 @@ from BACKEND.model import Caller
 api_key = load_api_key()
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DATA_DIR = SCRIPT_DIR / 'data'
+# The score reference is built from ANALYSIS/data, one level up.
+DATA_DIR = SCRIPT_DIR.parent / 'data'
 amount_of_matches = 10
 FETCH_COUNT = 1
 REQUEST_DELAY_SEC = 1.5
