@@ -1,0 +1,225 @@
+{
+ "platform": "EUW1",
+ "route": "europe",
+ "patch": "16.20",
+ "patch_source": "Data Dragon realm euw",
+ "window": {
+  "start": 1791287210,
+  "end": 1792528427,
+  "source": "probe",
+  "probe": {
+   "start": 1791287210,
+   "first_seen": 1791364090,
+   "probes": [
+    {
+     "last_before": 1791287210,
+     "first_on_patch": 1791364090
+    },
+    {
+     "last_before": 1790967018,
+     "first_on_patch": 1791562057
+    }
+   ],
+   "newest_seen": {
+    "16.20": 2
+   }
+  }
+ },
+ "settings": {
+  "regions": [
+   "EUW1",
+   "EUN1",
+   "NA1",
+   "BR1",
+   "KR"
+  ],
+  "games_per_region": 10,
+  "games_per_player": 3,
+  "queue_id": 420,
+  "queue_type": "RANKED_SOLO_5x5",
+  "tiers": [
+   "IRON",
+   "BRONZE",
+   "SILVER",
+   "GOLD",
+   "PLATINUM",
+   "EMERALD",
+   "DIAMOND",
+   "MASTER",
+   "GRANDMASTER",
+   "CHALLENGER"
+  ],
+  "patch": "current",
+  "patch_start": "auto",
+  "probe_lookback_days": 35,
+  "probe_players": 2,
+  "skip_inactive": true,
+  "max_draws_per_game": 8,
+  "max_match_pages": 3,
+  "seed": 20261020,
+  "rate_limit": {
+   "short_limit": 18,
+   "short_window_s": 1.0,
+   "long_limit": 90,
+   "long_window_s": 120.0,
+   "method_limit_safety": 0.9
+  },
+  "request_timeout_s": [
+   3.05,
+   20.0
+  ],
+  "max_retries": 4,
+  "network_patience_s": 600,
+  "ladder_reuse_hours": 24,
+  "expected_calls_per_game": 1.77,
+  "output_dir": "samples"
+ },
+ "created": "2026-10-20T20:33:47+00:00",
+ "git_commit": "b4388fa64c8ef32a2a1781e673fb073a802e2cd9",
+ "status": "complete",
+ "ladder": {
+  "IRON": {
+   "I": 64455,
+   "II": 39391,
+   "III": 19996,
+   "IV": 20759
+  },
+  "BRONZE": {
+   "I": 130895,
+   "II": 150263,
+   "III": 142657,
+   "IV": 167834
+  },
+  "SILVER": {
+   "I": 163601,
+   "II": 200541,
+   "III": 199199,
+   "IV": 228694
+  },
+  "GOLD": {
+   "I": 143114,
+   "II": 205430,
+   "III": 232773,
+   "IV": 329453
+  },
+  "PLATINUM": {
+   "I": 97396,
+   "II": 142209,
+   "III": 172952,
+   "IV": 283295
+  },
+  "EMERALD": {
+   "I": 123288,
+   "II": 76775,
+   "III": 105266,
+   "IV": 201495
+  },
+  "DIAMOND": {
+   "I": 21602,
+   "II": 49076,
+   "III": 23251,
+   "IV": 52690
+  },
+  "MASTER": {
+   "I": 10000
+  },
+  "GRANDMASTER": {
+   "I": 699
+  },
+  "CHALLENGER": {
+   "I": 300
+  }
+ },
+ "ladder_counted_at": "2026-10-20T20:44:15+00:00",
+ "quotas": {
+  "IRON": 0,
+  "BRONZE": 2,
+  "SILVER": 2,
+  "GOLD": 3,
+  "PLATINUM": 2,
+  "EMERALD": 1,
+  "DIAMOND": 0,
+  "MASTER": 0,
+  "GRANDMASTER": 0,
+  "CHALLENGER": 0
+ },
+ "updated": "2026-10-20T20:45:53+00:00",
+ "runs": [
+  {
+   "started": "2026-10-20T20:33:47+00:00",
+   "ended": "2026-10-20T20:45:53+00:00",
+   "status": "complete",
+   "calls": {
+    "euw1": 543,
+    "HTTP 200": 588,
+    "europe": 45
+   }
+  }
+ ],
+ "limits_seen": {
+  "eun1:league-apex": {
+   "app": "100:120,20:1",
+   "method": "500:600,30:10"
+  },
+  "br1:league-apex": {
+   "app": "100:120,20:1",
+   "method": "500:600,30:10"
+  },
+  "euw1:league-apex": {
+   "app": "100:120,20:1",
+   "method": "500:600,30:10"
+  },
+  "europe:match-ids": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "europe:match": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "kr:league-apex": {
+   "app": "100:120,20:1",
+   "method": "500:600,30:10"
+  },
+  "americas:match-ids": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "americas:match": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "asia:match-ids": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "eun1:league-entries": {
+   "app": "100:120,20:1",
+   "method": "50:10"
+  },
+  "na1:league-apex": {
+   "app": "100:120,20:1",
+   "method": "500:600,30:10"
+  },
+  "asia:match": {
+   "app": "100:120,20:1",
+   "method": "2000:10"
+  },
+  "euw1:league-entries": {
+   "app": "100:120,20:1",
+   "method": "50:10"
+  },
+  "br1:league-entries": {
+   "app": "100:120,20:1",
+   "method": "50:10"
+  },
+  "na1:league-entries": {
+   "app": "100:120,20:1",
+   "method": "50:10"
+  },
+  "kr:league-entries": {
+   "app": "100:120,20:1",
+   "method": "50:10"
+  }
+ }
+}

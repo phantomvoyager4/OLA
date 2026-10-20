@@ -1,0 +1,16 @@
+BR1 patch 16.20: status complete
+window 2026-10-07 01:47 UTC .. 2026-10-20 20:33 UTC (probe)
+tier          quota  games  draws
+  BRONZE          2      2      2
+  SILVER          2      2      4
+  GOLD            2      2      2
+  PLATINUM        2      2      4
+  EMERALD         1      1      4
+  DIAMOND         1      1      1
+draws by status: {'no_patch_games': 11, 'ok': 6}
+rejected games: {}
+calls: {'br1': 460, 'HTTP 200': 506, 'americas': 46}; americas calls per game 4.60
+patch purity: {'16.20': 10}; platforms: {'BR1': 10}
+games per sampled player: {1: 2, 2: 4}
+pairs of games from different draws sharing a player: 0/41 (0.00%); games on the 3 busiest days 50% over 8 days
+drift check vs saved reference (100 players): mean score 50.1 (expect 50), bands low 37% solid 17% strong 30% elite 16% (expect 40/20/20/20), AUC 0.788

@@ -1,0 +1,16 @@
+KR patch 16.20: status complete
+window 2026-10-06 08:40 UTC .. 2026-10-20 20:33 UTC (probe)
+tier          quota  games  draws
+  BRONZE          2      2      7
+  SILVER          2      2      5
+  GOLD            2      2      1
+  PLATINUM        2      2      5
+  EMERALD         1      1      7
+  DIAMOND         1      1      1
+draws by status: {'no_patch_games': 18, 'no_valid_games': 2, 'ok': 6}
+rejected games: {'remake': 2}
+calls: {'kr': 549, 'HTTP 200': 613, 'asia': 64}; asia calls per game 6.40
+patch purity: {'16.20': 10}; platforms: {'KR': 10}
+games per sampled player: {1: 2, 2: 4}
+pairs of games from different draws sharing a player: 0/41 (0.00%); games on the 3 busiest days 60% over 7 days
+drift check vs saved reference (100 players): mean score 53.9 (expect 50), bands low 35% solid 22% strong 22% elite 21% (expect 40/20/20/20), AUC 0.780

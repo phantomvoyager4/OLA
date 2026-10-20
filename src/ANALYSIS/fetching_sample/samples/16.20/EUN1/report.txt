@@ -1,0 +1,16 @@
+EUN1 patch 16.20: status complete
+window 2026-10-06 18:20 UTC .. 2026-10-20 20:33 UTC (probe)
+tier          quota  games  draws
+  BRONZE          2      2      3
+  SILVER          2      2      2
+  GOLD            2      2      2
+  PLATINUM        2      2      7
+  EMERALD         1      1      6
+  DIAMOND         1      1      1
+draws by status: {'no_patch_games': 14, 'ok': 7}
+rejected games: {}
+calls: {'eun1': 488, 'HTTP 200': 539, 'europe': 51}; europe calls per game 5.10
+patch purity: {'16.20': 10}; platforms: {'EUN1': 10}
+games per sampled player: {1: 4, 2: 3}
+pairs of games from different draws sharing a player: 0/42 (0.00%); games on the 3 busiest days 50% over 8 days
+drift check vs saved reference (100 players): mean score 45.5 (expect 50), bands low 45% solid 19% strong 17% elite 19% (expect 40/20/20/20), AUC 0.791
