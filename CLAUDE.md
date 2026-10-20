@@ -8,7 +8,7 @@ Player-performance site for League of Legends ranked solo/duo (queue 420 only).
 
 - `src/BACKEND`: Python 3.12 FastAPI app and scoring (`model.py`), imported as the `BACKEND` package from `src`
 - `src/FRONTEND`: React 19 + Vite + Tailwind 4
-- `src/ANALYSIS`: offline analysis; `fetching_script.py` crawls matches into `data/`, which the score reference is built from
+- `src/ANALYSIS`: offline analysis; `data/` holds the snowball crawl (`fetching_sample/fetching_script.py`) the score reference is built from. `fetching_sample/ladder_sampler.py` is its per-patch replacement: it draws players from Riot's ranked ladder and writes to `fetching_sample/samples/<patch>/<platform>/`
 - `data/static`: lookup tables and `score_reference.json`; also Vite's `publicDir`
 - `data/example_data/401dmg#6969_20.json`: fixture the scoring tests load
 
@@ -21,6 +21,8 @@ Python runs on the system interpreter. `.env` is a dotenv file holding `RIOT_API
 - Score evaluation (held-out, split by match_id): `cd src && python check_auc.py --seeds 0 1 2 3 4`
 - Rebuild score reference: `cd src && python -m BACKEND.metascripts.build_score_reference --data-dir ANALYSIS/data`
 - Refresh lookup tables (run from repo root): `python src/BACKEND/metascripts/run_all_scripts.py`
+- Ladder sample of the live patch (backend stopped; settings in `src/ANALYSIS/fetching_sample/settings.json`): `cd src && python -m ANALYSIS.fetching_sample.ladder_sampler`. Small test: `--regions EUN1 --games-per-region 10`. A rerun resumes; `--report-only` rebuilds `processed/` and `report.txt` with no API calls.
+- Sampler tests: `cd src && python -m unittest ANALYSIS.fetching_sample.test_ladder_sampler`
 - Backend: `cd src && python -m uvicorn BACKEND.main:app --reload --port 8000`
 - Frontend: `cd src/FRONTEND && npm run dev` / `npm run build` / `npm run lint`. Outside Docker, set `VITE_PROXY_TARGET=http://127.0.0.1:8000`; the `/api` proxy defaults to the Docker host `backend:8000`.
 - Full stack: `docker compose up --build` (both services hot-reload from the mounted source)
@@ -30,6 +32,7 @@ Python runs on the system interpreter. `.env` is a dotenv file holding `RIOT_API
 `/api/matches` → `pipeline.pipeline()` → `model.Caller` fetches the PUUID, match IDs and match payloads → each participant becomes a `Player`, each game a `Match` → `annotate_player_performance` adds scores → `summarizer` stats are appended as the last element of the returned list, so filter on `"players" in item`.
 
 - Every Riot call goes through `riot_api.riot_get_json`: one process-wide rate limiter (18/s and 90/120s, under the dev key's 20/100) plus an in-memory TTL cache. All state lives in the single backend process and is lost on restart.
+- Riot counts the key's limit per routing value, not per key: EUW1 and EUN1 share `europe` for match and account calls, NA1 and BR1 share `americas`, KR uses `asia`, and each platform host (`euw1`, `eun1`, ...) has its own budget for league calls. The ladder sampler keeps one limiter per route and runs regions in parallel; the backend's single limiter is stricter than it needs to be.
 - The dev-key budget is small: a 20-match profile costs about 22 calls. Don't loop live requests.
 - Tier list: `python -m BACKEND.tier_list_fetcher` is an offline collector that atomically writes `data/tier_list/euw_master_plus_latest.json`; the `/api/tier-list` routes only read that snapshot. Stop the backend while collecting, since both spend the same key budget.
 - `ai_overview.py` turns a digest the browser posts into prose via Groq. It makes no Riot calls and never affects scores.
