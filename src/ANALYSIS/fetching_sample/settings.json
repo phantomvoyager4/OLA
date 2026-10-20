@@ -1,0 +1,33 @@
+{
+  "regions": ["EUW1", "EUN1", "NA1", "BR1", "KR"],
+  "games_per_region": 4000,
+  "games_per_player": 3,
+  "queue_id": 420,
+  "queue_type": "RANKED_SOLO_5x5",
+  "tiers": ["IRON", "BRONZE", "SILVER", "GOLD", "PLATINUM", "EMERALD", "DIAMOND", "MASTER", "GRANDMASTER", "CHALLENGER"],
+
+  "patch": "current",
+  "patch_start": "auto",
+  "probe_lookback_days": 35,
+  "probe_players": 2,
+
+  "skip_inactive": true,
+  "max_draws_per_game": 8,
+  "max_match_pages": 3,
+  "seed": 20261020,
+
+  "rate_limit": {
+    "short_limit": 18,
+    "short_window_s": 1.0,
+    "long_limit": 90,
+    "long_window_s": 120.0,
+    "method_limit_safety": 0.9
+  },
+  "request_timeout_s": [3.05, 20.0],
+  "max_retries": 4,
+  "network_patience_s": 600,
+  "ladder_reuse_hours": 24,
+  "expected_calls_per_game": 1.77,
+
+  "output_dir": "samples"
+}
