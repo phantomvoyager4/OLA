@@ -47,23 +47,25 @@ The interesting part of this project is not only the UI. It is the engineering a
 Example:
 A 31-minute game, Swain mid, 5/10/12, a loss.
 
-|      Feature      | Player | Mid average |  Std |   z   | Weight | z × weight |
-|:-----------------:|:------:|:-----------:|:----:|:-----:|:------:|:----------:|
-| combat_efficiency | 2.27   | 3.50        | 3.42 | −0.36 | 0.22   | −0.08      |
-| damagePerMinute   | 955    | 893         | 334  | +0.19 | 0.18   | +0.03      |
-| goldPerMinute     | 347    | 418         | 76   | −0.93 | 0.10   | −0.09      |
-| vision_activity   | 2.08   | 3.24        | 1.41 | −0.82 | 0.14   | −0.12      |
-| farm_pressure     | 8.47   | 10.66       | 1.83 | −1.19 | 0.12   | −0.14      |
-| map_pressure      | 344    | 551         | 353  | −0.59 | 0.12   | −0.07      |
-| timeCCingOthers   | 60     | 24.3        | 19.3 | +1.85 | 0.06   | +0.11      |
-| soloKills         | 2      | 2.79        | 2.66 | −0.30 | 0.04   | −0.01      |
-| damage_share      | 24.9   | 23.4        | 7.0  | +0.21 | 0.06   | +0.01      |
-| survival_rate     | 0.15   | 0.26        | 0.17 | −0.64 | 0.05   | −0.03      |
-| death_penalty     | 2.81   | 2.34        | 0.62 | +0.76 | −0.12  | −0.09      |
-| Raw score         |        |             |      |       |        | −0.48      |
+|      Feature      | Player | Mid average |  Std  |   z   | Weight | z × weight |
+| :---------------: | :----: | :---------: | :---: | :---: | :----: | :--------: |
+| combat_efficiency |  2.27  |    3.49     | 3.42  | −0.36 |  0.22  |   −0.08    |
+|  damagePerMinute  |  955   |     891     |  335  | +0.19 |  0.18  |   +0.03    |
+|   goldPerMinute   |  347   |     418     |  76   | −0.93 |  0.10  |   −0.09    |
+|  vision_activity  |  0.63  |    0.79     | 0.30  | −0.54 |  0.14  |   −0.08    |
+|   farm_pressure   |  8.47  |    10.65    | 1.84  | −1.19 |  0.12  |   −0.14    |
+|   map_pressure    |  203   |     316     |  212  | −0.54 |  0.12  |   −0.06    |
+|  timeCCingOthers  |  1.91  |    0.77     | 0.57  | +1.98 |  0.06  |   +0.12    |
+|     soloKills     | 0.064  |    0.092    | 0.091 | −0.31 |  0.04  |   −0.01    |
+|   damage_share    |  24.9  |    23.4     |  7.0  | +0.21 |  0.06  |   +0.01    |
+|   survival_rate   |  0.15  |    0.26     | 0.17  | −0.64 |  0.05  |   −0.03    |
+|   death_penalty   |  2.81  |    2.33     | 0.63  | +0.76 | −0.12  |   −0.09    |
+|     Raw score     |        |             |       |       |        |   −0.42    |
 
-Going back to `score_reference.json`, we find corresponding score value and its index. In this case, most corresponding value is -0.490, which has an index of 25.
-This gives us a final score of a player, which basically mean that <b>he performed better than 25% of players on mid but worse than 75% players from this dataset</b>.
+Vision, objective damage, crowd control and solo kills are per minute: 60 s of CC and 2 solo kills over 31.4 minutes give 1.91 and 0.064.
+
+Going back to `score_reference.json`, we find where the raw score falls among the stored mid percentiles. In this case, −0.423 lies between −0.433 (index 28) and −0.419 (index 29); interpolating between them gives 28.7, shown as 29.
+This gives us a final score of a player, which basically mean that <b>he performed better than about 29% of players on mid but worse than about 71% players from this dataset</b>.
 
 ## Performance scoring
 
@@ -97,7 +99,11 @@ python -m BACKEND.metascripts.build_score_reference --data-dir <folder with data
 python -m unittest BACKEND.tests.test_scoring
 ```
 
-The weights are hand-picked, so the score is checked against an outcome it never sees: on the reference data it separates wins from losses with a ROC-AUC of 0.785 (0.745 for supports, 0.835 for junglers).
+The weights are hand-picked, so the score is checked against an outcome it never sees: on the reference data it separates wins from losses with a ROC-AUC of 0.790:
+<p align="center">
+  <img src="src\ANALYSIS\artifacts\roc_curves.png" width="300" alt="Open League Analyzer logo" />
+</p>
+Figure 1. ROC-AUC evaluation of performance metric.
 
 ### Live meta tier list
 
