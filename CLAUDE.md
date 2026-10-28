@@ -55,3 +55,8 @@ Python runs on the system interpreter. `.env` is a dotenv file holding `RIOT_API
 - Before any evaluation, check that no match_id appears in both train and test.
 - Ask before changing `PERFORMANCE_FEATURE_WEIGHTS`.
 - Riot key currently used in this repo has a rate limit: 20 requests every 1 seconds, 100 requests every 2 minutes. keep that in mind while working.
+- Rules for this practice
+- Answer in at most 8 bullets. Tables at most 4 columns.
+- Don't create files or notebooks unless I name a specific file.
+- Don't make modelling decisions for me. If there is something important always ask me for decision. Never decide for me.
+- If my request is vague, ask one clarifying question instead of guessing.
